@@ -1,0 +1,226 @@
+@import "tailwindcss";
+
+/* `dark:` follows the theme chosen in the app (next-themes sets data-theme on <html>), not only the OS setting */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* Design tokens — AI-EDW palette (docs/03-technical-spec.md §5). Components use these tokens only; no raw hex. */
+:root {
+  --primary: #1d4b80;
+  --primary-600: #163c68;
+  --primary-700: #10305a;
+  --primary-050: #e9eff7;
+  --navy: #0e2a4c;
+  /* brand gold (Nitimitr theme): --gold fills buttons/accents, --gold-text is the AA-safe tone for text on light surfaces */
+  --gold: #e2ae45;
+  --gold-600: #c99532;
+  --gold-light: #f3d58a;
+  --gold-text: #8f6710;
+  --page-art: url("/theme/bg-light.jpg");
+  --auth-art: url("/theme/bg-login.jpg");
+  --bg: #f4f1ea;
+  --surface: #ffffff;
+  --surface-2: #f1f3f5;
+  --text: #1f2937;
+  --text-muted: #5f6673;
+  --border: #e7e3da;
+  --border-strong: #d6d0c2;
+  --success: #16703a;
+  --success-050: #e8f6ec;
+  --warning: #8a5300;
+  --warning-050: #fff8e6;
+  --danger: #b42335;
+  --danger-050: #fdecec;
+  /* statute excerpts: the gold of the Royal Gazette seal, used only for verbatim law text */
+  --statute: #8a6a1f;
+  --statute-050: #faf5e8;
+  --focus: #1d5fb0;
+  --sidebar-width: 280px;
+  --header-height: 60px;
+  --right-panel-width: 360px;
+}
+
+:root[data-theme="dark"] {
+  --primary: #2970ba;
+  --primary-600: #215d9c;
+  --primary-700: #9cc8f2;
+  --primary-050: rgba(47, 124, 203, 0.18);
+  --navy: #0a1a30;
+  --gold: #e2ae45;
+  --gold-600: #c99532;
+  --gold-light: #f3d58a;
+  --gold-text: #e6c068;
+  --page-art: url("/theme/page-dark.svg");
+  --bg: #0b1220;
+  --surface: #121b2b;
+  --surface-2: #1b2638;
+  --text: #e6edf3;
+  --text-muted: #9aa4af;
+  --border: #26324a;
+  --border-strong: #36445f;
+  --success: #4cc27a;
+  --success-050: rgba(40, 167, 69, 0.16);
+  --warning: #f0b95a;
+  --warning-050: rgba(255, 193, 7, 0.16);
+  --danger: #f07a88;
+  --danger-050: rgba(220, 53, 69, 0.16);
+  --statute: #d8b665;
+  --statute-050: rgba(216, 182, 101, 0.1);
+  --focus: #6aa9ec;
+}
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-600: var(--primary-600);
+  --color-primary-700: var(--primary-700);
+  --color-primary-050: var(--primary-050);
+  --color-navy: var(--navy);
+  --color-gold: var(--gold);
+  --color-gold-600: var(--gold-600);
+  --color-gold-light: var(--gold-light);
+  --color-gold-text: var(--gold-text);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-text: var(--text);
+  --color-muted: var(--text-muted);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-success: var(--success);
+  --color-success-050: var(--success-050);
+  --color-warning: var(--warning);
+  --color-warning-050: var(--warning-050);
+  --color-danger: var(--danger);
+  --color-danger-050: var(--danger-050);
+  --color-statute: var(--statute);
+  --color-statute-050: var(--statute-050);
+  --font-sans: var(--font-plex-thai), system-ui, sans-serif;
+  /* headings and statute excerpts use the same family; kept as a separate token for the role */
+  --font-serif: var(--font-plex-thai), system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+/* page backdrop: warm cream with fine gold curves (public/theme/*.svg); fixed so it stays put while content scrolls */
+.bg-page {
+  background-color: var(--bg);
+  background-image: var(--page-art);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* the floating navy sidebar: re-point the tokens so everything inside (chat list, menus, switcher) reads on navy in both themes */
+.on-navy {
+  --text: #eaf0f8;
+  --text-muted: #aebbd0;
+  --border: rgba(255, 255, 255, 0.14);
+  --border-strong: rgba(255, 255, 255, 0.26);
+  --surface: #14365f;
+  --surface-2: rgba(255, 255, 255, 0.09);
+  --bg: rgba(255, 255, 255, 0.07);
+  --primary-050: rgba(226, 174, 69, 0.16);
+  --primary-700: #f3d58a;
+  --danger: #ff9aa6;
+  --danger-050: rgba(255, 154, 166, 0.14);
+  --success: #7fdca2;
+  --focus: #f3d58a;
+  background-color: var(--navy);
+  color: var(--text);
+}
+
+/* sign-in backdrop: the library photo; in the dark theme a navy veil dims it */
+.auth-bg {
+  background-color: var(--bg);
+  background-image: var(--auth-art);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+:root[data-theme="dark"] .auth-bg {
+  background-image: linear-gradient(rgba(8, 18, 34, 0.72), rgba(8, 18, 34, 0.72)), var(--auth-art);
+}
+
+/* the gold sign-in card: re-point tokens so labels, links, notices and buttons inside read on gold in both themes,
+   then turn fields into black pills and the primary button white with brown text (as in the design) */
+.on-gold {
+  --surface: #f0bc65;
+  --surface-2: rgba(255, 255, 255, 0.4);
+  --text: #2b1c03;
+  --text-muted: #5a3c08;
+  --border: rgba(90, 60, 8, 0.3);
+  --border-strong: rgba(90, 60, 8, 0.45);
+  --primary: #3b2704;
+  --primary-600: #2b1c03;
+  --primary-700: #3b2704;
+  --primary-050: rgba(255, 255, 255, 0.4);
+  --danger: #8a1222;
+  --danger-050: rgba(255, 255, 255, 0.65);
+  --success: #0e5a2c;
+  --success-050: rgba(255, 255, 255, 0.65);
+  --focus: #2b1c03;
+  --field-bg: #0c0e12;
+  --field-text: #f6f6f6;
+  background-color: var(--surface);
+  color: var(--text);
+}
+.on-gold input:not([type="checkbox"]):not([type="radio"]) {
+  background-color: var(--field-bg);
+  color: var(--field-text);
+  border-color: transparent;
+  border-radius: 9999px;
+  padding-inline: 1.1rem;
+}
+.on-gold input::placeholder {
+  color: rgba(246, 246, 246, 0.6);
+}
+.on-gold input:not([type="checkbox"]):not([type="radio"]):focus {
+  box-shadow: 0 0 0 3px rgba(43, 28, 3, 0.45);
+}
+.on-gold input + button {
+  color: #d9d9d9; /* show/hide password toggle sits on the black field */
+}
+.on-gold button.bg-primary,
+.on-gold button.bg-primary:hover {
+  background-color: #ffffff;
+  color: #6b4505;
+  border-radius: 9999px;
+}
+.on-gold button.bg-primary:hover {
+  background-color: #fff8e8;
+}
+.on-gold button:not(.bg-primary):not([type="submit"]),
+.on-gold nav a {
+  border-radius: 9999px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-plex-thai), system-ui, sans-serif;
+  /* Thai tone marks and vowels stack above and below the line: more leading than the Latin default */
+  line-height: 1.65;
+}
+
+/* keyboard focus is always visible (NFR-A11Y) */
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+::selection {
+  background: var(--primary-050);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

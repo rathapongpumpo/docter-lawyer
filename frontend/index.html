@@ -1,0 +1,1413 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>ดอกเตอร์ลอว์เยอร์ (Doctor Lawyer) — AI Legal Assistant & Partner Lawyer Network</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Noto+Serif+Thai:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #0066cc;
+      --primary-dark: #004c99;
+      --primary-light: #e6f0fa;
+      --navy: #0b2a4a;
+      --navy-light: #163e68;
+      --danger: #dc2626;
+      --danger-bg: #fef2f2;
+      --warning: #d97706;
+      --warning-bg: #fffbeb;
+      --success: #16a34a;
+      --success-bg: #f0fdf4;
+      --line-green: #06C755;
+      --line-green-dark: #05a847;
+      --google-red: #ea4335;
+      --bg: #f4f6f9;
+      --surface: #ffffff;
+      --text: #1f2937;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 16px;
+      --shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.06);
+      --font-sans: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-serif: 'Noto Serif Thai', Georgia, serif;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .main-wrapper {
+      max-width: 900px;
+      margin: 0 auto;
+      min-height: 100vh;
+      background: var(--surface);
+      box-shadow: 0 0 30px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top App Bar */
+    .top-bar {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      color: #fff;
+      padding: 18px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 4px 15px rgba(11, 42, 74, 0.15);
+    }
+    .top-bar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .brand-title {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .brand-sub {
+      font-size: 12px;
+      color: #93c5fd;
+      font-weight: 400;
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .badge-tier {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255, 255, 255, 0.18);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .badge-tier.tier1 { background: #10b981; border: none; }
+    .badge-tier.tier2 { background: #8b5cf6; border: none; }
+
+    /* User Auth Pill Button */
+    .btn-auth-nav {
+      background: #ffffff;
+      color: var(--navy);
+      border: none;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .btn-auth-nav:hover {
+      background: #f1f5f9;
+      transform: translateY(-1px);
+    }
+    .user-pill {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-logout {
+      background: none;
+      border: none;
+      color: #fca5a5;
+      font-size: 11px;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 0 4px;
+      font-family: inherit;
+    }
+
+    /* Container Body */
+    .content-area {
+      padding: 24px;
+      flex: 1;
+    }
+
+    /* Membership Banner */
+    .membership-alert-banner {
+      background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%);
+      border: 1px solid #bfdbfe;
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .membership-alert-banner .banner-text {
+      font-size: 13.5px;
+      color: #1e3a8a;
+    }
+    .membership-alert-banner .banner-btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-family: inherit;
+    }
+    .membership-alert-banner .banner-btn:hover {
+      background: var(--primary-dark);
+    }
+
+    /* Quick Presets Bar */
+    .presets-card {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+    }
+    .presets-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .presets-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .preset-btn {
+      background: #fff;
+      border: 1px solid var(--border);
+      color: #334155;
+      font-size: 12.5px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .preset-btn:hover {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    /* Query Input Card */
+    .query-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+    .query-card h2 {
+      margin: 0 0 12px 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .query-input {
+      width: 100%;
+      min-height: 110px;
+      padding: 14px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 14.5px;
+      color: var(--text);
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s ease;
+      background: #fcfcfd;
+    }
+    .query-input:focus {
+      border-color: var(--primary);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+    }
+    .query-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 14px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .btn-voice {
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      color: #475569;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-voice:hover { background: #e2e8f0; }
+    .btn-voice.recording {
+      background: var(--danger-bg);
+      color: var(--danger);
+      border-color: var(--danger);
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+    .btn-submit {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #fff;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(0, 102, 204, 0.25);
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .btn-submit:hover {
+      box-shadow: 0 6px 18px rgba(0, 102, 204, 0.35);
+      transform: translateY(-1px);
+    }
+    .btn-submit:disabled {
+      background: #cbd5e1;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    /* Results Container */
+    .results-container {
+      display: none;
+      animation: fadeIn .3s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Status & Urgency Card */
+    .status-card {
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid transparent;
+    }
+    .status-card.critical { background: var(--danger-bg); border-color: #fca5a5; color: #991b1b; }
+    .status-card.urgent { background: var(--warning-bg); border-color: #fcd34d; color: #92400e; }
+    .status-card.normal { background: var(--success-bg); border-color: #86efac; color: #166534; }
+    .status-left h3 { margin: 0 0 4px 0; font-size: 16.5px; font-weight: 700; }
+    .status-left p { margin: 0; font-size: 13.5px; }
+
+    /* Quota Banner */
+    .quota-info-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      color: #3730a3;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+
+    /* PDPA Shield Banner */
+    .pdpa-banner {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--primary);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      color: #475569;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Standardized 6-Part Advice Cards */
+    .advice-step-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      transition: border-color 0.2s;
+    }
+    .advice-step-card:hover { border-color: #cbd5e1; }
+    .advice-step-header {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .advice-step-content {
+      font-size: 14px;
+      color: #334155;
+      white-space: pre-line;
+      line-height: 1.7;
+    }
+
+    /* Partner Lawyer Handoff Box */
+    .handoff-action-box {
+      background: linear-gradient(135deg, #0b2a4a 0%, #163e68 100%);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-top: 24px;
+      box-shadow: 0 8px 24px rgba(11, 42, 74, 0.2);
+    }
+    .handoff-action-box h4 {
+      margin: 0 0 8px 0;
+      font-size: 18px;
+      font-family: var(--font-serif);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .handoff-action-box p {
+      margin: 0 0 16px 0;
+      font-size: 13.5px;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+    .handoff-btn-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .btn-line-oa {
+      background: var(--line-green);
+      color: #fff;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 14px rgba(6, 199, 85, 0.35);
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .btn-line-oa:hover {
+      background: var(--line-green-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(6, 199, 85, 0.45);
+    }
+    .btn-secondary-brief {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-size: 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .btn-secondary-brief:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Modal Styling */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-content {
+      background: #fff;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+      animation: zoomIn .2s ease-out;
+    }
+    @keyframes zoomIn {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
+    .modal-header h3 {
+      margin: 0;
+      font-size: 18px;
+      font-family: var(--font-serif);
+      color: var(--navy);
+    }
+    .close-btn {
+      border: none;
+      background: none;
+      font-size: 22px;
+      cursor: pointer;
+      color: #64748b;
+    }
+    .brief-section {
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 12px;
+      font-size: 13px;
+    }
+    .brief-label {
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+
+    /* Auth Modal Tabs & Inputs */
+    .auth-tabs {
+      display: flex;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 20px;
+    }
+    .auth-tab-btn {
+      flex: 1;
+      padding: 12px;
+      background: none;
+      border: none;
+      font-weight: 600;
+      font-size: 14px;
+      color: #64748b;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .auth-tab-btn.active {
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+    .form-input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-input:focus {
+      border-color: var(--primary);
+    }
+    .otp-input-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .otp-input {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-align: center;
+    }
+    .btn-google {
+      width: 100%;
+      background: #fff;
+      color: #374151;
+      border: 1.5px solid #d1d5db;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 14.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: background 0.2s;
+      font-family: inherit;
+    }
+    .btn-google:hover {
+      background: #f9fafb;
+      border-color: #9ca3af;
+    }
+    .auth-notice-box {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Notification Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e293b;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+
+    @media (max-width: 600px) {
+      .top-bar { padding: 14px 16px; }
+      .content-area { padding: 16px; }
+      .brand-title { font-size: 19px; }
+      .handoff-btn-group { flex-direction: column; }
+      .btn-line-oa, .btn-secondary-brief { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="main-wrapper">
+  <!-- Top App Bar -->
+  <header class="top-bar">
+    <div class="top-bar-inner">
+      <div class="brand-group">
+        <div class="brand-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v18"/><path d="M7 21h10"/><path d="M4 7h16"/><path d="M7 7l-3 7a3 3 0 0 0 6 0z"/><path d="M17 7l-3 7a3 3 0 0 0 6 0z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">ดอกเตอร์ลอว์เยอร์</div>
+          <div class="brand-sub">Doctor Lawyer · AI Legal Triage & Partner Lawyer Network</div>
+        </div>
+      </div>
+      
+      <div class="header-right">
+        <span id="tierBadge" class="badge-tier tier1">⚡ Tier 1: 0 บาท</span>
+        
+        <!-- Auth Profile State in Nav -->
+        <div id="authNavContainer">
+          <button type="button" class="btn-auth-nav" onclick="openAuthModal()">
+            <span>🔑 เข้าสู่ระบบ (รับฟรี 3 ครั้ง)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="content-area">
+    <!-- Membership State Banner -->
+    <div id="membershipBanner" class="membership-alert-banner">
+      <div class="banner-text">
+        <span id="membershipStatusText">👤 <b>ผู้ใช้งานทั่วไป:</b> ทดลองปรึกษาฟรีได้ 1 ครั้ง · สมัคร/เข้าสู่ระบบเพื่อรับสิทธิ์ฟรี 3 ครั้ง!</span>
+      </div>
+      <button type="button" id="membershipActionBtn" class="banner-btn" onclick="openAuthModal()">
+        เข้าสู่ระบบ / ลงทะเบียน
+      </button>
+    </div>
+
+    <!-- Presets Bar -->
+    <div class="presets-card">
+      <div class="presets-title">
+        <span>💡 คลิกเลือกตัวอย่างคดีทดสอบ (ทดสอบฟรี 1 คลิก):</span>
+      </div>
+      <div class="presets-grid">
+        <button class="preset-btn" onclick="setQuery('ถูกหลอกให้โอนเงินเข้าบัญชีม้า 35,000 บาท เมื่อ 1 ชั่วโมงที่แล้ว คนร้ายบล็อกหนี ติดต่อไม่ได้ มีสลิปโอนเงินครับ')">🚨 โกงออนไลน์ (AOC 72 ชม.)</button>
+        <button class="preset-btn" onclick="setQuery('กู้เงินนอกระบบมา 20,000 บาท เจ้าหนี้คิดดอกเบี้ยร้อยละ 20 ต่อเดือน ส่งดอกไป 20,000 แล้วแต่เงินต้นไม่ลดเลย มีแชทคุยในไลน์')">💸 ดอกเบี้ยโหด 20%/เดือน</button>
+        <button class="preset-btn" onclick="setQuery('ทำงานมา 2 ปี 6 เดือน ถูกเจ้านายบอกให้ออกสิ้นเดือนนี้กะทันหัน ไม่บอกล่วงหน้า ไม่จ่ายค่าชดเชยและค่าตกใจ ไม่ได้ทำผิดอะไร')">💼 เลิกจ้างไม่จ่ายชดเชย</button>
+        <button class="preset-btn" onclick="setQuery('ขับรถยนต์ถูกคู่กรณีขับรถชนท้าย รถต้องเข้าซ่อมที่อู่ 30 วัน ประกันคู่กรณีไม่ยอมจ่ายค่าขาดประโยชน์จากการใช้รถระหว่างซ่อม')">🚗 รถชน เรียกค่าขาดประโยชน์</button>
+        <button class="preset-btn" onclick="setQuery('ขายของออนไลน์ใน TikTok Shop มีเงินโอนเข้าบัญชีเกิน 400 ครั้ง ยอดขายทั้งปีเกิน 1.8 ล้านบาท โดนสรรพากรเรียกตรวจย้อนหลังเรื่อง VAT')">📦 ภาษีแม่ค้าออนไลน์ (VAT 1.8 ล้าน)</button>
+        <button class="preset-btn" onclick="setQuery('เป็นหนี้เพื่อน 5,000 บาท แล้วเพื่อนแคปแชทและเอารูปเราไปโพสต์ประจานในเฟซบุ๊ก ทำให้เสียชื่อเสียงมาก ฟ้องหมิ่นประมาทได้ไหม')">📢 โพสต์ประจานทวงหนี้</button>
+        <button class="preset-btn" onclick="setQuery('ผ่อนรถไม่ไหว อยากเอารถเช่าซื้อไปคืนไฟแนนซ์ก่อนที่จะผิดนัดค่างวด ไฟแนนซ์จะฟ้องเรียกค่าขาดราคาส่วนต่างได้ไหม')">🔑 คืนรถเช่าซื้อไฟแนนซ์</button>
+        <button class="preset-btn" onclick="setQuery('มีข้อพิพาทเรื่องเงิน ไม่อยากเสียค่าธรรมเนียมศาลและไม่อยากจ้างทนายฟ้อง อยากยื่นขอไกล่เกลี่ยข้อพิพาทก่อนฟ้องตามมาตรา 20 ตรี')">🤝 ไกล่เกลี่ยก่อนฟ้องฟรี</button>
+        <button class="preset-btn" onclick="setQuery('โดนเวนคืนที่ดินเพื่อสร้างทางด่วนพิเศษ ได้เงินค่าทดแทนน้อยเกินไป อยากยื่นอุทธรณ์ต่อศาลปกครอง')">🏛️ คดีเฉพาะทาง (เวนคืนที่ดิน)</button>
+      </div>
+    </div>
+
+    <!-- Query Input Card -->
+    <div class="query-card">
+      <h2>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+        พิมพ์เล่าปัญหาข้อพิพาทของท่าน (คุ้มครองข้อมูล PDPA อัตโนมัติ)
+      </h2>
+      <textarea id="queryInput" class="query-input" placeholder="เล่าเรื่องราวของคุณ เช่น โดนโกงเงิน, กู้เงินดอกเบี้ยเกิน, เลิกจ้างไม่เป็นธรรม, สรรพากรเรียกตรวจภาษี, เวนคืนที่ดิน..."></textarea>
+      
+      <div class="query-actions">
+        <button type="button" id="voiceBtn" class="btn-voice">
+          🎤 พูดด้วยเสียง
+        </button>
+        <button type="button" id="submitBtn" class="btn-submit">
+          <span>วิเคราะห์คดี (0 บาท)</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Results Container -->
+    <div id="resultsContainer" class="results-container">
+      <!-- Status Card -->
+      <div id="statusCard" class="status-card normal">
+        <div class="status-left">
+          <h3 id="categoryTitle">หมวดกฎหมาย</h3>
+          <p id="urgencyText">ระดับความเร่งด่วน</p>
+        </div>
+        <div id="statusIcon" style="font-size: 32px;">⚖️</div>
+      </div>
+
+      <!-- Quota Notice Bar -->
+      <div id="quotaInfoBar" class="quota-info-bar">
+        <span id="quotaInfoText">⚡ ประมวลผลสำเร็จ</span>
+        <span id="quotaRemainingBadge" style="font-weight: 700;"></span>
+      </div>
+
+      <!-- PDPA Shield -->
+      <div class="pdpa-banner">
+        <span>🛡️</span>
+        <span><b>PDPA Protected:</b> ระบบตัดเลขบัตรประชาชน, เลขที่บัญชีธนาคาร, และเบอร์โทรศัพท์ออกโดยอัตโนมัติ</span>
+      </div>
+
+      <!-- 6-Part Advice Cards -->
+      <div id="adviceCardsList"></div>
+
+      <!-- Partner Lawyer Handoff Box -->
+      <div class="handoff-action-box">
+        <h4>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.03 2 11c0 2.87 1.5 5.41 3.86 7.02-.17.6-.62 2.19-.71 2.53-.11.43.16.42.33.31.14-.09 2.2-1.46 3.1-2.07.46.07.93.11 1.42.11 5.52 0 10-4.03 10-9s-4.48-9-10-9z"/>
+          </svg>
+          ส่งต่อเคสให้ทนายความพาร์ตเนอร์ผ่าน LINE Official Account
+        </h4>
+        <p>ระบบได้ประมวลผลข้อเท็จจริงและจัดทำ <b>"ใบสรุปข้อมูลคดี (Case Intake Brief)"</b> เรียบร้อยแล้ว พร้อมส่งต่อให้ทนายความพาร์ตเนอร์ตรวจเอกสารและรับงานผ่าน LINE OA</p>
+        <div class="handoff-btn-group">
+          <button type="button" class="btn-line-oa" onclick="handoffToLineOA()">
+            <span>💬 ส่งเรื่องให้ทนายพาร์ตเนอร์ (เปิด LINE OA)</span>
+          </button>
+          <button type="button" class="btn-secondary-brief" onclick="openLawyerModal()">
+            <span>📄 ตรวจดูใบสรุปข้อมูลคดี</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: User Authentication (Google & Email OTP) -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>🔑 เข้าสู่ระบบ / ลงทะเบียนรับสิทธิ์ฟรี 3 ครั้ง</h3>
+      <button class="close-btn" onclick="closeAuthModal()">✕</button>
+    </div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab-btn active" id="tabGoogleBtn" onclick="switchAuthTab('google')">
+        Google Account
+      </button>
+      <button class="auth-tab-btn" id="tabEmailBtn" onclick="switchAuthTab('email')">
+        Email + รหัส OTP
+      </button>
+    </div>
+
+    <!-- Google Sign-In Tab -->
+    <div id="tabGoogleContent">
+      <p style="font-size: 13.5px; color: #475569; margin-bottom: 20px;">
+        เข้าสู่ระบบด้วย Google Account ที่ผ่านการตรวจสอบความถูกต้องแล้วทันที เพื่อรับสิทธิ์ปรึกษากฎหมายฟรี <b>3 ครั้ง</b>
+      </p>
+      
+      <button type="button" class="btn-google" onclick="handleGoogleSignInDemo()">
+        <svg width="20" height="20" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+          <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.34 24 12 24z"/>
+          <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.98 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+          <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+        </svg>
+        เข้าสู่ระบบด้วย Google Account
+      </button>
+
+      <div class="auth-notice-box">
+        <span>🛡️</span>
+        <span>Google Account ได้รับการยืนยันตัวตนอัตโนมัติ ไม่ต้องรอยืนยัน OTP</span>
+      </div>
+    </div>
+
+    <!-- Email + OTP Tab -->
+    <div id="tabEmailContent" style="display: none;">
+      <p style="font-size: 13.5px; color: #475569; margin-bottom: 16px;">
+        ลงทะเบียนด้วย Email เพื่อป้องกันอีเมลปลอม ระบบจะส่งรหัส <b>OTP 6 หลัก</b> ไปยังอีเมลของท่าน เมื่อยืนยันสำเร็จจะได้รับสิทธิ์ฟรี <b>3 ครั้ง</b>
+      </p>
+
+      <!-- Step 1: Input Email -->
+      <div id="emailStep1">
+        <div class="form-group">
+          <label for="authEmailInput">อีเมลของท่าน:</label>
+          <input type="email" id="authEmailInput" class="form-input" placeholder="name@example.com">
+        </div>
+        <div class="form-group">
+          <label for="authNameInput">ชื่อ-นามสกุล (สำหรับให้ทนายความเรียกขาน):</label>
+          <input type="text" id="authNameInput" class="form-input" placeholder="คุณสมชาย ใจดี">
+        </div>
+        <button type="button" id="btnRequestOtp" class="btn-submit" style="width: 100%; justify-content: center;" onclick="requestEmailOtp()">
+          📩 ส่งรหัส OTP ยืนยันตัวตน (15 นาที)
+        </button>
+      </div>
+
+      <!-- Step 2: Input OTP -->
+      <div id="emailStep2" style="display: none;">
+        <div class="form-group">
+          <label>กรอกรหัสยืนยัน OTP 6 หลัก ที่ส่งไปยังอีเมล:</label>
+          <input type="text" id="otpInput" class="form-input otp-input" maxlength="6" placeholder="000000">
+          <p id="otpDemoHint" style="font-size: 12px; color: #16a34a; margin-top: 6px; display: none;"></p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button type="button" id="btnVerifyOtp" class="btn-submit" style="flex: 2; justify-content: center;" onclick="verifyEmailOtp()">
+            ✅ ยืนยันรหัส OTP
+          </button>
+          <button type="button" class="btn-secondary-brief" style="flex: 1; background:#f1f5f9; color:#475569; border:1px solid #cbd5e1;" onclick="resetOtpStep()">
+            เปลี่ยนอีเมล
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Partner Lawyer Intake Brief -->
+<div class="modal-overlay" id="lawyerModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>📄 ใบสรุปข้อมูลส่งต่อทนายความ (Case Intake Brief)</h3>
+      <button class="close-btn" onclick="closeLawyerModal()">✕</button>
+    </div>
+    
+    <div id="briefContent">
+      <div class="brief-section">
+        <div class="brief-label">สถานะเคส:</div>
+        <div id="briefStatus" style="color: #10b981; font-weight: 600;">พร้อมส่งต่อทนายความพาร์ตเนอร์ (LINE OA)</div>
+      </div>
+      <div class="brief-section">
+        <div class="brief-label">หมวดหมู่คดี:</div>
+        <div id="briefCategory">-</div>
+      </div>
+      <div class="brief-section">
+        <div class="brief-label">ข้อเท็จจริงโดยสังเขป (ปกปิดข้อมูล PDPA):</div>
+        <div id="briefStatement" style="font-style: italic; color: #475569;">-</div>
+      </div>
+      <div class="brief-section">
+        <div class="brief-label">มาตรากฎหมายและคำพิพากษาฎีกาที่เกี่ยวข้อง:</div>
+        <div id="briefStatutes">-</div>
+      </div>
+      <div class="brief-section">
+        <div class="brief-label">เอกสารที่แนะนำให้ลูกความเตรียม:</div>
+        <div id="briefDocs">-</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+      <button class="btn-line-oa" style="flex: 1; justify-content: center;" onclick="handoffToLineOA()">
+        💬 คัดลอกสรุปคดี & เปิดแชท LINE OA ทนาย
+      </button>
+      <button type="button" onclick="copyBriefOnly()" class="btn-secondary-brief" style="background:#f1f5f9; color:#334155; border: 1px solid var(--border);">
+        📋 คัดลอกข้อความ
+      </button>
+      <button type="button" onclick="closeLawyerModal()" style="background:#e2e8f0; border:none; border-radius:12px; padding:12px 18px; cursor:pointer;">
+        ปิด
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Alert -->
+<div id="toast" class="toast">
+  <span id="toastIcon">✅</span>
+  <span id="toastText">คัดลอกข้อความแล้ว</span>
+</div>
+
+<script>
+  let lastResult = null;
+  const DEFAULT_LINE_OA_URL = "https://line.me/R/ti/p/@doctorlawyer";
+
+  // Guest ID and Session Management
+  let guestId = localStorage.getItem("doctor_lawyer_guest_id");
+  if (!guestId) {
+    guestId = "guest_" + Math.random().toString(36).substring(2, 12);
+    localStorage.setItem("doctor_lawyer_guest_id", guestId);
+  }
+
+  let sessionToken = localStorage.getItem("doctor_lawyer_token") || "";
+  let currentUser = null;
+
+  // Initialize and check current user status
+  async function initAuthStatus() {
+    try {
+      const headers = { "X-Guest-ID": guestId };
+      if (sessionToken) {
+        headers["Authorization"] = "Bearer " + sessionToken;
+      }
+
+      const resp = await fetch("/api/auth/me", { headers });
+      if (resp.ok) {
+        const data = await resp.json();
+        if (data.authenticated && data.user) {
+          currentUser = data.user;
+          renderLoggedInState(currentUser);
+        } else {
+          currentUser = null;
+          renderGuestState(data.guest);
+        }
+      }
+    } catch (e) {
+      console.log("Auth init skipped:", e);
+    }
+  }
+
+  function renderLoggedInState(user) {
+    const authNav = document.getElementById("authNavContainer");
+    const banner = document.getElementById("membershipBanner");
+
+    authNav.innerHTML = `
+      <div class="user-pill">
+        <span>👤 ${escapeHtml(user.name || user.email)}</span>
+        <span style="background:#10b981; padding:2px 8px; border-radius:12px; font-weight:700;">ฟรี ${user.remaining}/3 ครั้ง</span>
+        <button class="btn-logout" onclick="logout()">ออกจากระบบ</button>
+      </div>
+    `;
+
+    banner.style.background = "#f0fdf4";
+    banner.style.borderColor = "#86efac";
+    document.getElementById("membershipStatusText").innerHTML = `
+      ⭐ <b>ยินดีต้อนรับ ${escapeHtml(user.name || user.email)}:</b> สมาชิกยืนยันตัวตนแล้ว (สิทธิ์คงเหลือ: <b>${user.remaining}/3 ครั้ง</b>)
+    `;
+    document.getElementById("membershipActionBtn").style.display = "none";
+  }
+
+  function renderGuestState(guest) {
+    const authNav = document.getElementById("authNavContainer");
+    const banner = document.getElementById("membershipBanner");
+
+    authNav.innerHTML = `
+      <button type="button" class="btn-auth-nav" onclick="openAuthModal()">
+        <span>🔑 เข้าสู่ระบบ (รับฟรี 3 ครั้ง)</span>
+      </button>
+    `;
+
+    banner.style.background = "linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%)";
+    banner.style.borderColor = "#bfdbfe";
+    const rem = guest ? guest.remaining : 1;
+    document.getElementById("membershipStatusText").innerHTML = `
+      👤 <b>ผู้ใช้งานทั่วไป:</b> ได้รับสิทธิ์ทดลองฟรี <b>${rem}/1 ครั้ง</b> · เข้าสู่ระบบด้วย Google หรือ Email ยืนยัน OTP เพื่อรับฟรี <b>3 ครั้ง</b>
+    `;
+    const btn = document.getElementById("membershipActionBtn");
+    btn.style.display = "block";
+    btn.textContent = "เข้าสู่ระบบ / ลงทะเบียน";
+  }
+
+  function logout() {
+    localStorage.removeItem("doctor_lawyer_token");
+    sessionToken = "";
+    currentUser = null;
+    showToast("ออกจากระบบเรียบร้อยแล้ว", "👋");
+    initAuthStatus();
+  }
+
+  // Auth Tabs
+  function switchAuthTab(tab) {
+    const gTab = document.getElementById("tabGoogleBtn");
+    const eTab = document.getElementById("tabEmailBtn");
+    const gContent = document.getElementById("tabGoogleContent");
+    const eContent = document.getElementById("tabEmailContent");
+
+    if (tab === 'google') {
+      gTab.classList.add('active');
+      eTab.classList.remove('active');
+      gContent.style.display = 'block';
+      eContent.style.display = 'none';
+    } else {
+      eTab.classList.add('active');
+      gTab.classList.remove('active');
+      eContent.style.display = 'block';
+      gContent.style.display = 'none';
+    }
+  }
+
+  // Google Sign-In Demo Handler
+  async function handleGoogleSignInDemo() {
+    const emailPrompt = prompt("กรุณาระบุ Google Email ของท่าน (หรือกดยืนยันเพื่อใช้บัญชีทดสอบ):", "user.google@gmail.com");
+    if (!emailPrompt) return;
+
+    try {
+      const resp = await fetch("/api/auth/google", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: emailPrompt.trim(),
+          name: emailPrompt.split("@")[0]
+        })
+      });
+
+      const data = await resp.json();
+      if (data.success && data.user) {
+        localStorage.setItem("doctor_lawyer_token", data.session_token);
+        sessionToken = data.session_token;
+        currentUser = data.user;
+        renderLoggedInState(currentUser);
+        closeAuthModal();
+        showToast("เข้าสู่ระบบด้วย Google สำเร็จ! ได้รับสิทธิ์ฟรี 3 ครั้ง", "🎉");
+      } else {
+        alert(data.error || "เกิดข้อผิดพลาดในการเข้าสู่ระบบด้วย Google");
+      }
+    } catch (e) {
+      alert("เชื่อมต่อเซิร์ฟเวอร์ไม่สำเร็จ: " + e.message);
+    }
+  }
+
+  // Email OTP Request
+  async function requestEmailOtp() {
+    const email = document.getElementById("authEmailInput").value.trim();
+    const name = document.getElementById("authNameInput").value.trim();
+
+    if (!email) {
+      alert("กรุณากรอกอีเมลของท่านก่อนครับ");
+      return;
+    }
+
+    const btn = document.getElementById("btnRequestOtp");
+    btn.disabled = true;
+    btn.textContent = "กำลังส่งรหัส OTP...";
+
+    try {
+      const resp = await fetch("/api/auth/email/request-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, name })
+      });
+
+      const data = await resp.json();
+      if (data.success) {
+        document.getElementById("emailStep1").style.display = "none";
+        document.getElementById("emailStep2").style.display = "block";
+
+        const hint = document.getElementById("otpDemoHint");
+        if (data.demo_otp) {
+          hint.innerHTML = `💡 <b>รหัสทดสอบ OTP:</b> <span style="font-size:16px; font-weight:700;">${data.demo_otp}</span> (สำหรับทดสอบในโหมด Demo)`;
+          hint.style.display = "block";
+          document.getElementById("otpInput").value = data.demo_otp;
+        } else {
+          hint.style.display = "none";
+        }
+
+        showToast("ส่งรหัส OTP 6 หลักเรียบร้อยแล้ว", "📩");
+      } else {
+        alert(data.error || "ไม่สามารถส่ง OTP ได้");
+      }
+    } catch (e) {
+      alert("เชื่อมต่อไม่สำเร็จ: " + e.message);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "📩 ส่งรหัส OTP ยืนยันตัวตน (15 นาที)";
+    }
+  }
+
+  // Email OTP Verify
+  async function verifyEmailOtp() {
+    const email = document.getElementById("authEmailInput").value.trim();
+    const otp = document.getElementById("otpInput").value.trim();
+
+    if (!otp || otp.length !== 6) {
+      alert("กรุณากรอกรหัส OTP 6 หลักให้ครบถ้วนครับ");
+      return;
+    }
+
+    const btn = document.getElementById("btnVerifyOtp");
+    btn.disabled = true;
+    btn.textContent = "กำลังตรวจสอบ...";
+
+    try {
+      const resp = await fetch("/api/auth/email/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, otp })
+      });
+
+      const data = await resp.json();
+      if (data.success && data.user) {
+        localStorage.setItem("doctor_lawyer_token", data.session_token);
+        sessionToken = data.session_token;
+        currentUser = data.user;
+        renderLoggedInState(currentUser);
+        closeAuthModal();
+        showToast("ยืนยันอีเมลสำเร็จ! ได้รับสิทธิ์ฟรี 3 ครั้ง", "🎉");
+      } else {
+        alert(data.error || "รหัส OTP ไม่ถูกต้อง");
+      }
+    } catch (e) {
+      alert("เชื่อมต่อไม่สำเร็จ: " + e.message);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "✅ ยืนยันรหัส OTP";
+    }
+  }
+
+  function resetOtpStep() {
+    document.getElementById("emailStep1").style.display = "block";
+    document.getElementById("emailStep2").style.display = "none";
+  }
+
+  function openAuthModal() {
+    document.getElementById("authModal").style.display = "flex";
+  }
+
+  function closeAuthModal() {
+    document.getElementById("authModal").style.display = "none";
+  }
+
+  function setQuery(text) {
+    document.getElementById("queryInput").value = text;
+    document.getElementById("queryInput").focus();
+  }
+
+  function showToast(text, icon = "📋") {
+    const toast = document.getElementById("toast");
+    document.getElementById("toastText").textContent = text;
+    document.getElementById("toastIcon").textContent = icon;
+    toast.style.display = "flex";
+    setTimeout(() => {
+      toast.style.display = "none";
+    }, 3500);
+  }
+
+  // Voice Input (Speech-to-Text)
+  const voiceBtn = document.getElementById("voiceBtn");
+  if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'th-TH';
+    recognition.continuous = false;
+
+    let isRecording = false;
+    voiceBtn.addEventListener('click', () => {
+      if (!isRecording) {
+        recognition.start();
+        voiceBtn.classList.add('recording');
+        voiceBtn.innerHTML = '🔴 กำลังฟัง...';
+        isRecording = true;
+      } else {
+        recognition.stop();
+        voiceBtn.classList.remove('recording');
+        voiceBtn.innerHTML = '🎤 พูดด้วยเสียง';
+        isRecording = false;
+      }
+    });
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      document.getElementById("queryInput").value += (document.getElementById("queryInput").value ? " " : "") + transcript;
+      voiceBtn.classList.remove('recording');
+      voiceBtn.innerHTML = '🎤 พูดด้วยเสียง';
+      isRecording = false;
+    };
+
+    recognition.onerror = () => {
+      voiceBtn.classList.remove('recording');
+      voiceBtn.innerHTML = '🎤 พูดด้วยเสียง';
+      isRecording = false;
+    };
+  } else {
+    voiceBtn.style.display = 'none';
+  }
+
+  // Submit Query to Backend Engine
+  document.getElementById("submitBtn").addEventListener("click", async () => {
+    const query = document.getElementById("queryInput").value.trim();
+    if (!query) {
+      alert("กรุณากรอกข้อความเล่าปัญหาของท่านก่อนครับ");
+      return;
+    }
+
+    const submitBtn = document.getElementById("submitBtn");
+    submitBtn.disabled = true;
+    submitBtn.innerText = "กำลังประมวลผล...";
+
+    try {
+      const headers = {
+        "Content-Type": "application/json; charset=utf-8",
+        "X-Guest-ID": guestId
+      };
+      if (sessionToken) {
+        headers["Authorization"] = "Bearer " + sessionToken;
+      }
+
+      const response = await fetch("/api/consult", {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({ query: query })
+      });
+
+      const data = await response.json();
+      lastResult = data;
+
+      // Handle Authentication Required (Guest limit = 1 reached)
+      if (data.status === "AUTH_REQUIRED") {
+        renderResults(data);
+        setTimeout(() => {
+          openAuthModal();
+        }, 800);
+        return;
+      }
+
+      // Handle Member Quota Exceeded (Member limit = 3 reached)
+      if (data.status === "QUOTA_EXCEEDED") {
+        renderResults(data);
+        return;
+      }
+
+      renderResults(data);
+      // Refresh Auth and Quota badge
+      initAuthStatus();
+    } catch (err) {
+      alert("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้: " + err.message);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = `<span>วิเคราะห์คดี (0 บาท)</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>`;
+    }
+  });
+
+  function renderResults(data) {
+    const resultsContainer = document.getElementById("resultsContainer");
+    const statusCard = document.getElementById("statusCard");
+    const categoryTitle = document.getElementById("categoryTitle");
+    const urgencyText = document.getElementById("urgencyText");
+    const statusIcon = document.getElementById("statusIcon");
+    const adviceCardsList = document.getElementById("adviceCardsList");
+    const tierBadge = document.getElementById("tierBadge");
+    const quotaInfoText = document.getElementById("quotaInfoText");
+    const quotaRemainingBadge = document.getElementById("quotaRemainingBadge");
+
+    // Tier indicator
+    const isTier1 = (data.tier || "").includes("Tier 1");
+    if (isTier1) {
+      tierBadge.className = "badge-tier tier1";
+      tierBadge.textContent = "⚡ Tier 1: 0 บาท";
+    } else {
+      tierBadge.className = "badge-tier tier2";
+      tierBadge.textContent = "🤖 Tier 2: AI ช่วยวิเคราะห์";
+    }
+
+    // Quota display
+    if (data.quota) {
+      quotaInfoText.textContent = data.quota.note || "ประมวลผลข้อกฎหมายสำเร็จ";
+      quotaRemainingBadge.textContent = `สิทธิ์คงเหลือ: ${data.quota.remaining}/${data.quota.limit} ครั้ง`;
+    }
+
+    const urgencyScore = data.urgency ? data.urgency.score : 1;
+    statusCard.className = "status-card " + (urgencyScore >= 3 ? "critical" : (urgencyScore >= 2 ? "urgent" : "normal"));
+
+    categoryTitle.textContent = (data.matched_category_id ? data.matched_category_id + ": " : "") + (data.category_name || "คดีทั่วไป");
+    urgencyText.textContent = `ระดับความเร่งด่วน: ${data.urgency ? data.urgency.label : 'ปานกลาง'}`;
+    statusIcon.textContent = urgencyScore >= 3 ? "🚨" : (data.matched_category_id === "CAT-11" ? "📦" : "⚖️");
+
+    // Render Consultation Steps
+    adviceCardsList.innerHTML = "";
+    (data.consultation_parts || []).forEach(part => {
+      const card = document.createElement("div");
+      card.className = "advice-step-card";
+      card.innerHTML = `
+        <div class="advice-step-header">${part.title}</div>
+        <div class="advice-step-content">${escapeHtml(part.content)}</div>
+      `;
+      adviceCardsList.appendChild(card);
+    });
+
+    resultsContainer.style.display = "block";
+    resultsContainer.scrollIntoView({ behavior: "smooth" });
+  }
+
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.innerText = text;
+    return div.innerHTML;
+  }
+
+  function formatBriefAsText() {
+    if (!lastResult || !lastResult.partner_lawyer_brief) return "";
+    const b = lastResult.partner_lawyer_brief;
+    const cat = (b.category_id || '') + ' ' + (b.category_name || '');
+    const statutes = (b.recommended_statutes || []).join(', ');
+    const precedents = (b.relevant_precedents || []).join(', ');
+    const docs = (b.required_documents || []).map(d => '- ' + d).join('\n');
+
+    return `[ใบสรุปข้อมูลคดี - ดอกเตอร์ลอว์เยอร์ (Doctor Lawyer)]
+📋 หมวดหมู่คดี: ${cat}
+⚖️ ข้อเท็จจริงเบื้องต้น (PDPA): ${b.masked_client_statement || '-'}
+📖 ข้อกฎหมายและแนวฎีกา: ${statutes}${precedents ? '\nฎีกา: ' + precedents : ''}
+📂 เอกสารที่เตรียมไว้:
+${docs}
+
+(ส่งต่อผ่านระบบ ดอกเตอร์ลอว์เยอร์ เพื่อให้ทนายความพาร์ตเนอร์ตรวจเอกสารและรับงาน)`;
+  }
+
+  function copyBriefOnly() {
+    const text = formatBriefAsText();
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(() => {
+      showToast("คัดลอกสรุปคดีลงคลิปบอร์ดเรียบร้อยแล้ว!", "📋");
+    }).catch(err => {
+      alert("ไม่สามารถคัดลอกได้: " + err);
+    });
+  }
+
+  function handoffToLineOA() {
+    const text = formatBriefAsText();
+    const lineUrl = (lastResult && lastResult.line_oa_url) ? lastResult.line_oa_url : DEFAULT_LINE_OA_URL;
+
+    if (navigator.clipboard && text) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("คัดลอกสรุปคดีแล้ว กำลังเปิด LINE OA...", "💬");
+        setTimeout(() => {
+          window.open(lineUrl, "_blank");
+        }, 1200);
+      }).catch(() => {
+        window.open(lineUrl, "_blank");
+      });
+    } else {
+      window.open(lineUrl, "_blank");
+    }
+  }
+
+  // Modal Controls
+  function openLawyerModal() {
+    if (!lastResult || !lastResult.partner_lawyer_brief) return;
+    const brief = lastResult.partner_lawyer_brief;
+
+    document.getElementById("briefCategory").textContent = (brief.category_id || '') + ' ' + (brief.category_name || '');
+    document.getElementById("briefStatement").textContent = brief.masked_client_statement || '-';
+    
+    let statutesText = (brief.recommended_statutes || []).join(', ');
+    if (brief.relevant_precedents && brief.relevant_precedents.length > 0) {
+      statutesText += '\n• คำพิพากษาฎีกา: ' + brief.relevant_precedents.join(', ');
+    }
+    document.getElementById("briefStatutes").innerText = statutesText || '-';
+
+    document.getElementById("briefDocs").innerText = (brief.required_documents || []).map(d => '• ' + d).join('\n') || '-';
+
+    document.getElementById("lawyerModal").style.display = "flex";
+  }
+
+  function closeLawyerModal() {
+    document.getElementById("lawyerModal").style.display = "none";
+  }
+
+  // Load Auth Status on Page Load
+  initAuthStatus();
+</script>
+
+</body>
+</html>

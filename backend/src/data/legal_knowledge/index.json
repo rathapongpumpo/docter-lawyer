@@ -1,0 +1,96 @@
+{
+  "system_name": "ดอกเตอร์ลอว์เยอร์ (Doctor Lawyer) - Legal Knowledge Hub",
+  "version": "2.0.0",
+  "last_updated": "2026-10-29",
+  "total_categories": 11,
+  "categories": [
+    {
+      "id": "CAT-01",
+      "file": "01_cybercrime_fraud.json",
+      "name_th": "อาชญากรรมทางเทคโนโลยีและฉ้อโกงออนไลน์",
+      "name_en": "Cybercrime, Mule Accounts & Online Fraud",
+      "key_statutes": ["พ.ร.ก. ไซเบอร์ 2566 ม.9, 10", "ป.อาญา ฉ้อโกง ม.341, 343", "AOC 1441"],
+      "precedents_count": 3
+    },
+    {
+      "id": "CAT-02",
+      "file": "02_loans_usury.json",
+      "name_th": "กู้ยืมเงิน ดอกเบี้ยเกินอัตรา และการทวงหนี้",
+      "name_en": "Loan Agreements, Usury & Debt Collection",
+      "key_statutes": ["ป.พ.พ. ม.653, 654", "พ.ร.บ.ห้ามเรียกดอกเบี้ยเกินอัตรา 2560 ม.4", "พ.ร.บ.ทวงหนี้ 2558"],
+      "precedents_count": 3
+    },
+    {
+      "id": "CAT-03",
+      "file": "03_labor_dismissal.json",
+      "name_th": "กฎหมายแรงงาน การเลิกจ้าง และเงินชดเชย",
+      "name_en": "Labor Law, Severance Pay & Unfair Dismissal",
+      "key_statutes": ["พ.ร.บ.คุ้มครองแรงงาน 2541 ม.118, ม.17, ม.119", "พ.ร.บ.จัดตั้งศาลแรงงาน ม.49"],
+      "precedents_count": 3
+    },
+    {
+      "id": "CAT-04",
+      "file": "04_tort_traffic_damages.json",
+      "name_th": "ละเมิด อุบัติเหตุจราจร และการเรียกค่าเสียหาย",
+      "name_en": "Tort, Traffic Accidents & Damages",
+      "key_statutes": ["ป.พ.พ. ม.420, 425, 437, 448", "พ.ร.บ.คุ้มครองผู้ประสบภัยจากรถ"],
+      "precedents_count": 3
+    },
+    {
+      "id": "CAT-05",
+      "file": "05_family_inheritance.json",
+      "name_th": "ครอบครัว มรดก และพินัยกรรม",
+      "name_en": "Family Law, Estate & Inheritance",
+      "key_statutes": ["ป.พ.พ. ม.1599, 1600, 1629, 1754", "ป.พ.พ. ม.1516 เหตุฟ้องหย่า"],
+      "precedents_count": 3
+    },
+    {
+      "id": "CAT-06",
+      "file": "06_rent_hire_purchase.json",
+      "name_th": "เช่าทรัพย์ เช่าซื้อ และการขับไล่",
+      "name_en": "Lease, Hire-Purchase & Eviction",
+      "key_statutes": ["ป.พ.พ. ม.560, 572, 573", "ป.อาญา บุกรุก ม.362", "ประกาศ สคบ. สัญญาเช่า"],
+      "precedents_count": 3
+    },
+    {
+      "id": "CAT-07",
+      "file": "07_consumer_protection.json",
+      "name_th": "คุ้มครองผู้บริโภค สินค้าไม่ตรงปก และการซื้อขาย",
+      "name_en": "Consumer Protection & Defective Goods",
+      "key_statutes": ["ป.พ.พ. ม.472, 474", "พ.ร.บ.วิธีพิจารณาคดีผู้บริโภค 2551 ม.20, 29"],
+      "precedents_count": 3
+    },
+    {
+      "id": "CAT-08",
+      "file": "08_defamation_computer_crimes.json",
+      "name_th": "หมิ่นประมาท การประจาน และ พ.ร.บ. คอมพิวเตอร์",
+      "name_en": "Defamation, Online Shaming & Computer Crimes",
+      "key_statutes": ["ป.อาญา ม.326, 328, 329", "พ.ร.บ.คอมพิวเตอร์ ม.14(1)"],
+      "precedents_count": 3
+    },
+    {
+      "id": "CAT-09",
+      "file": "09_criminal_offenses.json",
+      "name_th": "คดีอาญาพื้นฐาน ทรัพย์สิน และร่างกาย",
+      "name_en": "Basic Criminal Offenses, Property & Bodily Harm",
+      "key_statutes": ["ป.อาญา ทำร้ายร่างกาย ม.295", "ป.อาญา ลักทรัพย์ ม.334", "ป.อาญา ยักยอก ม.352"],
+      "precedents_count": 3
+    },
+    {
+      "id": "CAT-10",
+      "file": "10_court_mediation.json",
+      "name_th": "การไกล่เกลี่ยข้อพิพาทก่อนฟ้องคดีและขั้นตอนศาล",
+      "name_en": "Pre-Litigation Mediation & Court Procedures",
+      "key_statutes": ["ป.วิ.พ. ม.20 ตรี ไกล่เกลี่ยก่อนฟ้อง", "ป.พ.พ. สัญญาประนีประนอม ม.850, 852"],
+      "precedents_count": 3
+    },
+    {
+      "id": "CAT-11",
+      "file": "11_ecommerce_tax.json",
+      "name_th": "ภาษีพ่อค้าแม่ค้าออนไลน์และภาษีบุคคลธรรมดา",
+      "name_en": "E-Commerce Taxation, VAT & Online Merchant Audits",
+      "key_statutes": ["ป.รัษฎากร ม.40(8) ค้าขายออนไลน์", "ม.81/1 VAT เกิน 1.8 ล้าน", "ม.3 สัตตรส e-Payment"],
+      "precedents_count": 3
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+[Unit]
+Description=Legal Consult encrypted backup
+After=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/setup/legal-consult
+Environment=COMPOSE_FILE=deploy/docker-compose.yml
+ExecStart=/opt/setup/legal-consult/scripts/backup.sh
+ExecStartPost=/opt/setup/legal-consult/scripts/restore-test.sh

@@ -1,0 +1,193 @@
+# Production stack (docs/03-technical-spec.md §1.4, §7.13). One VM, Docker Compose; only Caddy publishes ports (80/443).
+#
+#   cp .env.example .env            # fill every CHANGE_ME; APP_ENV=prod; SITE_ADDRESS=<host name>; ACME_EMAIL
+#   docker compose --env-file .env -f deploy/docker-compose.yml build
+#   docker compose --env-file .env -f deploy/docker-compose.yml up -d
+#   docker compose --env-file .env -f deploy/docker-compose.yml --profile monitoring up -d     # + Prometheus / Alertmanager
+#
+# Values in .env that describe the developer's view (127.0.0.1 ports) are overridden below with the compose-network view.
+name: legal-consult
+x-app-env: &app-env
+  APP_ENV: prod
+  NODE_ENV: production
+  DB_HOST: postgres
+  DB_PORT: "5432"
+  REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
+  AI_SERVICE_URL: http://ai:8000
+  EMBED_URL: http://embed-m3:80
+  S3_ENDPOINT: http://minio:9000
+  CLAMAV_HOST: clamav
+  CLAMAV_PORT: "3310"
+  KB_SERVE_DRAFTS: "false"          # never serve unreviewed content in production (CLAUDE.md §2.1 rule 4)
+  EXTRA_TRUSTED_ORIGINS: ""
+  STAFF_2FA_REQUIRED: "true"
+  EMAIL_VERIFICATION_REQUIRED: "true"
+  CONTRACT_REVIEW_BACKEND: ${CONTRACT_REVIEW_BACKEND:-off}   # web, ai and worker must agree; `mock` is ignored when APP_ENV=prod; `pnc` uses the PNC_* settings (URL/KEY/TIMEOUT come from .env)
+x-logging: &logging
+  driver: json-file
+  options: { max-size: "20m", max-file: "5" }
+
+services:
+  caddy:
+    image: caddy:2
+    ports: ["80:80", "443:443", "443:443/udp"]
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS:?set SITE_ADDRESS to the public host name}
+      ACME_EMAIL: ${ACME_EMAIL:?set ACME_EMAIL}
+    volumes: [./Caddyfile:/etc/caddy/Caddyfile:ro, caddy_data:/data, caddy_config:/config]
+    depends_on: [web]
+    mem_limit: 128m
+    logging: *logging
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ../web
+      args: { APP_BUILD: "${APP_BUILD:-dev}", APP_VERSION: "${APP_VERSION:-0.0.0}" }
+    env_file: ../.env
+    environment:
+      <<: *app-env
+      DB_USER: lc_web
+      DB_PASSWORD: ${DB_WEB_PASSWORD}
+      APP_URL: https://${SITE_ADDRESS}
+      BETTER_AUTH_URL: https://${SITE_ADDRESS}
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+      redis: { condition: service_started }
+      ai: { condition: service_started }
+    mem_limit: 768m
+    logging: *logging
+    restart: unless-stopped
+
+  ai:
+    build: { context: ../ai, dockerfile: Dockerfile }
+    env_file: ../.env
+    environment:
+      <<: *app-env
+      DB_USER: lc_ai
+      DB_PASSWORD: ${DB_AI_PASSWORD}
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --timeout-keep-alive 75 --workers 2
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/readyz', timeout=3).status == 200 else 1)"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+    mem_limit: 1g
+    logging: *logging
+    restart: unless-stopped
+
+  worker:
+    build: { context: ../ai, dockerfile: Dockerfile }
+    env_file: ../.env
+    environment:
+      <<: *app-env
+      DB_USER: lc_worker
+      DB_PASSWORD: ${DB_WORKER_PASSWORD}
+    command: python -m worker
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+    mem_limit: 512m
+    logging: *logging
+    restart: unless-stopped
+
+  migrate:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: ${DB_ADMIN_USER}
+      POSTGRES_PASSWORD: ${DB_ADMIN_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    entrypoint: ["/bin/sh", "/migrate.sh"]
+    volumes: [./migrate.sh:/migrate.sh:ro, ../db/migrations:/migrations:ro]
+    depends_on:
+      postgres: { condition: service_healthy }
+    restart: "no"
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_ADMIN_USER}
+      POSTGRES_PASSWORD: ${DB_ADMIN_PASSWORD}
+      DB_WEB_PASSWORD: ${DB_WEB_PASSWORD}
+      DB_AI_PASSWORD: ${DB_AI_PASSWORD}
+      DB_WORKER_PASSWORD: ${DB_WORKER_PASSWORD}
+    command: postgres -c shared_buffers=2GB -c effective_cache_size=6GB -c max_connections=150 -c log_min_duration_statement=1000
+    volumes: [pgdata:/var/lib/postgresql/data, ./postgres/init:/docker-entrypoint-initdb.d:ro]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      retries: 20
+    mem_limit: 8g
+    logging: *logging
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD} --maxmemory 256mb --maxmemory-policy noeviction
+    volumes: [redisdata:/data]
+    mem_limit: 384m
+    logging: *logging
+    restart: unless-stopped
+
+  # Object store for contract files. The Bitnami legacy image is what the dev server can pull; choose the supported image or a managed
+  # S3-compatible service for production, keeping the bucket private.
+  minio:
+    image: bitnamilegacy/minio:latest
+    environment:
+      MINIO_ROOT_USER: ${S3_ACCESS_KEY}
+      MINIO_ROOT_PASSWORD: ${S3_SECRET_KEY}
+      MINIO_DEFAULT_BUCKETS: ${S3_BUCKET}
+    volumes: [miniodata:/bitnami/minio/data]
+    mem_limit: 1g
+    logging: *logging
+    restart: unless-stopped
+
+  clamav:
+    image: clamav/clamav:stable
+    volumes: [clamdata:/var/lib/clamav]
+    healthcheck:
+      test: ["CMD", "clamdcheck.sh"]
+      interval: 30s
+      retries: 10
+      start_period: 120s
+    mem_limit: 2g
+    logging: *logging
+    restart: unless-stopped
+
+  embed-m3:
+    image: ghcr.io/huggingface/text-embeddings-inference:cpu-latest
+    command: --model-id BAAI/bge-m3 --port 80 --max-client-batch-size 64 --max-batch-tokens 2048
+    volumes: [hfcache:/data]
+    mem_limit: 5g
+    logging: *logging
+    restart: unless-stopped
+
+  # ---- optional monitoring (profile "monitoring"): scrapes web and ai with METRICS_TOKEN, evaluates deploy/monitoring/alerts.yml
+  prometheus:
+    image: prom/prometheus:latest
+    profiles: [monitoring]
+    # the scrape token is written to a file at start because Prometheus does not expand environment variables in its config
+    entrypoint: ["/bin/sh", "-c", "printf %s \"$$METRICS_TOKEN\" > /tmp/metrics_token && exec /bin/prometheus --config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path=/prometheus --storage.tsdb.retention.time=30d"]
+    environment: { METRICS_TOKEN: "${METRICS_TOKEN:-}" }
+    volumes: [./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro, ./monitoring/alerts.yml:/etc/prometheus/alerts.yml:ro, promdata:/prometheus]
+    mem_limit: 512m
+    restart: unless-stopped
+  alertmanager:
+    image: prom/alertmanager:latest
+    profiles: [monitoring]
+    volumes: [./monitoring/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro]
+    mem_limit: 128m
+    restart: unless-stopped
+
+volumes:
+  pgdata: {}
+  redisdata: {}
+  hfcache: {}
+  miniodata: {}
+  clamdata: {}
+  caddy_data: {}
+  caddy_config: {}
+  promdata: {}

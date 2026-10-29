@@ -1,0 +1,45 @@
+# หมวดย่อยที่ใช้ในฐานความรู้เฟส 1 (กฎหมายสัญญา)
+# ขยายจาก docs/03-technical-spec.md §6.1 — เพิ่ม CONTRACT.PENALTY และ CONTRACT.UNFAIR (ยังไม่มีในตาราง §6.1)
+# รหัสห้ามเปลี่ยนหลัง publish
+categories:
+  - code: CONTRACT
+    name_th: หนี้และสัญญา
+    sub_categories:
+      - code: CONTRACT.OBLIG
+        name_th: การชำระหนี้และการผิดนัด
+        laws: [{law: ccc, sections: ["194", "203", "204", "205", "213", "368", "369"]}]
+      - code: CONTRACT.BREACH
+        name_th: การผิดสัญญา ค่าเสียหาย และการเลิกสัญญา
+        laws: [{law: ccc, sections: ["215", "217", "218", "219", "222", "223", "224", "224/1", "386", "387", "388", "389", "390", "391", "392"]}]
+      - code: CONTRACT.DEPOSIT
+        name_th: มัดจำ
+        laws: [{law: ccc, sections: ["377", "378"]}, {law: unfair_terms_2540, sections: ["7"]}]
+      - code: CONTRACT.PENALTY
+        name_th: เบี้ยปรับ (ค่าปรับตามสัญญา)
+        new: true
+        laws: [{law: ccc, sections: ["379", "380", "381", "382", "383", "384", "385"]}]
+      - code: CONTRACT.SALE
+        name_th: ซื้อขาย การส่งมอบ และความชำรุดบกพร่อง
+        laws: [{law: ccc, sections: ["453", "461", "462", "465", "472", "473", "474"]}]
+      - code: CONTRACT.HIRE
+        name_th: จ้างทำของ
+        laws: [{law: ccc, sections: ["587", "591", "592", "593", "594", "596", "598", "600", "601", "602", "604", "605", "607"]}]
+      - code: CONTRACT.UNFAIR
+        name_th: ข้อสัญญาที่ไม่เป็นธรรม
+        new: true
+        laws: [{law: unfair_terms_2540, sections: ["3", "4", "5", "6", "7", "8", "10", "11"]}]
+  - code: PERSON
+    name_th: บุคคลและนิติกรรม
+    sub_categories:
+      - code: PERSON.JURACT
+        name_th: นิติกรรมและการตีความเจตนา
+        laws: [{law: ccc, sections: ["149", "150", "171"]}]
+      - code: PERSON.PRESCRIPT
+        name_th: อายุความ
+        laws: [{law: ccc, sections: ["193/12", "193/14", "193/15", "193/30", "193/34", "474", "601"]}]
+  - code: PROCEDURE
+    name_th: กระบวนการยุติธรรมและวิธีพิจารณาความ
+    sub_categories:
+      - code: PROCEDURE.CIVIL
+        name_th: การฟ้องคดีแพ่ง (ศาลที่จะยื่นฟ้อง)
+        laws: [{law: cpc, sections: ["4"]}]

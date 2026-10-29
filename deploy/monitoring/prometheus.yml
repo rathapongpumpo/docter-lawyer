@@ -1,0 +1,15 @@
+# Scrapes the web tier and the AI service over the compose network. Both endpoints need the bearer token METRICS_TOKEN (they answer 404
+# when it is unset, and Caddy does not expose them to the internet).
+global: { scrape_interval: 15s, evaluation_interval: 15s }
+rule_files: [/etc/prometheus/alerts.yml]
+alerting:
+  alertmanagers: [{ static_configs: [{ targets: ["alertmanager:9093"] }] }]
+scrape_configs:
+  - job_name: web
+    metrics_path: /api/metrics
+    authorization: { credentials_file: /tmp/metrics_token }
+    static_configs: [{ targets: ["web:3000"] }]
+  - job_name: ai
+    metrics_path: /metrics
+    authorization: { credentials_file: /tmp/metrics_token }
+    static_configs: [{ targets: ["ai:8000"] }]

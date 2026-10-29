@@ -1,0 +1,47 @@
+# TLS + reverse proxy (docs/03-technical-spec.md §1.4). SITE_ADDRESS is the public host name (Let's Encrypt is automatic when it is a
+# real, reachable name); for a local rehearsal use SITE_ADDRESS=localhost:8443 (Caddy's internal CA).
+{
+	email {$ACME_EMAIL:admin@example.com}
+}
+
+{$SITE_ADDRESS:localhost} {
+	# the metrics and readiness endpoints are for the internal network only
+	@internal path /api/metrics /api/readyz
+	handle @internal {
+		respond 404
+	}
+
+	request_body {
+		max_size 26MB
+	}
+
+	header {
+		-Server
+		X-Content-Type-Options nosniff
+	}
+
+	# Server-Sent Events: no compression, no buffering, long idle allowance
+	@sse path /api/v1/chat/stream
+	handle @sse {
+		reverse_proxy web:3000 {
+			flush_interval -1
+			transport http {
+				response_header_timeout 5m
+				read_timeout 5m
+			}
+		}
+	}
+
+	handle {
+		encode zstd gzip
+		reverse_proxy web:3000 {
+			health_uri /api/healthz
+			health_interval 10s
+		}
+	}
+
+	log {
+		output stdout
+		format json
+	}
+}

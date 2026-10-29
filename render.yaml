@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: doctor-lawyer-demo
+    runtime: python
+    buildCommand: "echo 'No build dependencies needed - Pure Python Standard Library'"
+    startCommand: "python -X utf8 backend/main.py"
+    plan: free
+    region: singapore
+    envVars:
+      - key: PYTHONUTF8
+        value: "1"
+      - key: PORT
+        value: "3000"
+      - key: FREE_AI_QUOTA_LIMIT
+        value: "5"
+      - key: LINE_OA_ID
+        value: "@doctorlawyer"
+      - key: LINE_OA_URL
+        value: "https://line.me/R/ti/p/@doctorlawyer"
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false

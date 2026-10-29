@@ -1,0 +1,15 @@
+# Alert routing. The receiver is a placeholder: fill in the on-call channel (e-mail / LINE Notify / Slack) once the pilot's
+# on-call contact exists (docs/03-technical-spec.md §7.4 incident response). Until then alerts are visible in the Prometheus UI only.
+route:
+  receiver: on-call
+  group_by: [alertname]
+  group_wait: 30s
+  repeat_interval: 4h
+receivers:
+  - name: on-call
+    # email_configs:
+    #   - to: oncall@example.com
+    #     from: alerts@example.com
+    #     smarthost: smtp.example.com:587
+    #     auth_username: alerts@example.com
+    #     auth_password: CHANGE_ME

@@ -1,0 +1,13 @@
+{
+  "description": "AES-256-GCM field encryption vectors shared by web/lib/crypto.ts and the Python service (spec §2.5). key_version=1.",
+  "vectors": [
+    {
+      "key_base64": "BwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwc=",
+      "key_version": 1,
+      "nonce_hex": "000102030405060708090a0b",
+      "aad": "app.counsel_shares.note_enc:42",
+      "plaintext": "ส่งสัญญาฉบับนี้ให้ตรวจ — test",
+      "ciphertext_hex": "0101000102030405060708090a0bf8394390a48139f1f0525d3602e0dd1a59b156369582cf83f676ea5a364d8dbd6f8ffe787777a81d4c50230fd5170cb01488f7996d5c042ee4af0c2f4078bc2ff5c7235e1ac738e44d46d3fbe51ffbfce382eb94bcc93fbe7765fa"
+    }
+  ]
+}

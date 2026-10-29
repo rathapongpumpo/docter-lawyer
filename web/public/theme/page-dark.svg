@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="a" cx="85%" cy="8%" r="55%"><stop offset="0" stop-color="#3a3220" stop-opacity=".65"/><stop offset="1" stop-color="#3a3220" stop-opacity="0"/></radialGradient>
+    <radialGradient id="c" cx="45%" cy="40%" r="65%"><stop offset="0" stop-color="#14233b" stop-opacity=".9"/><stop offset="1" stop-color="#14233b" stop-opacity="0"/></radialGradient>
+    <linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#d8b665" stop-opacity="0"/><stop offset=".5" stop-color="#d8b665" stop-opacity=".4"/><stop offset="1" stop-color="#d8b665" stop-opacity=".1"/></linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="#0b1220"/>
+  <rect width="1600" height="900" fill="url(#c)"/>
+  <rect width="1600" height="900" fill="url(#a)"/>
+  <g fill="none" stroke="url(#g)" stroke-width="1.6">
+    <path d="M1100 -20C1180 160 1360 220 1640 190"/>
+    <path d="M1180 -20C1240 130 1400 190 1640 160"/>
+    <path d="M1260 -20C1300 100 1440 150 1640 130"/>
+    <path d="M-40 640C200 640 380 760 470 940"/>
+    <path d="M-40 700C160 700 300 790 360 940"/>
+    <path d="M300 940C420 800 640 740 900 760"/>
+  </g>
+</svg>

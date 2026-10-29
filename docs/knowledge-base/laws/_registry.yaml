@@ -1,0 +1,45 @@
+# Law registry for the importer (kb.laws / kb.law_versions). Every value comes from sources.md — do not add facts that are not there.
+# effective_from is intentionally absent: no source in sources.md states when the compiled texts took effect as a whole.
+# A reviewer must fill it before a version can be published (db/migrations/0013). Per-section dates that ARE stated
+# in a source go in section_effective_from.
+laws:
+  - law_code: ccc
+    law_type: code
+    title_th: ประมวลกฎหมายแพ่งและพาณิชย์
+    short_name_th: ป.พ.พ.
+    aliases: [ป.พ.พ., ปพพ, ประมวลแพ่ง, ประมวลกฎหมายแพ่งและพาณิชย์, กฎหมายแพ่ง]
+    categories: [CONTRACT, PERSON]
+    official_url: https://www.senate.go.th/assets/portals/28/fileups/146/files/%E0%B9%81%E0%B8%9E%E0%B9%88%E0%B8%87%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%9E%E0%B8%B2%E0%B8%93%E0%B8%B4%E0%B8%8A%E0%B8%A2%E0%B9%8C.pdf
+    source_ids: [S1, S3]
+    version_label: ฉบับรวบรวมของสำนักงานคณะกรรมการกฤษฎีกา ปรับปรุงถึงฉบับที่ 19 พ.ศ. 2551 (S1) และมาตรา 7, 224, 224/1 ตาม พ.ร.ก.แก้ไขเพิ่มเติม ป.พ.พ. พ.ศ. 2564 (S3)
+    gazette_ref: null
+    # S3: ราชกิจจานุเบกษา เล่ม 138 ตอนที่ 26 ก หน้า 1 วันที่ 10 เมษายน 2564 ใช้บังคับ 11 เมษายน 2564
+    section_effective_from:
+      "7": 2021-04-11
+      "224": 2021-04-11
+      "224/1": 2021-04-11
+    section_official_url:
+      "7": https://www.ratchakitcha.soc.go.th/DATA/PDF/2564/A/026/T_0001.PDF
+      "224": https://www.ratchakitcha.soc.go.th/DATA/PDF/2564/A/026/T_0001.PDF
+      "224/1": https://www.ratchakitcha.soc.go.th/DATA/PDF/2564/A/026/T_0001.PDF
+  - law_code: unfair_terms_2540
+    law_type: act
+    title_th: พระราชบัญญัติว่าด้วยข้อสัญญาที่ไม่เป็นธรรม พ.ศ. 2540
+    short_name_th: พ.ร.บ.ข้อสัญญาที่ไม่เป็นธรรม
+    aliases: [พ.ร.บ.ข้อสัญญาที่ไม่เป็นธรรม, พ.ร.บ.ว่าด้วยข้อสัญญาที่ไม่เป็นธรรม, ข้อสัญญาที่ไม่เป็นธรรม]
+    year_be: 2540
+    categories: [CONTRACT, CONSUMER]
+    official_url: https://www.opsmoac.go.th/law-files-391991791832
+    source_ids: [S4]
+    version_label: ฉบับรวบรวมของสำนักงานคณะกรรมการกฤษฎีกา (S4) — ราชกิจจานุเบกษา เล่ม 114 ตอนที่ 72 ก หน้า 32 วันที่ 16 พฤศจิกายน 2540
+    gazette_ref: เล่ม 114 ตอนที่ 72 ก หน้า 32
+  - law_code: cpc
+    law_type: code
+    title_th: ประมวลกฎหมายวิธีพิจารณาความแพ่ง
+    short_name_th: ป.วิ.พ.
+    aliases: [ป.วิ.พ., ปวิพ, วิแพ่ง, ประมวลกฎหมายวิธีพิจารณาความแพ่ง]
+    categories: [PROCEDURE]
+    official_url: https://jla.coj.go.th/th/content/category/detail/id/4/cid/1560/iid/10978/
+    source_ids: [S5]
+    version_label: สำเนาหน้าเว็บสำนักงานคณะกรรมการกฤษฎีกา ของสำนักกฎหมายและวิชาการศาลยุติธรรม พิมพ์เมื่อ 29 พ.ค. 2569 (S5)
+    gazette_ref: null

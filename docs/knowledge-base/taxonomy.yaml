@@ -1,0 +1,22 @@
+# หมวดกฎหมายหลัก 18 หมวด (docs/03-technical-spec.md §6.1) → kb.categories — รหัสห้ามเปลี่ยนหลัง publish
+# หมวดย่อยของเฟส 1 อยู่ใน taxonomy-contract.yaml (นำเข้าหลังไฟล์นี้)
+# name_en เป็นชื่อเมนูภาษาอังกฤษสำหรับ UI เท่านั้น ไม่ใช่ชื่อทางกฎหมาย
+categories:
+  - {code: FOUND, name_th: พื้นฐานกฎหมายและรัฐธรรมนูญ, name_en: Legal basics & constitution}
+  - {code: PERSON, name_th: บุคคลและนิติกรรม, name_en: Persons & juristic acts}
+  - {code: CONTRACT, name_th: หนี้และสัญญา, name_en: Obligations & contracts}
+  - {code: PROPERTY, name_th: ทรัพย์สินและที่ดิน, name_en: Property & land}
+  - {code: FAMILY, name_th: ครอบครัว, name_en: Family}
+  - {code: INHERIT, name_th: มรดกและพินัยกรรม, name_en: Inheritance & wills}
+  - {code: CRIMINAL, name_th: อาญา, name_en: Criminal}
+  - {code: LABOR, name_th: แรงงานและประกันสังคม, name_en: Labour & social security}
+  - {code: CONSUMER, name_th: คุ้มครองผู้บริโภค, name_en: Consumer protection}
+  - {code: BUSINESS, name_th: ธุรกิจและบริษัท, name_en: Business & companies}
+  - {code: TAX, name_th: ภาษีอากร, name_en: Tax}
+  - {code: ADMIN, name_th: ปกครองและหน่วยงานรัฐ, name_en: Administrative & government}
+  - {code: DIGITAL, name_th: ดิจิทัล ข้อมูลส่วนบุคคล คอมพิวเตอร์, name_en: Digital, personal data & computers}
+  - {code: TRAFFIC, name_th: จราจรและยานพาหนะ, name_en: Traffic & vehicles}
+  - {code: IP, name_th: ทรัพย์สินทางปัญญา, name_en: Intellectual property}
+  - {code: DEBT, name_th: หนี้สิน บังคับคดี ล้มละลาย, name_en: Debt, enforcement & bankruptcy}
+  - {code: PROCEDURE, name_th: กระบวนการยุติธรรมและวิธีพิจารณาความ, name_en: Justice system & procedure}
+  - {code: CIVREG, name_th: ทะเบียนราษฎร สัญชาติ คนต่างด้าว, name_en: Civil registration & nationality}

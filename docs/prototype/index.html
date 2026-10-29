@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>นิติมิตร — หน้าจอระบบ</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;family=Noto+Serif+Thai:wght@600;700&amp;display=swap" rel="stylesheet">
+<style>
+:root{--primary:#0066cc;--primary-700:#003d7a;--navy:#0b2a4a;--bg:#f8f9fa;--surface:#fff;--text:#1f2937;--muted:#5f6673;--border:#e5e7eb}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'IBM Plex Sans Thai',system-ui,sans-serif;line-height:1.6}
+header{background:var(--navy);color:#fff;padding:48px 16px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+h1{font-family:'Noto Serif Thai',serif;font-size:36px;margin:0 0 8px}
+header p{margin:0;color:#c9d7e8;max-width:720px}
+.note{margin-top:16px;display:inline-block;font-size:13px;background:#123a63;color:#dce8f5;border-radius:8px;padding:6px 12px}
+section{padding:32px 0 8px}
+h2{font-size:20px;margin:0 0 4px}
+.lead{margin:0 0 16px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px}
+a.card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;color:inherit;text-decoration:none;transition:box-shadow .2s,border-color .2s}
+a.card:hover,a.card:focus-visible{border-color:#9cc3ea;box-shadow:0 8px 20px rgba(16,24,40,.10);outline:none}
+.thumb{position:relative;height:170px;overflow:hidden;background:#e9ecef;border-bottom:1px solid var(--border)}
+.thumb iframe{position:absolute;top:0;left:0;width:1440px;height:900px;border:0;transform:scale(.19);transform-origin:0 0;pointer-events:none}
+.thumb.mobile iframe{width:390px;height:844px;transform:scale(.2);left:50%;margin-left:-39px}
+.meta{padding:12px 14px}
+.meta strong{display:block;font-size:15px}
+.meta span{font-size:13px;color:var(--muted)}
+footer{padding:32px 16px 48px;color:var(--muted);font-size:13px}
+@media (prefers-reduced-motion:reduce){a.card{transition:none}}
+</style>
+</head>
+<body>
+<header>
+<div class="wrap">
+<h1>นิติมิตร</h1>
+<p>ที่ปรึกษากฎหมาย AI สำหรับองค์กรและบุคคล เริ่มจากกฎหมายสัญญาทางการค้าและการผิดสัญญา</p>
+<span class="note">หน้าจอระบบ v1.0.0 · กรณีการใช้งาน: สัญญาทางการค้าและการผิดสัญญา</span>
+</div>
+</header>
+<main class="wrap">
+<section>
+<h2>1 · เข้าใช้งานและถาม AI</h2>
+<p class="lead">หัวใจของระบบ: ถามด้วยภาษาตัวเอง ได้คำตอบพร้อมอ้างอิงตัวบท และแจ้งเตือนเมื่อเป็นเรื่องเร่งด่วน</p>
+<div class="grid">
+<a class="card" href="login.html"><div class="thumb"><iframe src="login.html" title="หน้าเข้าสู่ระบบ" tabindex="-1" loading="lazy"></iframe></div><div class="meta"><strong>เข้าสู่ระบบ / ทดลองใช้</strong><span>สมัคร เข้าสู่ระบบ หรือทดลองใช้โดยไม่สมัคร</span></div></a>
+<a class="card" href="chat.html"><div class="thumb"><iframe src="chat.html" title="หน้าแชทหน้าแรก" tabindex="-1" loading="lazy"></iframe></div><div class="meta"><strong>แชท — หน้าแรก</strong><span>หมวดยอดนิยม ตัวอย่างคำถาม และช่องพิมพ์</span></div></a>
+<a class="card" href="chat-answer.html"><div class="thumb"><iframe src="chat-answer.html" title="คำตอบพร้อมแหล่งอ้างอิง" tabindex="-1" loading="lazy"></iframe></div><div class="meta"><strong>แชท — คำตอบพร้อมแหล่งอ้างอิง</strong><span>คำตอบแบบมีโครงสร้าง อ้างอิงมาตรา และขั้นตอนถัดไป</span></div></a>
+<a class="card" href="mobile-safety.html"><div class="thumb mobile"><iframe src="mobile-safety.html" title="หน้าจอมือถือเตือนอายุความ" tabindex="-1" loading="lazy"></iframe></div><div class="meta"><strong>มือถือ — แจ้งเตือนใกล้หมดอายุความ</strong><span>เตือนทันทีเมื่อสิทธิใกล้หมดอายุความ</span></div></a>
+</div>
+</section>
+<section>
+<h2>2 · จากความรู้สู่การลงมือทำ</h2>
+<p class="lead">คลังความรู้ 18 หมวด ตัวบทกฎหมาย คู่มือทำนิติกรรมทีละขั้น และเครื่องมือนำทางสู่ศาล</p>
+<div class="grid">
+<a class="card" href="library.html"><div class="thumb"><iframe src="library.html" title="คลังความรู้" tabindex="-1" loading="lazy"></iframe></div><div class="meta"><strong>คลังความรู้ 18 หมวด</strong><span>ค้นหาด้วยคำหรือเลขมาตรา</span></div></a>
+<a class="card" href="law.html"><div class="thumb"><iframe src="law.html" title="หน้าตัวบท" tabindex="-1" loading="lazy"></iframe></div><div class="meta"><strong>ตัวบท — ป.พ.พ. มาตรา 383</strong><span>สารบัญ ตัวบท และคำอธิบายภาษาง่าย</span></div></a>
+<a class="card" href="guide.html"><div class="thumb"><iframe src="guide.html" title="คู่มือบอกกล่าวให้แก้ไขการผิดสัญญา" tabindex="-1" loading="lazy"></iframe></div><div class="meta"><strong>คู่มือ — บอกกล่าวให้แก้ไขการผิดสัญญา</strong><span>checklist เอกสารที่กดติ๊กได้</span></div></a>
+<a class="card" href="court.html"><div class="thumb"><iframe src="court.html" title="เครื่องมือตรวจอายุความ" tabindex="-1" loading="lazy"></iframe></div><div class="meta"><strong>นำทางสู่ศาล — ตรวจอายุความ</strong><span>วันครบอายุความ และเส้นทางคดีแพ่ง</span></div></a>
+</div>
+</section>
+<section>
+<h2>3 · เรียนรู้และระบบหลังบ้าน</h2>
+<p class="lead">หลักสูตรเรียนจาก 0 และหน้าที่ทีมใช้ตรวจเนื้อหาก่อนเผยแพร่</p>
+<div class="grid">
+<a class="card" href="learn.html"><div class="thumb"><iframe src="learn.html" title="บทเรียนและแบบทดสอบ" tabindex="-1" loading="lazy"></iframe></div><div class="meta"><strong>เรียนจาก 0 — บทเรียนและแบบทดสอบ</strong><span>กดตอบแบบทดสอบแล้วมีเฉลย</span></div></a>
+<a class="card" href="admin.html"><div class="thumb"><iframe src="admin.html" title="ระบบหลังบ้าน" tabindex="-1" loading="lazy"></iframe></div><div class="meta"><strong>หลังบ้าน — ตรวจและอนุมัติเนื้อหา</strong><span>เทียบฉบับ ผลตรวจอัตโนมัติ อนุมัติหรือตีกลับ</span></div></a>
+</div>
+</section>
+</main>
+<footer class="wrap">นิติมิตร · หน้าจอระบบ v1.0.0</footer>
+</body>
+</html>
