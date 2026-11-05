@@ -1,7 +1,7 @@
 [project]
 name = "legal-consult-ai"
 version = "0.1.0"
-description = "AI service for Nitimitr (RAG, extractive answers, guardrails, SSE streaming)"
+description = "AI service for Doctor Lawyer (RAG, extractive answers, guardrails, SSE streaming)"
 requires-python = ">=3.12"
 dependencies = [
   "fastapi>=0.115",

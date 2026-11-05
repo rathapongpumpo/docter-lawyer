@@ -101,7 +101,7 @@ ok('the type filter keeps a single group', kindOnly.length === 1 && /แบบ�
 ok('the words searched are highlighted in the snippets', (await page.locator('main mark').count()) >= 1);
 await page.goto(`${BASE}/library/search?q=${encodeURIComponent('qzxwvjkq')}`);
 await page.getByText(/ไม่พบเนื้อหาที่ตรงกับ/).waitFor({ timeout: 20000 });
-ok('no result offers "ask Nitimitr instead"', (await page.getByRole('link', { name: 'ถามนิติมิตรแทน' }).count()) >= 1);
+ok('no result offers "ask Doctor Lawyer instead"', (await page.getByRole('link', { name: 'ถามดอกเตอร์ลอว์เยอร์แทน' }).count()) >= 1);
 ok('search tab title', (await page.title()).includes('ผลการค้นหา'));
 
 // ---- FR-KB-005/006/010: statutes

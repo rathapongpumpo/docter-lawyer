@@ -3,8 +3,8 @@ import type { MetadataRoute } from 'next';
 // Web app manifest (tab/home-screen icons). Name is the product name in both languages.
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'นิติมิตร',
-    short_name: 'นิติมิตร',
+    name: 'ดอกเตอร์ลอว์เยอร์',
+    short_name: 'ดอกเตอร์ลอว์เยอร์',
     start_url: '/chat',
     display: 'standalone',
     background_color: '#f8f9fa',

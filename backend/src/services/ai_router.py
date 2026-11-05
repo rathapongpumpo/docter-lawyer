@@ -14,6 +14,27 @@ from typing import Dict, Any, List, Optional
 from pathlib import Path
 
 
+def _load_env_file():
+    """Attempts to load .env from project root if not already loaded into os.environ."""
+    env_file = Path(__file__).resolve().parent.parent.parent.parent / ".env"
+    if env_file.exists():
+        try:
+            with open(env_file, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if not line or line.startswith("#") or "=" not in line:
+                        continue
+                    k, v = line.split("=", 1)
+                    k = k.strip()
+                    v = v.strip().strip("'\"")
+                    if k not in os.environ:
+                        os.environ[k] = v
+        except Exception:
+            pass
+
+_load_env_file()
+
+
 class AIRouter:
     """
     Tier 2 AI Legal Router and Reasoning Engine.
@@ -21,21 +42,24 @@ class AIRouter:
     """
 
     def __init__(self, categories: Optional[Dict[str, Any]] = None):
+        _load_env_file()
         self.categories = categories or {}
         self.gemini_api_key = os.environ.get("GEMINI_API_KEY", "").strip()
+        self.gemini_model = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash").strip()
         self.openai_api_key = os.environ.get("OPENAI_API_KEY", "").strip()
         self.ai_api_key = os.environ.get("AI_API_KEY", "").strip()
         self.ai_api_base = os.environ.get("AI_API_BASE", "https://api.openai.com/v1").rstrip("/")
-        self.ai_model = os.environ.get("AI_MODEL", "gpt-4o-mini").strip()
+        self.ai_model = os.environ.get("AI_MODEL", "openai/gpt-oss-120b").strip()
 
     def get_provider_status(self) -> Dict[str, Any]:
         """Returns the active AI provider status."""
         if self.gemini_api_key:
-            return {"provider": "Gemini API", "model": "gemini-1.5-flash / gemini-2.0-flash", "status": "Ready"}
+            return {"provider": "Google Gemini API (Free Tier)", "model": self.gemini_model, "status": "Ready", "cost": "0 THB"}
         elif self.openai_api_key:
             return {"provider": "OpenAI API", "model": self.ai_model, "status": "Ready"}
         elif self.ai_api_key:
-            return {"provider": "OpenAI-Compatible / Custom API", "endpoint": self.ai_api_base, "status": "Ready"}
+            provider_title = "Groq Cloud (Free Tier)" if "groq.com" in self.ai_api_base else "OpenAI-Compatible API"
+            return {"provider": provider_title, "endpoint": self.ai_api_base, "model": self.ai_model, "status": "Ready", "cost": "0 THB"}
         else:
             return {"provider": "Smart Heuristic Engine (Offline / Demo Mode)", "status": "Ready (Zero-Dependency)"}
 
@@ -69,21 +93,21 @@ class AIRouter:
             except Exception as e:
                 print(f"⚠️ Gemini API failed: {e}, attempting next fallback...", flush=True)
 
-        # Try OpenAI API or OpenAI-compatible if key exists
+        # Try OpenAI API or OpenAI-compatible (e.g. Groq) if key exists
         api_key = self.openai_api_key or self.ai_api_key
         if api_key:
             try:
                 return self._call_openai(query, api_key)
             except Exception as e:
-                print(f"⚠️ OpenAI/Custom API failed: {e}, falling back to Heuristic...", flush=True)
+                print(f"⚠️ OpenAI/Groq API failed: {e}, falling back to Heuristic...", flush=True)
 
         # Fallback to Smart Heuristic Engine (zero external API call, instant, reliable)
         return self._generate_smart_heuristic_response(query)
 
     def _call_gemini(self, query: str) -> Dict[str, Any]:
         """Calls Google Gemini API via REST endpoint."""
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={self.gemini_api_key}"
-        
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{self.gemini_model}:generateContent?key={self.gemini_api_key}"
+
         system_prompt = (
             "คุณคือ 'ดอกเตอร์ลอว์เยอร์' (Doctor Lawyer) ผู้ช่วยทนายความ AI ประจำแพลตฟอร์มที่ปรึกษากฎหมายไทย\n"
             f"{self._build_knowledge_context()}\n\n"
@@ -96,12 +120,12 @@ class AIRouter:
             '  "urgency_score": 1 ถึง 3,\n'
             '  "urgency_label": "คำอธิบายความเร่งด่วน",\n'
             '  "consultation_parts": [\n'
-            '    {"step": 1, "title": "📌 สรุปประเด็นข้อกฎหมายและสิทธิของท่าน", "content": "..."},\n'
-            '    {"step": 2, "title": "⚖️ ข้อกฎหมายและคำพิพากษาฎีกาที่เกี่ยวข้อง", "content": "..."},\n'
-            '    {"step": 3, "title": "🔍 การวิเคราะห์ปรับบทกฎหมาย", "content": "..."},\n'
-            '    {"step": 4, "title": "🚀 ขั้นตอนที่ต้องปฏิบัติทันที", "content": "..."},\n'
-            '    {"step": 5, "title": "📋 เอกสารและพยานหลักฐานที่ต้องเตรียม", "content": "..."},\n'
-            '    {"step": 6, "title": "👨‍⚖️ ส่งต่อทนายความพาร์ตเนอร์ผู้เชี่ยวชาญ", "content": "..."}\n'
+            '    {"step": 1, "title": "สรุปประเด็นข้อกฎหมายและสิทธิของท่าน", "content": "..."},\n'
+            '    {"step": 2, "title": "ข้อกฎหมายและคำพิพากษาฎีกาที่เกี่ยวข้อง", "content": "..."},\n'
+            '    {"step": 3, "title": "การวิเคราะห์ปรับบทกฎหมาย", "content": "..."},\n'
+            '    {"step": 4, "title": "ขั้นตอนที่ต้องปฏิบัติทันที", "content": "..."},\n'
+            '    {"step": 5, "title": "เอกสารและพยานหลักฐานที่ต้องเตรียม", "content": "..."},\n'
+            '    {"step": 6, "title": "ส่งต่อทนายความพาร์ตเนอร์ผู้เชี่ยวชาญ", "content": "..."}\n'
             "  ],\n"
             '  "partner_lawyer_brief": {\n'
             '    "category_id": "...",\n'
@@ -124,34 +148,50 @@ class AIRouter:
             ],
             "generationConfig": {
                 "temperature": 0.2,
-                "responseMimeType": "application/json"
+                "responseMimeType": "application/json",
+                "thinkingConfig": {
+                    "thinkingBudget": 0
+                }
             }
         }
 
         req = urllib.request.Request(
             url,
             data=json.dumps(payload).encode("utf-8"),
-            headers={"Content-Type": "application/json"},
+            headers={
+                "Content-Type": "application/json",
+                "User-Agent": "DoctorLawyer/1.0"
+            },
             method="POST"
         )
 
-        with urllib.request.urlopen(req, timeout=10) as resp:
+        with urllib.request.urlopen(req, timeout=18) as resp:
             data = json.loads(resp.read().decode("utf-8"))
 
-        text_content = data["candidates"][0]["content"]["parts"][0]["text"]
+        text_content = data["candidates"][0]["content"]["parts"][0]["text"].strip()
+        if text_content.startswith("```"):
+            lines = text_content.split("\n")
+            if lines[0].startswith("```"):
+                lines = lines[1:]
+            if lines and lines[-1].startswith("```"):
+                lines = lines[:-1]
+            text_content = "\n".join(lines).strip()
+
         result = json.loads(text_content)
-        result["tier"] = "Tier 2: AI Deep Analysis (Google Gemini API)"
-        result["tokens_consumed"] = data.get("usageMetadata", {}).get("totalTokenCount", 450)
-        result["cost_thb"] = round(result["tokens_consumed"] * 0.000005, 4)
-        return result
+        tokens = data.get("usageMetadata", {}).get("totalTokenCount", 450)
+        return self._normalize_response(
+            result, query,
+            f"Tier 2: AI Deep Analysis (Google Gemini API - {self.gemini_model})",
+            tokens, 0.0
+        )
 
     def _call_openai(self, query: str, api_key: str) -> Dict[str, Any]:
-        """Calls OpenAI or OpenAI-compatible endpoint."""
+        """Calls OpenAI or OpenAI-compatible endpoint (e.g. Groq Cloud)."""
         url = f"{self.ai_api_base}/chat/completions"
         system_prompt = (
             "คุณคือ 'ดอกเตอร์ลอว์เยอร์' (Doctor Lawyer) ผู้ช่วยทนายความ AI ที่ปรึกษากฎหมายไทย\n"
             f"{self._build_knowledge_context()}\n\n"
-            "จงตอบกลับเป็น JSON ภาษาไทยที่มีคีย์ category_id, category_name, urgency_score, urgency_label, consultation_parts (มี 6 steps), และ partner_lawyer_brief"
+            "คำสั่ง: วิเคราะห์และตอบกลับเป็น JSON ภาษาไทยที่มีคีย์ category_id, category_name, urgency_score, urgency_label, consultation_parts (ครบ 6 steps), และ partner_lawyer_brief"
         )
 
         payload = {
@@ -169,19 +209,88 @@ class AIRouter:
             data=json.dumps(payload).encode("utf-8"),
             headers={
                 "Content-Type": "application/json",
-                "Authorization": f"Bearer {api_key}"
+                "Authorization": f"Bearer {api_key}",
+                "User-Agent": "DoctorLawyer/1.0"
             },
             method="POST"
         )
 
-        with urllib.request.urlopen(req, timeout=12) as resp:
+        with urllib.request.urlopen(req, timeout=15) as resp:
             data = json.loads(resp.read().decode("utf-8"))
 
-        text_content = data["choices"][0]["message"]["content"]
+        text_content = data["choices"][0]["message"]["content"].strip()
+        if text_content.startswith("```"):
+            lines = text_content.split("\n")
+            if lines[0].startswith("```"):
+                lines = lines[1:]
+            if lines and lines[-1].startswith("```"):
+                lines = lines[:-1]
+            text_content = "\n".join(lines).strip()
+
         result = json.loads(text_content)
-        result["tier"] = f"Tier 2: AI Deep Analysis ({self.ai_model})"
-        result["tokens_consumed"] = data.get("usage", {}).get("total_tokens", 500)
-        result["cost_thb"] = round(result["tokens_consumed"] * 0.00002, 4)
+        tokens = data.get("usage", {}).get("total_tokens", 500)
+        provider_name = "Groq Cloud" if "groq.com" in self.ai_api_base else "OpenAI"
+        return self._normalize_response(
+            result, query,
+            f"Tier 2: AI Deep Analysis ({provider_name} - {self.ai_model})",
+            tokens, 0.0 if "groq.com" in self.ai_api_base else round(tokens * 0.00002, 4)
+        )
+
+    def _normalize_response(
+        self, result: Dict[str, Any], query: str, tier_name: str, tokens: int, cost: float
+    ) -> Dict[str, Any]:
+        """Ensures the response strictly follows the 6-part consultation structure and partner lawyer brief format."""
+        result["tier"] = tier_name
+        result["tokens_consumed"] = tokens
+        result["cost_thb"] = cost
+
+        cat_id = result.get("category_id") or "CAT-SPECIALIZED"
+        cat_name = result.get("category_name") or "คดีเฉพาะทาง / ข้อพิพาททั่วไป"
+        result["category_id"] = cat_id
+        result["category_name"] = cat_name
+        result.setdefault("urgency_score", 2)
+        result.setdefault("urgency_label", "🟡 เร่งด่วนปานกลาง")
+
+        parts = result.get("consultation_parts", [])
+        if not isinstance(parts, list) or len(parts) < 6:
+            step_titles = [
+                "สรุปประเด็นข้อกฎหมายและสิทธิของท่าน",
+                "ข้อกฎหมายและคำพิพากษาฎีกาที่เกี่ยวข้อง",
+                "การวิเคราะห์ปรับบทกฎหมาย",
+                "ขั้นตอนที่ต้องปฏิบัติทันที",
+                "เอกสารและพยานหลักฐานที่ต้องเตรียม",
+                "ส่งต่อทนายความพาร์ตเนอร์ผู้เชี่ยวชาญผ่าน LINE OA"
+            ]
+            current_steps = {p.get("step"): p for p in parts if isinstance(p, dict) and "step" in p}
+            normalized_parts = []
+            for i, title in enumerate(step_titles, start=1):
+                if i in current_steps:
+                    normalized_parts.append(current_steps[i])
+                else:
+                    normalized_parts.append({
+                        "step": i,
+                        "title": title,
+                        "content": "ทนายความระบบได้บันทึกประเด็นและพร้อมให้ข้อมูลเพิ่มเติมในการส่งต่อทนายความ"
+                    })
+            result["consultation_parts"] = normalized_parts
+
+        brief = result.get("partner_lawyer_brief")
+        if not isinstance(brief, dict):
+            brief = {}
+        brief["brief_status"] = "READY_FOR_LINE_OA_HANDOFF"
+        brief.setdefault("category_id", cat_id)
+        brief.setdefault("category_name", cat_name)
+        brief.setdefault("masked_client_statement", query[:150])
+        brief.setdefault("recommended_statutes", ["ประมวลกฎหมายที่เกี่ยวข้อง"])
+        brief.setdefault("relevant_precedents", ["แนวคำพิพากษาศาลฎีกา"])
+        brief.setdefault("required_documents", [
+            "สำเนาสัญญาหรือหนังสือแจ้งเตือนจากคู่กรณี",
+            "หลักฐานการติดต่อสื่อสาร (แชท/อีเมล)",
+            "สลิปหรือหลักฐานการชำระเงิน",
+            "บัตรประชาชนผู้มีสิทธิเรียกร้อง"
+        ])
+        result["partner_lawyer_brief"] = brief
+
         return result
 
     def _generate_smart_heuristic_response(self, query: str) -> Dict[str, Any]:
@@ -221,32 +330,32 @@ class AIRouter:
         consultation_parts = [
             {
                 "step": 1,
-                "title": "📌 สรุปประเด็นข้อกฎหมายและสิทธิของท่าน",
-                "content": f"จากข้อเท็จจริงที่ท่านระบุ: \"{query}\"\nประเด็นนี้จัดอยู่ในหมวด **{category_name}** มีข้อพิจารณาเรื่องสิทธิเรียกร้องและการโต้แย้งสิทธิตามกฎหมายที่ต้องระมัดระวังเรื่องกำหนดอายุความและการยื่นคำร้องต่อหน่วยงานที่เกี่ยวข้อง"
+                "title": "สรุปประเด็นข้อกฎหมายและสิทธิของท่าน",
+                "content": f'จากข้อเท็จจริงที่ท่านระบุ: "{query}"\nประเด็นนี้จัดอยู่ในหมวด **{category_name}** มีข้อพิจารณาเรื่องสิทธิเรียกร้องและการโต้แย้งสิทธิตามกฎหมายที่ต้องระมัดระวังเรื่องกำหนดอายุความและการยื่นคำร้องต่อหน่วยงานที่เกี่ยวข้อง'
             },
             {
                 "step": 2,
-                "title": "⚖️ ข้อกฎหมายและคำพิพากษาฎีกาที่เกี่ยวข้อง",
+                "title": "ข้อกฎหมายและคำพิพากษาฎีกาที่เกี่ยวข้อง",
                 "content": f"• บทกฎหมายหลัก: {', '.join(recommended_statutes)}\n• แนวคำพิพากษาศาลฎีกาอ้างอิง: {', '.join(relevant_precedents)}\n• หลักกฎหมายสำคัญ: การโต้แย้งสิทธิหรือเรียกร้องค่าเสียหายจะต้องมีพยานหลักฐานเป็นลายลักษณ์อักษรที่ชัดเจน"
             },
             {
                 "step": 3,
-                "title": "🔍 การวิเคราะห์ปรับบทกฎหมาย",
+                "title": "การวิเคราะห์ปรับบทกฎหมาย",
                 "content": f"ระบบ AI ได้วิเคราะห์ข้อเท็จจริงเบื้องต้นพบว่า กรณีนี้มีสาระสำคัญที่สามารถเรียกร้องความเป็นธรรมได้ แต่จำเป็นต้องตรวจดูเอกสารต้นฉบับ เงื่อนเวลา และคู่สัญญา/คู่กรณี เพื่อวางรูปคดีและแนวทางการดำเนินกระบวนพิจารณาที่ถูกต้อง"
             },
             {
                 "step": 4,
-                "title": "🚀 ขั้นตอนที่ต้องปฏิบัติทันที",
+                "title": "ขั้นตอนที่ต้องปฏิบัติทันที",
                 "content": "1. ตรวจสอบและบันทึกวันเวลาที่เกิดเหตุ หรือวันที่ได้รับหนังสือแจ้ง\n2. รวบรวมเอกสารสัญญา หนังสือแจ้งเตือน ใบเสร็จ หรือภาพถ่ายพยานหลักฐาน\n3. หลีกเลี่ยงการลงลายมือชื่อในเอกสารสละสิทธิหรือยอมความก่อนได้รับคำปรึกษาจากทนายความ\n4. ติดต่อทนายความพาร์ตเนอร์เพื่อวางแนวทางการยื่นหนังสือโต้แย้งหรือดำเนินคดี"
             },
             {
                 "step": 5,
-                "title": "📋 เอกสารและพยานหลักฐานที่ต้องเตรียม",
+                "title": "เอกสารและพยานหลักฐานที่ต้องเตรียม",
                 "content": "• บัตรประจำตัวประชาชนและสำเนาทะเบียนบ้าน\n• สำเนาสัญญา/หนังสือคำสั่ง/หนังสือแจ้งเตือนจากคู่กรณี\n• หลักฐานการสื่อสาร (แชทไลน์, อีเมล, บันทึกเสียง)\n• หลักฐานทางการเงิน สลิปโอนเงิน หรือรายการเดินบัญชี (ถ้ามี)"
             },
             {
                 "step": 6,
-                "title": "👨‍⚖️ ส่งต่อทนายความพาร์ตเนอร์ผู้เชี่ยวชาญผ่าน LINE OA",
+                "title": "ส่งต่อทนายความพาร์ตเนอร์ผู้เชี่ยวชาญผ่าน LINE OA",
                 "content": "ระบบได้เตรียม 'ใบสรุปข้อมูลคดี (Case Intake Brief)' เรียบร้อยแล้ว\n👉 ท่านสามารถกดปุ่ม **'ส่งต่อให้ทนายพาร์ตเนอร์ผ่าน LINE OA'** เพื่อให้ทนายความผู้เชี่ยวชาญตรวจเอกสารและรับคำปรึกษาต่อได้ทันที"
             }
         ]

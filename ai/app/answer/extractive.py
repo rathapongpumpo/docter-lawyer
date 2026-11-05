@@ -35,18 +35,18 @@ _DEFINITION = re.compile(r"คืออะไร|หมายถึง|แปล
 SKIP_HEADINGS = {"ฐานกฎหมาย"}
 
 T: dict[str, dict[str, str]] = {
-    "intro_article": {"th": "คำถามของคุณเกี่ยวข้องกับหัวข้อ **{title}** {cite} ในคลังความรู้ของนิติมิตร สรุปได้ดังนี้",
-                      "en": "Your question relates to **{title}** {cite} in the Nitimitr knowledge base "
+    "intro_article": {"th": "คำถามของคุณเกี่ยวข้องกับหัวข้อ **{title}** {cite} ในคลังความรู้ของดอกเตอร์ลอว์เยอร์ สรุปได้ดังนี้",
+                      "en": "Your question relates to **{title}** {cite} in the Doctor Lawyer knowledge base "
                             "(content is in Thai):"},
-    "intro_guide": {"th": "เรื่องนี้มีคู่มือขั้นตอน **{title}** {cite} ในคลังความรู้ของนิติมิตร สรุปได้ดังนี้",
+    "intro_guide": {"th": "เรื่องนี้มีคู่มือขั้นตอน **{title}** {cite} ในคลังความรู้ของดอกเตอร์ลอว์เยอร์ สรุปได้ดังนี้",
                     "en": "The knowledge base has a step-by-step guide, **{title}** {cite} (content is in Thai):"},
     "closing": {"th": "ข้อมูล ณ วันที่ {date} · ข้อมูลนี้เป็นความรู้ทั่วไป ไม่ใช่คำปรึกษาทางกฎหมายสำหรับกรณีเฉพาะของคุณ",
                 "en": "Information as of {date} · General legal information, not legal advice for your specific case."},
     "section_intro": {"th": "**{title} มาตรา {sec}** {cite} บัญญัติว่า",
                       "en": "**{title}, section {sec}** {cite} provides (official Thai text):"},
     "section_version": {"th": "ข้อความจาก: {label}", "en": "Text from: {label}"},
-    "section_missing": {"th": "ยังไม่มี{law}มาตรา {sec} ในคลังความรู้ของนิติมิตร",
-                        "en": "Section {sec}{law} is not in the Nitimitr knowledge base yet."},
+    "section_missing": {"th": "ยังไม่มี{law}มาตรา {sec} ในคลังความรู้ของดอกเตอร์ลอว์เยอร์",
+                        "en": "Section {sec}{law} is not in the Doctor Lawyer knowledge base yet."},
     "section_articles": {"th": "หัวข้อในคลังความรู้ที่อ้างมาตรานี้:", "en": "Knowledge-base topics that cite it:"},
     "laws_intro": {"th": "ยังไม่มีบทความในคลังความรู้ที่ตอบคำถามนี้โดยตรง ตัวบทที่ค้นพบว่าอาจเกี่ยวข้องมีดังนี้",
                    "en": "No knowledge-base article answers this directly. These statute sections may be relevant:"},
@@ -56,31 +56,31 @@ T: dict[str, dict[str, str]] = {
                           "large or a deadline is involved, consult a lawyer."},
     "definition": {"th": "**{term}** {cite} — {definition}", "en": "**{term}** {cite} — {definition}"},
     "definition_refs": {"th": "มาตราที่เกี่ยวข้อง:", "en": "Related sections:"},
-    "no_evidence": {"th": "ยังไม่พบข้อมูลในคลังความรู้ของนิติมิตรที่ตอบคำถามนี้ได้ จึงยังไม่ให้คำตอบเพื่อไม่ให้ข้อมูลคลาดเคลื่อน\n\n"
+    "no_evidence": {"th": "ยังไม่พบข้อมูลในคลังความรู้ของดอกเตอร์ลอว์เยอร์ที่ตอบคำถามนี้ได้ จึงยังไม่ให้คำตอบเพื่อไม่ให้ข้อมูลคลาดเคลื่อน\n\n"
                           "ขณะนี้คลังความรู้ครอบคลุม**สัญญาทางการค้าและการผิดสัญญา** เช่น ค่าปรับส่งงานล่าช้า "
                           "ซัพพลายเออร์ส่งของไม่ได้มาตรฐาน การถูกเลิกสัญญากลางงาน ข้อสัญญาที่เสียเปรียบ "
                           "ค่าเสียหายและดอกเบี้ยผิดนัด และอายุความของสิทธิตามสัญญา\n\n"
                           "หากเรื่องของคุณเร่งด่วน มีมูลค่าสูง หรือมีกำหนดเวลา ควรปรึกษาทนายความ",
-                    "en": "The Nitimitr knowledge base has nothing that answers this yet, so no answer is given "
+                    "en": "The Doctor Lawyer knowledge base has nothing that answers this yet, so no answer is given "
                           "rather than risk being wrong.\n\nIt currently covers **commercial contracts and breach of "
                           "contract** — late-delivery penalties, substandard supplies, termination mid-work, one-sided "
                           "terms, damages and default interest, and limitation periods.\n\nIf your matter is urgent, "
                           "high-value or has a deadline, consult a lawyer."},
-    "out_of_scope": {"th": "คำถามนี้เป็นเรื่อง**{category}** ซึ่งยังไม่อยู่ในคลังความรู้ของนิติมิตร "
+    "out_of_scope": {"th": "คำถามนี้เป็นเรื่อง**{category}** ซึ่งยังไม่อยู่ในคลังความรู้ของดอกเตอร์ลอว์เยอร์ "
                            "จึงยังไม่ให้คำตอบเพื่อไม่ให้ข้อมูลคลาดเคลื่อน\n\n"
                            "ขณะนี้คลังความรู้ครอบคลุม**สัญญาทางการค้าและการผิดสัญญา** เช่น ค่าปรับส่งงานล่าช้า "
                            "ซัพพลายเออร์ส่งของไม่ได้มาตรฐาน และการถูกเลิกสัญญากลางงาน\n\n"
                            "สำหรับเรื่องนี้ ควรปรึกษาทนายความหรือหน่วยงานที่รับผิดชอบเรื่องนั้นโดยตรง",
-                     "en": "This question is about **{category}**, which the Nitimitr knowledge base does not cover "
+                     "en": "This question is about **{category}**, which the Doctor Lawyer knowledge base does not cover "
                            "yet, so no answer is given rather than risk being wrong.\n\nIt currently covers "
                            "**commercial contracts and breach of contract**.\n\nFor this matter, consult a lawyer or "
                            "the agency responsible for it."},
     "degraded": {"th": "_ระบบค้นคลังความรู้ขัดข้องบางส่วน ผลการค้นอาจไม่ครบ_",
                  "en": "_Knowledge-base search is partly unavailable; results may be incomplete._"},
-    "greeting": {"th": "สวัสดีครับ นิติมิตรช่วยอธิบายกฎหมายเรื่อง**สัญญาทางการค้าและการผิดสัญญา** พร้อมอ้างอิงตัวบท "
+    "greeting": {"th": "สวัสดีครับ ดอกเตอร์ลอว์เยอร์ช่วยอธิบายกฎหมายเรื่อง**สัญญาทางการค้าและการผิดสัญญา** พร้อมอ้างอิงตัวบท "
                        "เช่น ค่าปรับส่งงานล่าช้า ซัพพลายเออร์ส่งของไม่ได้มาตรฐาน หรือถูกเลิกสัญญากะทันหัน\n\n"
                        "เล่าเรื่องของคุณด้วยภาษาของคุณเองได้เลย เช่น ทำสัญญากับใคร ตกลงอะไรไว้ และเกิดอะไรขึ้น",
-                 "en": "Hello! Nitimitr explains Thai law on **commercial contracts and breach of contract**, with "
+                 "en": "Hello! Doctor Lawyer explains Thai law on **commercial contracts and breach of contract**, with "
                        "citations — for example late-delivery penalties, substandard supplies or sudden termination."
                        "\n\nDescribe your situation in your own words: who the contract is with, what was agreed and "
                        "what happened."},

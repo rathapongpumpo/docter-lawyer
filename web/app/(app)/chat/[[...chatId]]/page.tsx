@@ -19,7 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function ChatPage({ params, searchParams }: PageProps<'/chat/[[...chatId]]'>) {
   const { chatId } = await params;
   const sp = await searchParams;
-  // "ถามนิติมิตรเรื่องนี้" on knowledge pages links to /chat?q=… — the text is only a draft, never auto-sent (FR-CHAT-030 AC2)
+  // "ถามดอกเตอร์ลอว์เยอร์เรื่องนี้" on knowledge pages links to /chat?q=… — the text is only a draft, never auto-sent (FR-CHAT-030 AC2)
   const initialDraft = typeof sp.q === 'string' ? sp.q.slice(0, 500) : '';
   let id = chatId?.[0] ?? null;
   if (chatId && (chatId.length > 1 || !UUID.test(id ?? ''))) notFound();

@@ -224,7 +224,7 @@ if (PHASE === '1') {
   await viewer.getByRole('alert').filter({ hasText: 'ไม่ถูกต้อง' }).waitFor();
   await viewer.locator('input[name=password]').fill('sharepw1');
   await viewer.getByRole('button', { name: 'เปิดดู' }).click();
-  await viewer.getByRole('link', { name: 'ถามต่อในนิติมิตร' }).waitFor();
+  await viewer.getByRole('link', { name: 'ถามต่อในดอกเตอร์ลอว์เยอร์' }).waitFor();
   const html = await viewer.content();
   ok('the shared page shows the conversation, never the owner', html.includes('081-234-5678') && !html.includes(email('alice')) && !html.includes('alice'));
   await viewer.screenshot({ path: `${OUT}/04-shared-page.png` });

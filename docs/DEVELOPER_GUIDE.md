@@ -139,7 +139,7 @@ copy .env.example .env   # บน Windows
    - รายการพยานหลักฐานและเอกสารที่ลูกความเตรียมไว้
 2. เมื่อลูกความกดปุ่ม **"ส่งเรื่องให้ทนายพาร์ตเนอร์ (เปิด LINE OA)"**:
    - ระบบจะคัดลอกข้อความสรุปคดีลงคลิปบอร์ดของผู้ใช้ทันที
-   - เด้งเปิดหน้าแชท LINE Official Account (`https://line.me/R/ti/p/@doctorlawyer`)
+   - เด้งเปิดหน้าแชท LINE Official Account (`https://lin.ee/NQLCu3p`)
    - ลูกความเพียงแค่กด Paste ในแชท LINE เพื่อคุยกับทนายความต่อได้ทันที
 
 ---
@@ -155,5 +155,5 @@ copy .env.example .env   # บน Windows
 - ดับเบิ้ลคลิก `scripts\start_public_tunnel.bat` บนเครื่อง จะได้ Public HTTPS URL นำไปเปิดบนมือถือหรือส่งให้ลูกค้าทดสอบได้ทันที
 
 ### 3. ผูก LINE Developers Console
-- นำ Public HTTPS URL ไปใส่ใน **LINE Developers Console** ➔ Channel ID: `2011732178` ➔ LIFF ID: `2011732178-nMl0LXMq`
-- สามารถเปิดใช้งานผ่านลิงก์ LIFF `https://liff.line.me/2011732178-nMl0LXMq` ภายในแอปพลิเคชัน LINE ได้ทันที
+- นำ Public HTTPS URL ไปใส่ใน **LINE Developers Console** ➔ Channel ID: `2012301635` ➔ LIFF ID: `2012301635-WMe8TR6J`
+- สามารถเปิดใช้งานผ่านลิงก์ LIFF `https://liff.line.me/2012301635-WMe8TR6J` ภายในแอปพลิเคชัน LINE ได้ทันที

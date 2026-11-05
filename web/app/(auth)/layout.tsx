@@ -3,7 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import type { ReactNode } from 'react';
 import { LanguageSwitch, ThemeSwitch } from '@/components/shell/PreferenceControls';
 
-// Sign-in screens: the law-library photo as backdrop, one gold card with the logo tile on top (Nitimitr theme).
+// Sign-in screens: the law-library photo as backdrop, one gold card with the logo tile on top (Doctor Lawyer theme).
 export default async function AuthLayout({ children }: { children: ReactNode }) {
   const t = await getTranslations();
   return (

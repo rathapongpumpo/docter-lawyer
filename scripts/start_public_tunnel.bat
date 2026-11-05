@@ -8,8 +8,8 @@ echo กำลังสร้าง Public HTTPS URL สำหรับแสด
 echo [Local Server: http://127.0.0.1:3000]
 echo.
 echo * หมายเหตุ: เมื่อได้ HTTPS URL แล้ว สามารถนำไปใส่ใน LINE Developers Console:
-echo   - Channel ID: 2011732178
-echo   - LIFF ID: 2011732178-nMl0LXMq
+echo   - Channel ID: 2012301635
+echo   - LIFF ID: 2012301635-WMe8TR6J
 echo.
 echo กำลังเชื่อมต่อ Secure Tunnel... (กด Ctrl+C เพื่อหยุด)
 echo ===========================================================================

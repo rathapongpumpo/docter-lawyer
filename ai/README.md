@@ -1,6 +1,6 @@
 # ai — AI service (FastAPI)
 
-Retrieval, extractive answers, guardrails and SSE streaming for Nitimitr. There is no LLM in this product: answers are
+Retrieval, extractive answers, guardrails and SSE streaming for Doctor Lawyer. There is no LLM in this product: answers are
 assembled verbatim from the knowledge base, and the only outside source is the optional company chatbot API
 (`PNC_*`, `app/external/company_kb.py`). Design: `docs/03-technical-spec.md` §1.2–1.4, §3.4–3.5.
 

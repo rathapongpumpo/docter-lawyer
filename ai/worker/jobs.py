@@ -309,7 +309,7 @@ def dsr_digest(conn: Connection, payload: dict[str, Any]) -> dict[str, Any]:
     body = (f"{len(due)} data-subject request(s) are due within 7 days (30-day PDPA limit):\n\n" + "\n".join(lines)
             + "\n\nOpen the back-office → Data requests to handle them.\n"
             f"\n{len(due)} คำขอใช้สิทธิเจ้าของข้อมูลใกล้ครบกำหนด (ภายใน 7 วัน) — เปิดหลังบ้าน > คำขอใช้สิทธิ เพื่อดำเนินการ\n")
-    mail.send(admins, f"[Nitimitr] {len(due)} data request(s) due soon", body)
+    mail.send(admins, f"[Doctor Lawyer] {len(due)} data request(s) due soon", body)
     return {"due": len(due), "mailed": len(admins)}
 
 

@@ -1,4 +1,4 @@
-# CLAUDE.md — Legal Consult TH (ชื่อชั่วคราว: "นิติมิตร")
+# CLAUDE.md — Legal Consult TH (ชื่อชั่วคราว: "ดอกเตอร์ลอว์เยอร์")
 
 > ไฟล์นี้คือ "กติกากลาง" ของโปรเจกต์ สำหรับ developer และ AI coding agent (Claude Code) ทุกคน
 > อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง แล้วอ่าน `docs/01-blueprint.md` → `docs/02-srs.md` → `docs/03-technical-spec.md` (ตามส่วนที่เกี่ยวกับงาน)

@@ -149,7 +149,27 @@ def test_email_otp_flow():
     print("PASSED [Email OTP Verified -> 3 Queries Granted]")
 
 
+def ensure_server():
+    import threading
+    import time
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+    from backend.src.api.server import run_server
+
+    try:
+        req = urllib.request.Request(f"{SERVER_URL}/api/health")
+        with opener.open(req, timeout=1):
+            return
+    except Exception:
+        pass
+
+    t = threading.Thread(target=lambda: run_server(3000, "127.0.0.1"), daemon=True)
+    t.start()
+    time.sleep(1.5)
+
+
 if __name__ == "__main__":
+    ensure_server()
     print("=" * 65)
     print("  Running End-to-End Test Suite for Doctor Lawyer Auth & Quota")
     print("=" * 65)

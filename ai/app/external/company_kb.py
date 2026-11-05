@@ -24,10 +24,10 @@ _NOT_FOUND = re.compile(r"^\s*(ขออภัย|ขอโทษ|ไม่พ�
 
 LABEL = {
     "th": ("**ข้อมูลเพิ่มเติมจากฐานความรู้ของบริษัท (PromptNow)**\n\n"
-           "> ส่วนนี้มาจากระบบภายนอกนิติมิตร **ไม่มีแหล่งอ้างอิงแนบมา** และยังไม่ผ่านผู้ตรวจเนื้อหา "
+           "> ส่วนนี้มาจากระบบภายนอกดอกเตอร์ลอว์เยอร์ **ไม่มีแหล่งอ้างอิงแนบมา** และยังไม่ผ่านผู้ตรวจเนื้อหา "
            "โปรดตรวจกับตัวบทหรือปรึกษาผู้เชี่ยวชาญก่อนนำไปใช้\n\n"),
     "en": ("**Additional information from the company knowledge base (PromptNow)**\n\n"
-           "> This part comes from a system outside Nitimitr, **with no source attached**, and has not been reviewed. "
+           "> This part comes from a system outside Doctor Lawyer, **with no source attached**, and has not been reviewed. "
            "Check it against the law or ask a professional before relying on it.\n\n"),
 }
 

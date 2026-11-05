@@ -101,5 +101,65 @@ class TestAuthService(unittest.TestCase):
         self.assertEqual(session_user["name"], "สมหญิง Google")
 
 
+    def test_line_sign_in(self):
+        line_id = "U1234567890abcdef"
+        ok, msg, user_data = self.auth.sign_in_with_line(
+            line_user_id=line_id,
+            name="สมศักดิ์ LINE"
+        )
+        self.assertTrue(ok)
+        self.assertTrue(user_data["is_verified"])
+        self.assertEqual(user_data["free_quota"], 3)
+        self.assertEqual(user_data["remaining"], 3)
+        self.assertEqual(user_data["auth_provider"], "line")
+        self.assertEqual(user_data["email"], f"{line_id}@line.user")
+
+        # Session token works
+        session_user = self.auth.get_user_by_session(user_data["session_token"])
+        self.assertIsNotNone(session_user)
+        self.assertEqual(session_user["name"], "สมศักดิ์ LINE")
+
+
+    def test_daily_quota_reset(self):
+        # 1. Member consumes all 3 queries today
+        ok, msg, user_data = self.auth.sign_in_with_google(email="daily_test@gmail.com", name="Daily User")
+        user_id = user_data["id"]
+        token = user_data["session_token"]
+
+        for _ in range(3):
+            self.auth.consume_user_quota(user_id)
+
+        # Now quota is exhausted
+        user_now = self.auth.get_user_by_session(token)
+        self.assertEqual(user_now["remaining"], 0)
+
+        # Simulate rollover to next day by backdating quota_reset_date in DB
+        with self.auth._get_connection() as conn:
+            conn.execute("UPDATE users SET quota_reset_date = '2020-01-01' WHERE id = ?", (user_id,))
+            conn.commit()
+
+        # Check session next day -> should automatically reset back to 3!
+        user_next_day = self.auth.get_user_by_session(token)
+        self.assertEqual(user_next_day["remaining"], 3)
+        self.assertEqual(user_next_day["quota_used"], 0)
+
+        # 2. Guest consumes 1 query today
+        guest_id = "daily_guest_999"
+        self.auth.get_or_create_guest(guest_id)
+        self.auth.consume_guest_quota(guest_id)
+        g_now = self.auth.get_or_create_guest(guest_id)
+        self.assertEqual(g_now["remaining"], 0)
+
+        # Simulate rollover to next day for guest
+        with self.auth._get_connection() as conn:
+            conn.execute("UPDATE guest_sessions SET quota_reset_date = '2020-01-01' WHERE guest_id = ?", (guest_id,))
+            conn.commit()
+
+        # Check guest next day -> should automatically reset back to 1!
+        g_next_day = self.auth.get_or_create_guest(guest_id)
+        self.assertEqual(g_next_day["remaining"], 1)
+        self.assertEqual(g_next_day["quota_used"], 0)
+
+
 if __name__ == "__main__":
     unittest.main()

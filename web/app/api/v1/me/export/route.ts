@@ -35,7 +35,7 @@ export const GET = defineOperation({ operationId: 'privacy_export', role: 'membe
   return new Response(JSON.stringify(payload, null, 2), {
     headers: {
       'content-type': 'application/json; charset=utf-8',
-      'content-disposition': `attachment; filename="nitimitr-export-${new Date().toISOString().slice(0, 10)}.json"`,
+      'content-disposition': `attachment; filename="doctor-lawyer-export-${new Date().toISOString().slice(0, 10)}.json"`,
       'cache-control': 'no-store',
     },
   });

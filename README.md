@@ -94,8 +94,8 @@ docker run -p 3000:3000 doctor-lawyer
 ```
 
 ### การผูกเข้ากับ LINE LIFF (เพื่อเปิดใน LINE)
-- นำ Public HTTPS URL ที่ได้ ไปใส่ใน **LINE Developers Console** ➔ Channel ID: `2011732178` ➔ LIFF ID: `2011732178-nMl0LXMq`
-- สามารถเปิดใช้งานผ่านลิงก์ `https://liff.line.me/2011732178-nMl0LXMq` ได้ทันที
+- นำ Public HTTPS URL ที่ได้ ไปใส่ใน **LINE Developers Console** ➔ Channel ID: `2012301635` ➔ LIFF ID: `2012301635-WMe8TR6J`
+- สามารถเปิดใช้งานผ่านลิงก์ `https://liff.line.me/2012301635-WMe8TR6J` ได้ทันที
 
 ---
 

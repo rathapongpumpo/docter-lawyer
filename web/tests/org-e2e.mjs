@@ -217,7 +217,7 @@ if (PHASE === '2') {
   await bob.goto(`${BASE}/org/counsel?box=sent`);
   await bob.getByRole('main').getByRole('link', { name: /chat-bob-private/ }).click();
   await bob.getByText('ข้อ 7 ควรมีเพดานค่าปรับ').waitFor();
-  await bob.getByText('ไม่ใช่ของระบบนิติมิตร').waitFor();
+  await bob.getByText('ไม่ใช่ของระบบดอกเตอร์ลอว์เยอร์').waitFor();
   ok('reply shows the counsel disclaimer', true);
   const share = (await api(bob, 'GET', `/api/v1/orgs/${orgA}/counsel-shares?box=sent`)).json.data.shares[0];
   ok('the org owner cannot open a share sent to someone else (404)', (await api(alice, 'GET', `/api/v1/counsel-shares/${share.id}`)).status === 404);

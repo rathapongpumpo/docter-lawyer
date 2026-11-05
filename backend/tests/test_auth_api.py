@@ -1,3 +1,4 @@
+from pathlib import Path
 """
 End-to-End API Test for:
 1. Guest 1 free trial limit (2nd request blocked with AUTH_REQUIRED)
@@ -16,6 +17,25 @@ opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
 
 
 class TestAuthAPI(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        import threading
+        import time
+        import sys
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+        from backend.src.api.server import run_server
+
+        try:
+            req = urllib.request.Request(f"{SERVER_URL}/api/health")
+            with opener.open(req, timeout=1):
+                return
+        except Exception:
+            pass
+
+        t = threading.Thread(target=lambda: run_server(3000, "127.0.0.1"), daemon=True)
+        t.start()
+        time.sleep(1.5)
+
     def test_01_health_and_quota_rules(self):
         req = urllib.request.Request(f"{SERVER_URL}/api/health")
         with opener.open(req, timeout=5) as resp:

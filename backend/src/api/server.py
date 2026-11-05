@@ -32,9 +32,30 @@ from src.services.rule_engine import RuleEngine
 from src.services.ai_router import AIRouter
 from src.services.auth_service import AuthService
 
+def _load_env_file():
+    env_file = PROJECT_ROOT / ".env"
+    if env_file.exists():
+        with open(env_file, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith("#") or "=" not in line:
+                    continue
+                k, v = line.split("=", 1)
+                k = k.strip()
+                v = v.strip().strip("'\"")
+                if k not in os.environ:
+                    os.environ[k] = v
+
+_load_env_file()
+
+
 # Configuration
 LINE_OA_ID = os.environ.get("LINE_OA_ID", "@doctorlawyer")
-LINE_OA_URL = os.environ.get("LINE_OA_URL", f"https://line.me/R/ti/p/{LINE_OA_ID}")
+LINE_OA_URL = os.environ.get("LINE_OA_URL", "https://lin.ee/NQLCu3p")
+LINE_LIFF_ID = os.environ.get("LINE_LIFF_ID", "2012301635-WMe8TR6J")
+LINE_LIFF_URL = os.environ.get("LINE_LIFF_URL", "https://liff.line.me/2012301635-WMe8TR6J")
+LINE_CHANNEL_ID = os.environ.get("LINE_CHANNEL_ID", "2012301635")
+LINE_CHANNEL_SECRET = os.environ.get("LINE_CHANNEL_SECRET", "82b5a8addcad17c5555adf9ec429a281")
 
 # Initialize Engines
 rule_engine = RuleEngine()
@@ -116,6 +137,8 @@ class DoctorLawyerHTTPHandler(SimpleHTTPRequestHandler):
                 self._handle_statutes()
             elif path == "/api/quota":
                 self._handle_quota()
+            elif path == "/api/config":
+                self._handle_config()
             elif path == "/api/auth/me":
                 self._handle_auth_me()
             elif path == "/" or path == "":
@@ -141,6 +164,8 @@ class DoctorLawyerHTTPHandler(SimpleHTTPRequestHandler):
                 self._handle_verify_otp()
             elif path == "/api/auth/google":
                 self._handle_google_auth()
+            elif path == "/api/auth/line":
+                self._handle_line_auth()
             else:
                 self._send_json({"error": "Endpoint not found"}, status=404)
         except Exception as e:
@@ -177,6 +202,7 @@ class DoctorLawyerHTTPHandler(SimpleHTTPRequestHandler):
             "quota_rules": {
                 "registered_member_limit": 3,
                 "unregistered_guest_limit": 1,
+                "reset_frequency": "daily (รีเซ็ตใหม่ทุกวันเที่ยงคืน)",
                 "email_verification": "Required (6-digit OTP)"
             },
             "current_session": {
@@ -214,14 +240,16 @@ class DoctorLawyerHTTPHandler(SimpleHTTPRequestHandler):
                 "is_verified": user["is_verified"],
                 "auth_provider": user["auth_provider"],
                 "quota_remaining": user["remaining"],
-                "quota_limit": user["free_quota"]
+                "quota_limit": user["free_quota"],
+                "reset_frequency": "daily"
             })
         else:
             self._send_json({
                 "user_type": "guest",
                 "guest_id": guest_info["guest_id"],
                 "quota_remaining": guest_info["remaining"],
-                "quota_limit": guest_info["max_quota"]
+                "quota_limit": guest_info["max_quota"],
+                "reset_frequency": "daily"
             })
 
     def _handle_auth_me(self):
@@ -260,6 +288,34 @@ class DoctorLawyerHTTPHandler(SimpleHTTPRequestHandler):
             return
 
         ok, msg, user_data = auth_service.verify_email_otp(email, otp)
+        if ok:
+            self._send_json({
+                "success": True,
+                "message": msg,
+                "user": user_data,
+                "session_token": user_data["session_token"]
+            })
+        else:
+            self._send_json({"success": False, "error": msg}, status=400)
+
+    def _handle_config(self):
+        self._send_json({
+            "line_liff_id": LINE_LIFF_ID,
+            "line_liff_url": LINE_LIFF_URL,
+            "line_oa_url": LINE_OA_URL
+        })
+
+    def _handle_line_auth(self):
+        data = self._read_json_body()
+        line_user_id = data.get("line_user_id", "").strip()
+        name = data.get("name", "").strip()
+        picture_url = data.get("picture_url", "").strip()
+
+        if not line_user_id:
+            self._send_json({"success": False, "error": "ข้อมูล LINE User ID ไม่ถูกต้อง"}, status=400)
+            return
+
+        ok, msg, user_data = auth_service.sign_in_with_line(line_user_id, name, picture_url)
         if ok:
             self._send_json({
                 "success": True,
@@ -352,32 +408,33 @@ class DoctorLawyerHTTPHandler(SimpleHTTPRequestHandler):
                 self._send_json({
                     "status": "AUTH_REQUIRED",
                     "user_type": "guest",
-                    "message": "ท่านได้ใช้สิทธิ์ทดลองใช้งานฟรี 1 ครั้งแล้ว เพื่อรับสิทธิ์ปรึกษาฟรี 3 ครั้ง กรุณาเข้าสู่ระบบด้วย Google Account หรือลงทะเบียนด้วย Email (พร้อมยืนยันรหัส OTP)",
+                    "message": "ท่านได้ใช้สิทธิ์ทดลองใช้งานฟรีสำหรับวันนี้ครบ 1 ครั้งแล้ว (รีเซ็ตใหม่ทุกวัน) เพื่อรับสิทธิ์ปรึกษาเพิ่มเป็น 3 ครั้ง/วัน กรุณาเข้าสู่ระบบด้วย Google Account หรือลงทะเบียนด้วย Email หรือ LINE",
                     "confidence": 0.0,
                     "matched_category_id": "CAT-SPECIALIZED",
-                    "category_name": "กรุณาเข้าสู่ระบบเพื่อรับฟรี 3 ครั้ง",
+                    "category_name": "เข้าสู่ระบบเพื่อรับฟรี 3 ครั้ง/วัน",
                     "show_auth_modal": True,
                     "urgency": {
                         "score": 1,
-                        "label": "🔵 ต้องเข้าสู่ระบบหรือยืนยันอีเมล"
+                        "label": "🔵 ต้องเข้าสู่ระบบเพื่อรับสิทธิ์ 3 ครั้ง/วัน"
                     },
                     "consultation_parts": [
                         {
                             "step": 1,
-                            "title": "🔒 ท่านได้ใช้สิทธิ์ทดลองใช้งานฟรี 1 ครั้งแล้ว",
-                            "content": "สำหรับผู้ใช้งานทั่วไปที่ยังไม่ได้ลงทะเบียน ระบบเปิดให้ทดลองใช้งานฟรีได้ 1 ครั้งครับ"
+                            "title": "🔒 สิทธิ์ทดลองใช้งานฟรีสำหรับวันนี้ครบ 1 ครั้งแล้ว",
+                            "content": "สำหรับผู้ใช้งานทั่วไป ระบบเปิดให้ทดลองใช้งานฟรีได้ 1 ครั้งต่อวันครับ (ระบบจะรีเซ็ตใหม่ในวันพรุ่งนี้)"
                         },
                         {
                             "step": 2,
-                            "title": "🎁 สมัครสมาชิกหรือเข้าสู่ระบบ เพื่อรับสิทธิ์ฟรี 3 ครั้ง!",
-                            "content": "กรุณาเข้าสู่ระบบด้วย **Google Account** หรือลงทะเบียนด้วย **Email (พร้อมยืนยันรหัส OTP)** เพื่อป้องกันอีเมลปลอม และรับสิทธิ์ปรึกษากฎหมายฟรีเพิ่มทันที **3 ครั้ง**"
+                            "title": "🎁 สมัครสมาชิกหรือเข้าสู่ระบบ เพื่อรับฟรี 3 ครั้ง/วัน ทุกวัน!",
+                            "content": "ท่านสามารถเข้าสู่ระบบด้วย **LINE Account**, **Google Account** หรือลงทะเบียนด้วย **Email (พร้อมยืนยันรหัส OTP)** เพื่อรับสิทธิ์ปรึกษากฎหมายฟรีเพิ่มเป็น **3 ครั้งต่อวัน (รีเซ็ตใหม่ทุกวัน)** ได้ทันทีครับ"
                         }
                     ],
                     "quota": {
                         "user_type": "guest",
                         "remaining": 0,
                         "limit": 1,
-                        "note": "ท่านใช้สิทธิ์ทดลองฟรีครบ 1 ครั้งแล้ว กรุณาลงทะเบียนเพื่อรับฟรี 3 ครั้ง"
+                        "reset_frequency": "daily",
+                        "note": "ใช้สิทธิ์ทดลองฟรีสำหรับวันนี้ครบ 1 ครั้งแล้ว (รีเซ็ตใหม่ทุกวัน) กรุณาเข้าสู่ระบบเพื่อรับ 3 ครั้ง/วัน"
                     },
                     "line_oa_url": LINE_OA_URL
                 })
@@ -397,23 +454,24 @@ class DoctorLawyerHTTPHandler(SimpleHTTPRequestHandler):
 
         # Deduct Quota:
         if user:
-            auth_service.consume_user_quota(user["id"])
-            new_rem = max(0, user["remaining"] - 1)
+            ok, new_rem, limit = auth_service.consume_user_quota(user["id"])
             consult_result["quota"] = {
                 "user_type": "member",
                 "email": user["email"],
                 "remaining": new_rem,
-                "limit": user["free_quota"],
-                "note": f"สมาชิกยืนยันตัวตนแล้ว (เหลือโควตา {new_rem}/{user['free_quota']} ครั้ง)"
+                "limit": limit,
+                "reset_frequency": "daily",
+                "note": f"สมาชิกยืนยันตัวตนแล้ว (เหลือโควตาวันนี้ {new_rem}/{limit} ครั้ง - รีเซ็ตใหม่ทุกวัน)"
             }
         else:
-            auth_service.consume_guest_quota(guest_info["guest_id"])
+            ok, new_rem = auth_service.consume_guest_quota(guest_info["guest_id"])
             consult_result["quota"] = {
                 "user_type": "guest",
                 "guest_id": guest_info["guest_id"],
-                "remaining": 0,
-                "limit": 1,
-                "note": "ทดลองใช้ฟรี 1 ครั้ง (เข้าสู่ระบบด้วย Google หรือ Email เพื่อรับเพิ่มอีก 3 ครั้ง!)"
+                "remaining": new_rem,
+                "limit": guest_info["max_quota"],
+                "reset_frequency": "daily",
+                "note": f"ทดลองใช้งานฟรี (เหลือโควตาวันนี้ {new_rem}/{guest_info['max_quota']} ครั้ง - รีเซ็ตใหม่ทุกวัน หรือเข้าสู่ระบบเพื่อรับ 3 ครั้ง/วัน)"
             }
 
         consult_result["line_oa_url"] = LINE_OA_URL

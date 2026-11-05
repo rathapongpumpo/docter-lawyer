@@ -1,6 +1,6 @@
 {
   "app": {
-    "name": "Nitimitr",
+    "name": "Doctor Lawyer",
     "tagline": "Legal information for organizations and individuals",
     "disclaimer": "General legal information, not legal advice for a specific case"
   },
@@ -140,7 +140,7 @@
     "placeholder": "Describe your situation…",
     "send": "Send message",
     "stop": "Stop generating",
-    "assistant": "Nitimitr",
+    "assistant": "Doctor Lawyer",
     "copy": "Copy answer",
     "copied": "Copied",
     "stopped": "Generation stopped",
@@ -281,7 +281,7 @@
     "citedBy": "Knowledge-base topics citing this section",
     "prev": "Section {section}",
     "next": "Section {section}",
-    "askAbout": "Ask Nitimitr about this",
+    "askAbout": "Ask Doctor Lawyer about this",
     "askSection": "What does {law} section {section} say?",
     "type": "{kind, select, article {Article} guide {Step-by-step guide} template {Letter template} glossary {Glossary term} other {Statute}}",
     "updated": "Last updated {date}",
@@ -325,7 +325,7 @@
     "searchDegraded": "These results use word matching only (meaning-based search is unavailable).",
     "sectionMissing": "Section {section} is not in the library (it may not be imported yet, or the number is wrong).",
     "noResults": "Nothing matches “{q}”",
-    "askInstead": "Ask Nitimitr instead",
+    "askInstead": "Ask Doctor Lawyer instead",
     "exactMatch": "Exact match",
     "statutesIntro": "The statutes in the library, with links to the articles and guides that cite them",
     "lawSearch": "Search by statute name or abbreviation",
@@ -832,12 +832,12 @@
     }
   },
   "email": {
-    "brand": "Nitimitr",
+    "brand": "Doctor Lawyer",
     "greeting": "Hello {name}",
-    "signature": "The Nitimitr team",
+    "signature": "The Doctor Lawyer team",
     "verify": {
       "subject": "Confirm your email",
-      "body": "Thanks for signing up for Nitimitr. Please confirm your email to start using your account. This link is valid for 24 hours.",
+      "body": "Thanks for signing up for Doctor Lawyer. Please confirm your email to start using your account. This link is valid for 24 hours.",
       "action": "Confirm email",
       "footer": "If you did not sign up, do nothing. The account will not be activated."
     },
@@ -869,8 +869,8 @@
       "footer": "If this was not you, change your password right away."
     },
     "orgInvite": {
-      "subject": "You were invited to an organization on Nitimitr",
-      "body": "{inviter} invited you to join the organization \"{org}\" on Nitimitr as {role}. Use the button below to view and accept the invitation (you must sign in or sign up with this email address).",
+      "subject": "You were invited to an organization on Doctor Lawyer",
+      "body": "{inviter} invited you to join the organization \"{org}\" on Doctor Lawyer as {role}. Use the button below to view and accept the invitation (you must sign in or sign up with this email address).",
       "action": "View invitation",
       "footer": "This invitation expires in 7 days. If you do not know the sender, ignore this email."
     },
@@ -890,7 +890,7 @@
       "subject": "Organization counsel replied",
       "body": "Your organization's counsel for \"{org}\" replied to the matter you sent.",
       "action": "View reply",
-      "footer": "This opinion is from your organization's counsel, not from Nitimitr."
+      "footer": "This opinion is from your organization's counsel, not from Doctor Lawyer."
     },
     "orgDeletion": {
       "subject": "Your organization is scheduled for deletion",
@@ -916,7 +916,7 @@
       "sections": [
         {
           "title": "What this service is",
-          "body": "Nitimitr provides general legal information based on the system's knowledge library to help you understand your situation. It is not legal advice for your specific case. The system is not a lawyer, does not argue cases, and does not represent you before any court or agency."
+          "body": "Doctor Lawyer provides general legal information based on the system's knowledge library to help you understand your situation. It is not legal advice for your specific case. The system is not a lawyer, does not argue cases, and does not represent you before any court or agency."
         },
         {
           "title": "Accuracy of information",
@@ -1242,7 +1242,7 @@
       "back": "← Back",
       "note": "Note",
       "reply": "Counsel's opinion",
-      "replyDisclaimer": "This opinion is from your organization's counsel, not from Nitimitr.",
+      "replyDisclaimer": "This opinion is from your organization's counsel, not from Doctor Lawyer.",
       "yourReply": "Your reply",
       "sendReply": "Send reply",
       "replySent": "Reply sent. The sender will see it under \"Send to counsel\".",
@@ -1284,10 +1284,10 @@
     "untitled": "Shared chat",
     "sharedOn": "Shared on {date}",
     "disclaimerGeneral": "General legal information, not legal advice for a specific case — consult a lawyer before relying on it",
-    "disclaimer": "General legal information based on Nitimitr's knowledge library — not legal advice for a specific case. Check the date of the information and the original before relying on it.",
-    "askMore": "Ask more on Nitimitr",
+    "disclaimer": "General legal information based on Doctor Lawyer's knowledge library — not legal advice for a specific case. Check the date of the information and the original before relying on it.",
+    "askMore": "Ask more on Doctor Lawyer",
     "askMoreHint": "Opens a new chat of your own with the first question from this chat (not sent until you press send).",
-    "assistant": "Nitimitr",
+    "assistant": "Doctor Lawyer",
     "sources": "Sources",
     "asOf": "as of {date}",
     "passwordTitle": "This link is password-protected",
@@ -1322,7 +1322,7 @@
     "printedOn": "Printed {date}",
     "print": "Print / save as PDF",
     "you": "You",
-    "assistant": "Nitimitr",
+    "assistant": "Doctor Lawyer",
     "asOf": "as of {date}"
   },
   "contracts": {
@@ -1449,7 +1449,7 @@
     "print": "Print / save PDF",
     "guestNote": "Your progress is remembered in this browser only. Sign up to continue on other devices.",
     "saveFailed": "Could not save your progress. Please try again.",
-    "askStep": "Ask Nitimitr about this step",
+    "askStep": "Ask Doctor Lawyer about this step",
     "printFooter": "Printed {date} · {url}"
   },
   "templates": {

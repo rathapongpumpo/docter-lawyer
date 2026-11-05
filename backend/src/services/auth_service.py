@@ -1,9 +1,9 @@
 """
 Doctor Lawyer - Authentication & User Quota Service
 Handles:
-1. Member verification via Google Account (instant verified) or Email (6-digit OTP verification)
-2. Member Free Quota: 3 free queries per verified user
-3. Guest Trial Quota: 1 free query for unregistered guests
+1. Member verification via Google Account (instant verified), LINE LIFF, or Email (6-digit OTP verification)
+2. Member Free Quota: 3 free queries per verified user per day (Daily Reset)
+3. Guest Trial Quota: 1 free query for unregistered guests per day (Daily Reset)
 4. Persistent SQLite storage for users, sessions, and guest records
 """
 
@@ -18,11 +18,12 @@ from email.mime.multipart import MIMEMultipart
 from pathlib import Path
 from typing import Dict, Any, Tuple, Optional
 from contextlib import contextmanager
+from datetime import datetime, timezone, timedelta
 
 
 class AuthService:
     """
-    Manages user authentication, email OTP verification, and tier quotas.
+    Manages user authentication, email OTP verification, and daily tier quotas.
     """
 
     def __init__(self, db_path: Optional[str] = None):
@@ -43,6 +44,11 @@ class AuthService:
 
         self._init_db()
 
+    def _get_today_str(self) -> str:
+        """Returns today's date in YYYY-MM-DD format using Thailand Time (UTC+7)."""
+        tz_thai = timezone(timedelta(hours=7))
+        return datetime.now(tz_thai).strftime("%Y-%m-%d")
+
     @contextmanager
     def _get_connection(self):
         conn = sqlite3.connect(str(self.db_path))
@@ -53,7 +59,7 @@ class AuthService:
             conn.close()
 
     def _init_db(self):
-        """Initializes database tables if they do not exist."""
+        """Initializes database tables if they do not exist, and migrates columns."""
         with self._get_connection() as conn:
             cursor = conn.cursor()
 
@@ -69,6 +75,7 @@ class AuthService:
                     code_expires_at REAL,
                     free_quota INTEGER DEFAULT 3,
                     quota_used INTEGER DEFAULT 0,
+                    quota_reset_date TEXT,
                     created_at REAL NOT NULL,
                     last_login_at REAL
                 )
@@ -84,29 +91,42 @@ class AuthService:
                 )
             """)
 
-            # Guest sessions table (1 free trial query)
+            # Guest sessions table (1 free trial query per day)
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS guest_sessions (
                     guest_id TEXT PRIMARY KEY,
                     quota_used INTEGER DEFAULT 0,
                     max_quota INTEGER DEFAULT 1,
+                    quota_reset_date TEXT,
                     created_at REAL NOT NULL,
                     last_active_at REAL NOT NULL,
                     ip_address TEXT
                 )
             """)
 
+            # Safe migrations for existing databases
+            try:
+                cursor.execute("ALTER TABLE users ADD COLUMN quota_reset_date TEXT")
+            except sqlite3.OperationalError:
+                pass
+
+            try:
+                cursor.execute("ALTER TABLE guest_sessions ADD COLUMN quota_reset_date TEXT")
+            except sqlite3.OperationalError:
+                pass
+
             conn.commit()
 
     # -------------------------------------------------------------
-    # Guest Quota Handling (1 Free Trial Query)
+    # Guest Quota Handling (1 Free Trial Query / Day)
     # -------------------------------------------------------------
     def get_or_create_guest(self, guest_id: str, ip: str = "127.0.0.1") -> Dict[str, Any]:
-        """Retrieves or registers a guest session with a 1-query limit."""
+        """Retrieves or registers a guest session with a 1-query/day limit (daily reset)."""
         if not guest_id:
             guest_id = f"guest_{secrets.token_hex(12)}"
 
         now = time.time()
+        today = self._get_today_str()
         with self._get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM guest_sessions WHERE guest_id = ?", (guest_id,))
@@ -114,37 +134,52 @@ class AuthService:
 
             if not row:
                 cursor.execute("""
-                    INSERT INTO guest_sessions (guest_id, quota_used, max_quota, created_at, last_active_at, ip_address)
-                    VALUES (?, 0, 1, ?, ?, ?)
-                """, (guest_id, now, now, ip))
+                    INSERT INTO guest_sessions (guest_id, quota_used, max_quota, quota_reset_date, created_at, last_active_at, ip_address)
+                    VALUES (?, 0, 1, ?, ?, ?, ?)
+                """, (guest_id, today, now, now, ip))
                 conn.commit()
                 return {
                     "guest_id": guest_id,
                     "is_guest": True,
                     "quota_used": 0,
                     "max_quota": 1,
-                    "remaining": 1
+                    "remaining": 1,
+                    "reset_frequency": "daily"
                 }
             else:
-                cursor.execute("""
-                    UPDATE guest_sessions SET last_active_at = ?, ip_address = ? WHERE guest_id = ?
-                """, (now, ip, guest_id))
-                conn.commit()
                 quota_used = row["quota_used"]
                 max_quota = row["max_quota"]
+                reset_date = row["quota_reset_date"] if "quota_reset_date" in row.keys() else None
+
+                # Daily reset check: if day has rolled over, reset used count
+                if reset_date != today:
+                    quota_used = 0
+                    cursor.execute("""
+                        UPDATE guest_sessions 
+                        SET quota_used = 0, quota_reset_date = ?, last_active_at = ?, ip_address = ?
+                        WHERE guest_id = ?
+                    """, (today, now, ip, guest_id))
+                else:
+                    cursor.execute("""
+                        UPDATE guest_sessions SET last_active_at = ?, ip_address = ? WHERE guest_id = ?
+                    """, (now, ip, guest_id))
+                conn.commit()
+
                 return {
                     "guest_id": guest_id,
                     "is_guest": True,
                     "quota_used": quota_used,
                     "max_quota": max_quota,
-                    "remaining": max(0, max_quota - quota_used)
+                    "remaining": max(0, max_quota - quota_used),
+                    "reset_frequency": "daily"
                 }
 
     def consume_guest_quota(self, guest_id: str) -> Tuple[bool, int]:
         """
-        Consumes 1 quota credit for guest.
+        Consumes 1 quota credit for guest for today.
         Returns: (success, remaining)
         """
+        today = self._get_today_str()
         with self._get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM guest_sessions WHERE guest_id = ?", (guest_id,))
@@ -155,17 +190,24 @@ class AuthService:
 
             quota_used = row["quota_used"]
             max_quota = row["max_quota"]
+            reset_date = row["quota_reset_date"] if "quota_reset_date" in row.keys() else None
+
+            # Daily reset if day changed
+            if reset_date != today:
+                quota_used = 0
 
             if quota_used >= max_quota:
                 return False, 0
 
             new_used = quota_used + 1
-            cursor.execute("UPDATE guest_sessions SET quota_used = ? WHERE guest_id = ?", (new_used, guest_id))
+            cursor.execute("""
+                UPDATE guest_sessions SET quota_used = ?, quota_reset_date = ? WHERE guest_id = ?
+            """, (new_used, today, guest_id))
             conn.commit()
             return True, max(0, max_quota - new_used)
 
     # -------------------------------------------------------------
-    # Email OTP Registration & Verification (3 Free Queries)
+    # Email OTP Registration & Verification (3 Free Queries / Day)
     # -------------------------------------------------------------
     def request_email_otp(self, email: str, name: str = "") -> Dict[str, Any]:
         """
@@ -180,6 +222,7 @@ class AuthService:
         otp = str(secrets.randbelow(900000) + 100000)
         expires_at = time.time() + 900  # 15 minutes
         now = time.time()
+        today = self._get_today_str()
 
         with self._get_connection() as conn:
             cursor = conn.cursor()
@@ -196,9 +239,9 @@ class AuthService:
             else:
                 # Create unverified user
                 cursor.execute("""
-                    INSERT INTO users (email, name, auth_provider, is_verified, verification_code, code_expires_at, free_quota, quota_used, created_at)
-                    VALUES (?, ?, 'email', 0, ?, ?, 3, 0, ?)
-                """, (clean_email, name.strip() or clean_email.split("@")[0], otp, expires_at, now))
+                    INSERT INTO users (email, name, auth_provider, is_verified, verification_code, code_expires_at, free_quota, quota_used, quota_reset_date, created_at)
+                    VALUES (?, ?, 'email', 0, ?, ?, 3, 0, ?, ?)
+                """, (clean_email, name.strip() or clean_email.split("@")[0], otp, expires_at, today, now))
 
             conn.commit()
 
@@ -223,11 +266,12 @@ class AuthService:
     def verify_email_otp(self, email: str, otp: str) -> Tuple[bool, str, Optional[Dict[str, Any]]]:
         """
         Verifies the 6-digit OTP code.
-        Activates user and grants 3 free queries.
+        Activates user and grants 3 free queries / day.
         """
         clean_email = email.strip().lower()
         clean_otp = otp.strip()
         now = time.time()
+        today = self._get_today_str()
 
         with self._get_connection() as conn:
             cursor = conn.cursor()
@@ -246,12 +290,19 @@ class AuthService:
             if user["verification_code"] != clean_otp:
                 return False, "รหัส OTP ไม่ถูกต้อง กรุณาตรวจสอบรหัส 6 หลักอีกครั้ง", None
 
+            quota_used = user["quota_used"]
+            reset_date = user["quota_reset_date"] if "quota_reset_date" in user.keys() else None
+
+            # Reset daily quota if new day
+            if reset_date != today:
+                quota_used = 0
+
             # Mark user as verified and clear OTP
             cursor.execute("""
                 UPDATE users 
-                SET is_verified = 1, verification_code = NULL, code_expires_at = NULL, last_login_at = ?
+                SET is_verified = 1, verification_code = NULL, code_expires_at = NULL, quota_used = ?, quota_reset_date = ?, last_login_at = ?
                 WHERE id = ?
-            """, (now, user["id"]))
+            """, (quota_used, today, now, user["id"]))
 
             # Create session token (valid for 30 days)
             token = secrets.token_hex(24)
@@ -269,25 +320,27 @@ class AuthService:
                 "auth_provider": "email",
                 "is_verified": True,
                 "free_quota": user["free_quota"],
-                "quota_used": user["quota_used"],
-                "remaining": max(0, user["free_quota"] - user["quota_used"]),
+                "quota_used": quota_used,
+                "remaining": max(0, user["free_quota"] - quota_used),
+                "reset_frequency": "daily",
                 "session_token": token
             }
-            return True, "ยืนยันตัวตนสำเร็จ! ได้รับสิทธิ์ปรึกษาฟรี 3 ครั้ง", user_data
+            return True, "ยืนยันตัวตนสำเร็จ! ได้รับสิทธิ์ปรึกษาฟรี 3 ครั้ง/วัน (รีเซ็ตทุกวัน)", user_data
 
     # -------------------------------------------------------------
-    # Google Account Sign-In (Instant Verified, 3 Free Queries)
+    # Google Account Sign-In (Instant Verified, 3 Free Queries / Day)
     # -------------------------------------------------------------
     def sign_in_with_google(self, email: str, name: str = "", google_sub: str = "") -> Tuple[bool, str, Dict[str, Any]]:
         """
         Signs in or registers via Google Account.
-        Google accounts are inherently verified by Google, granting instant 3 free queries.
+        Google accounts are inherently verified by Google, granting instant 3 free queries / day.
         """
         clean_email = email.strip().lower()
         if not re.match(r"^[^@]+@[^@]+\.[^@]+$", clean_email):
             return False, "อีเมล Google ไม่ถูกต้อง", {}
 
         now = time.time()
+        today = self._get_today_str()
         with self._get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM users WHERE email = ?", (clean_email,))
@@ -295,18 +348,25 @@ class AuthService:
 
             if user:
                 user_id = user["id"]
+                quota_used = user["quota_used"]
+                reset_date = user["quota_reset_date"] if "quota_reset_date" in user.keys() else None
+
+                # Daily reset
+                if reset_date != today:
+                    quota_used = 0
+
                 cursor.execute("""
                     UPDATE users 
-                    SET is_verified = 1, auth_provider = 'google', name = COALESCE(NULLIF(?, ''), name), last_login_at = ?
+                    SET is_verified = 1, auth_provider = 'google', name = COALESCE(NULLIF(?, ''), name), 
+                        quota_used = ?, quota_reset_date = ?, last_login_at = ?
                     WHERE id = ?
-                """, (name.strip(), now, user_id))
+                """, (name.strip(), quota_used, today, now, user_id))
                 free_quota = user["free_quota"]
-                quota_used = user["quota_used"]
             else:
                 cursor.execute("""
-                    INSERT INTO users (email, name, auth_provider, is_verified, free_quota, quota_used, created_at, last_login_at)
-                    VALUES (?, ?, 'google', 1, 3, 0, ?, ?)
-                """, (clean_email, name.strip() or clean_email.split("@")[0], now, now))
+                    INSERT INTO users (email, name, auth_provider, is_verified, free_quota, quota_used, quota_reset_date, created_at, last_login_at)
+                    VALUES (?, ?, 'google', 1, 3, 0, ?, ?, ?)
+                """, (clean_email, name.strip() or clean_email.split("@")[0], today, now, now))
                 user_id = cursor.lastrowid
                 free_quota = 3
                 quota_used = 0
@@ -329,19 +389,89 @@ class AuthService:
                 "free_quota": free_quota,
                 "quota_used": quota_used,
                 "remaining": max(0, free_quota - quota_used),
+                "reset_frequency": "daily",
                 "session_token": token
             }
-            return True, "เข้าสู่ระบบด้วย Google สำเร็จ! ได้รับสิทธิ์ปรึกษาฟรี 3 ครั้ง", user_data
+            return True, "เข้าสู่ระบบด้วย Google สำเร็จ! ได้รับสิทธิ์ปรึกษาฟรี 3 ครั้ง/วัน (รีเซ็ตทุกวัน)", user_data
 
     # -------------------------------------------------------------
-    # Session & User Quota Check / Consume
+    # LINE LIFF User Sign-In (Instant Verified, 3 Free Queries / Day)
+    # -------------------------------------------------------------
+    def sign_in_with_line(self, line_user_id: str, name: str = "", picture_url: str = ""):
+        """
+        Signs in or registers via LINE LIFF.
+        LINE users are verified by LINE, granting instant 3 free queries / day.
+        """
+        clean_id = line_user_id.strip()
+        if not clean_id:
+            return False, "LINE User ID ไม่ถูกต้อง", {}
+
+        clean_email = f"{clean_id}@line.user"
+        clean_name = name.strip() or f"LINE User {clean_id[-4:]}"
+        now = time.time()
+        today = self._get_today_str()
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM users WHERE email = ?", (clean_email,))
+            user = cursor.fetchone()
+
+            if user:
+                user_id = user["id"]
+                quota_used = user["quota_used"]
+                reset_date = user["quota_reset_date"] if "quota_reset_date" in user.keys() else None
+
+                # Daily reset
+                if reset_date != today:
+                    quota_used = 0
+
+                cursor.execute("""
+                    UPDATE users 
+                    SET is_verified = 1, auth_provider = 'line', name = COALESCE(NULLIF(?, ''), name), 
+                        quota_used = ?, quota_reset_date = ?, last_login_at = ?
+                    WHERE id = ?
+                """, (clean_name, quota_used, today, now, user_id))
+                free_quota = user["free_quota"]
+            else:
+                cursor.execute("""
+                    INSERT INTO users (email, name, auth_provider, is_verified, free_quota, quota_used, quota_reset_date, created_at, last_login_at)
+                    VALUES (?, ?, 'line', 1, 3, 0, ?, ?, ?)
+                """, (clean_email, clean_name, today, now, now))
+                user_id = cursor.lastrowid
+                free_quota = 3
+                quota_used = 0
+
+            token = secrets.token_hex(24)
+            expires_at = now + (30 * 86400)
+            cursor.execute("""
+                INSERT INTO sessions (token, user_id, expires_at) VALUES (?, ?, ?)
+            """, (token, user_id, expires_at))
+
+            conn.commit()
+
+            user_data = {
+                "id": user_id,
+                "email": clean_email,
+                "name": clean_name,
+                "auth_provider": "line",
+                "is_verified": True,
+                "free_quota": free_quota,
+                "quota_used": quota_used,
+                "remaining": max(0, free_quota - quota_used),
+                "reset_frequency": "daily",
+                "session_token": token
+            }
+            return True, "เข้าสู่ระบบด้วย LINE สำเร็จ! ได้รับสิทธิ์ปรึกษาฟรี 3 ครั้ง/วัน (รีเซ็ตทุกวัน)", user_data
+
+    # -------------------------------------------------------------
+    # Session & User Quota Check / Consume (Daily Reset)
     # -------------------------------------------------------------
     def get_user_by_session(self, token: str) -> Optional[Dict[str, Any]]:
-        """Resolves active user session."""
+        """Resolves active user session with daily quota reset."""
         if not token:
             return None
 
         now = time.time()
+        today = self._get_today_str()
         with self._get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute("""
@@ -354,6 +484,17 @@ class AuthService:
             if not row:
                 return None
 
+            quota_used = row["quota_used"]
+            reset_date = row["quota_reset_date"] if "quota_reset_date" in row.keys() else None
+
+            # Daily reset check for registered members
+            if reset_date != today:
+                quota_used = 0
+                cursor.execute("""
+                    UPDATE users SET quota_used = 0, quota_reset_date = ? WHERE id = ?
+                """, (today, row["id"]))
+                conn.commit()
+
             return {
                 "id": row["id"],
                 "email": row["email"],
@@ -361,18 +502,20 @@ class AuthService:
                 "auth_provider": row["auth_provider"],
                 "is_verified": bool(row["is_verified"]),
                 "free_quota": row["free_quota"],
-                "quota_used": row["quota_used"],
-                "remaining": max(0, row["free_quota"] - row["quota_used"])
+                "quota_used": quota_used,
+                "remaining": max(0, row["free_quota"] - quota_used),
+                "reset_frequency": "daily"
             }
 
     def consume_user_quota(self, user_id: int) -> Tuple[bool, int, int]:
         """
-        Consumes 1 consultation credit for a registered verified user.
+        Consumes 1 consultation credit for a registered verified user for today.
         Returns: (success, remaining, limit)
         """
+        today = self._get_today_str()
         with self._get_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT free_quota, quota_used, is_verified FROM users WHERE id = ?", (user_id,))
+            cursor.execute("SELECT free_quota, quota_used, quota_reset_date, is_verified FROM users WHERE id = ?", (user_id,))
             user = cursor.fetchone()
 
             if not user or not user["is_verified"]:
@@ -380,12 +523,19 @@ class AuthService:
 
             free_quota = user["free_quota"]
             quota_used = user["quota_used"]
+            reset_date = user["quota_reset_date"] if "quota_reset_date" in user.keys() else None
+
+            # Daily reset if day changed
+            if reset_date != today:
+                quota_used = 0
 
             if quota_used >= free_quota:
                 return False, 0, free_quota
 
             new_used = quota_used + 1
-            cursor.execute("UPDATE users SET quota_used = ? WHERE id = ?", (new_used, user_id))
+            cursor.execute("""
+                UPDATE users SET quota_used = ?, quota_reset_date = ? WHERE id = ?
+            """, (new_used, today, user_id))
             conn.commit()
             return True, max(0, free_quota - new_used), free_quota
 
@@ -415,7 +565,7 @@ class AuthService:
                     <p style="color: #64748b; font-size: 13px; margin: 12px 0 0 0;">รหัสนี้มีอายุการใช้งาน 15 นาที</p>
                 </div>
                 <p style="color: #475569; font-size: 14px; line-height: 1.6; margin-bottom: 20px;">
-                    เมื่อยืนยันอีเมลเรียบร้อยแล้ว ท่านจะได้รับสิทธิ์ปรึกษาข้อกฎหมายฟรี <b>3 ครั้ง</b> พร้อมระบบวิเคราะห์ความเร่งด่วนและส่งต่อทนายความพาร์ตเนอร์
+                    เมื่อยืนยันอีเมลเรียบร้อยแล้ว ท่านจะได้รับสิทธิ์ปรึกษาข้อกฎหมายฟรี <b>3 ครั้งต่อวัน (รีเซ็ตใหม่ทุกวัน)</b> พร้อมระบบวิเคราะห์ความเร่งด่วนและส่งต่อทนายความพาร์ตเนอร์
                 </p>
                 <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 20px 0;">
                 <p style="color: #94a3b8; font-size: 12px; text-align: center; margin: 0;">

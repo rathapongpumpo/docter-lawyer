@@ -2,1412 +2,2565 @@
 <html lang="th">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>ดอกเตอร์ลอว์เยอร์ (Doctor Lawyer) — AI Legal Assistant & Partner Lawyer Network</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>ดอกเตอร์ลอว์เยอร์ (Doctor Lawyer) — ผู้ช่วยกฎหมาย AI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Noto+Serif+Thai:wght@600;700&display=swap" rel="stylesheet">
+  <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <!-- High-Readability Thai Typography: IBM Plex Sans Thai (Clear UI & Headings) + Sarabun (Clean Legal Body) -->
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
+    /* =========================================================
+       DOCTOR LAWYER EXECUTIVE LEGAL DESIGN SYSTEM
+       ========================================================= */
     :root {
-      --primary: #0066cc;
-      --primary-dark: #004c99;
-      --primary-light: #e6f0fa;
-      --navy: #0b2a4a;
-      --navy-light: #163e68;
-      --danger: #dc2626;
-      --danger-bg: #fef2f2;
-      --warning: #d97706;
-      --warning-bg: #fffbeb;
-      --success: #16a34a;
-      --success-bg: #f0fdf4;
-      --line-green: #06C755;
-      --line-green-dark: #05a847;
-      --google-red: #ea4335;
-      --bg: #f4f6f9;
-      --surface: #ffffff;
-      --text: #1f2937;
-      --text-muted: #64748b;
-      --border: #e2e8f0;
-      --radius: 16px;
-      --shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.06);
-      --font-sans: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-serif: 'Noto Serif Thai', Georgia, serif;
+      --gemini-bg: #f8fafd;
+      --gemini-surface: #ffffff;
+      --gemini-input-bg: #f0f4f9;
+      --gemini-input-hover: #e9eef6;
+      --gemini-border: #e3e3e3;
+      --gemini-border-subtle: #f0f0f0;
+      
+      --gemini-text-primary: #1e293b;
+      --gemini-text-secondary: #475569;
+      --gemini-text-tertiary: #64748b;
+
+      --google-blue: #2563eb;
+      --google-blue-hover: #1d4ed8;
+      --google-blue-subtle: #eff6ff;
+      
+      --line-green: #06c755;
+      --line-green-hover: #05a847;
+
+      --font-ui: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-body: 'IBM Plex Sans Thai', 'Sarabun', -apple-system, sans-serif;
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --radius-full: 9999px;
+
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
+      --shadow-input: 0 4px 20px rgba(0, 0, 0, 0.08);
+      
+      --max-width: 820px;
     }
 
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    body {
+    /* =========================================================
+       GOOGLE GEMINI DARK THEME (Signature Deep Midnight #131314)
+       ========================================================= */
+    [data-theme="dark"] {
+      --gemini-bg: #131314;
+      --gemini-surface: #1e1f20;
+      --gemini-input-bg: #1e1f20;
+      --gemini-input-hover: #282a2c;
+      --gemini-border: #37393b;
+      --gemini-border-subtle: #282a2c;
+      
+      --gemini-text-primary: #e3e3e3;
+      --gemini-text-secondary: #c4c7c5;
+      --gemini-text-tertiary: #8e918f;
+
+      --google-blue: #a8c7fa;
+      --google-blue-hover: #8ab4f8;
+      --google-blue-subtle: rgba(168, 199, 250, 0.12);
+
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+      --shadow-input: 0 4px 24px rgba(0, 0, 0, 0.6);
+    }
+
+    * {
+      box-sizing: border-box;
       margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-sans);
-      font-size: 15px;
-      line-height: 1.6;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    .main-wrapper {
-      max-width: 900px;
-      margin: 0 auto;
+    html, body {
+      width: 100%;
+      max-width: 100vw;
       min-height: 100vh;
-      background: var(--surface);
-      box-shadow: 0 0 30px rgba(0,0,0,0.05);
-      display: flex;
-      flex-direction: column;
+      background: var(--gemini-bg);
+      color: var(--gemini-text-primary);
+      font-family: var(--font-ui);
+      font-size: 15.5px;
+      line-height: 1.7;
+      letter-spacing: -0.005em;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Top App Bar */
-    .top-bar {
-      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
-      color: #fff;
-      padding: 18px 24px;
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #d3d7dc; border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: #b0b4b9; }
+
+    /* =========================================================
+       TOP HEADER (Gemini App Bar)
+       ========================================================= */
+    .gemini-header {
       position: sticky;
       top: 0;
-      z-index: 50;
-      box-shadow: 0 4px 15px rgba(11, 42, 74, 0.15);
+      z-index: 100;
+      background: rgba(248, 250, 253, 0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gemini-border-subtle);
+      padding-top: env(safe-area-inset-top);
     }
-    .top-bar-inner {
+
+    .header-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 10px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
       gap: 12px;
     }
+
     .brand-group {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--gemini-text-primary);
+      min-width: 0;
     }
-    .brand-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(8px);
+
+    .legal-crest {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #0f1d35 0%, #1e3a67 100%);
+      color: #93c5fd;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(15, 29, 53, 0.18);
     }
-    .brand-title {
-      font-family: var(--font-serif);
-      font-size: 22px;
-      font-weight: 700;
-      line-height: 1.2;
-    }
-    .brand-sub {
-      font-size: 12px;
+    [data-theme="dark"] .legal-crest {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
       color: #93c5fd;
-      font-weight: 400;
+      border: 1px solid rgba(255, 255, 255, 0.12);
     }
-    .header-right {
+
+    .brand-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--gemini-text-primary);
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .header-actions {
       display: flex;
       align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
+      gap: 8px;
+      flex-shrink: 0;
     }
-    .badge-tier {
-      font-size: 11px;
-      font-weight: 600;
-      padding: 4px 12px;
-      border-radius: 20px;
+
+    .quota-badge {
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      background: rgba(255, 255, 255, 0.18);
-      color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-    }
-    .badge-tier.tier1 { background: #10b981; border: none; }
-    .badge-tier.tier2 { background: #8b5cf6; border: none; }
-
-    /* User Auth Pill Button */
-    .btn-auth-nav {
-      background: #ffffff;
-      color: var(--navy);
-      border: none;
-      padding: 6px 14px;
-      border-radius: 20px;
+      background: #eef2f6;
+      color: var(--gemini-text-secondary);
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      white-space: nowrap;
+    }
+    .quota-badge.member {
+      background: #e6f4ea;
+      color: #137333;
+    }
+
+    .btn-auth-header {
+      background: var(--google-blue);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-full);
+      padding: 6px 14px;
+      font-size: 12.5px;
+      font-weight: 500;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
       font-family: inherit;
+      white-space: nowrap;
     }
-    .btn-auth-nav:hover {
-      background: #f1f5f9;
-      transform: translateY(-1px);
+    .btn-auth-header:hover {
+      background: var(--google-blue-hover);
     }
-    .user-pill {
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      color: #fff;
+
+    .user-header-pill {
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      background: #ffffff;
+      border: 1px solid var(--gemini-border);
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      color: var(--gemini-text-primary);
     }
-    .btn-logout {
+    .btn-logout-link {
       background: none;
       border: none;
-      color: #fca5a5;
+      color: #d93025;
       font-size: 11px;
       cursor: pointer;
-      text-decoration: underline;
-      padding: 0 4px;
+      padding: 2px 4px;
       font-family: inherit;
     }
 
-    /* Container Body */
-    .content-area {
-      padding: 24px;
-      flex: 1;
-    }
-
-    /* Membership Banner */
-    .membership-alert-banner {
-      background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%);
-      border: 1px solid #bfdbfe;
-      border-radius: var(--radius);
-      padding: 14px 18px;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .membership-alert-banner .banner-text {
-      font-size: 13.5px;
-      color: #1e3a8a;
-    }
-    .membership-alert-banner .banner-btn {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
-      font-family: inherit;
-    }
-    .membership-alert-banner .banner-btn:hover {
-      background: var(--primary-dark);
-    }
-
-    /* Quick Presets Bar */
-    .presets-card {
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px 20px;
-      margin-bottom: 24px;
-    }
-    .presets-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--navy);
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .presets-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .preset-btn {
-      background: #fff;
-      border: 1px solid var(--border);
-      color: #334155;
-      font-size: 12.5px;
-      padding: 6px 14px;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-family: inherit;
-    }
-    .preset-btn:hover {
-      background: var(--primary-light);
-      border-color: var(--primary);
-      color: var(--primary);
-      transform: translateY(-1px);
-    }
-
-    /* Query Input Card */
-    .query-card {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-      box-shadow: var(--shadow);
-      margin-bottom: 24px;
-    }
-    .query-card h2 {
-      margin: 0 0 12px 0;
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--navy);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .query-input {
+    /* =========================================================
+       MAIN GEMINI CANVAS
+       ========================================================= */
+    .gemini-main {
+      max-width: var(--max-width);
       width: 100%;
-      min-height: 110px;
-      padding: 14px 16px;
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      font-family: inherit;
-      font-size: 14.5px;
-      color: var(--text);
-      resize: vertical;
-      outline: none;
-      transition: border-color 0.2s ease;
-      background: #fcfcfd;
-    }
-    .query-input:focus {
-      border-color: var(--primary);
-      background: #fff;
-      box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
-    }
-    .query-actions {
+      margin: 0 auto;
+      padding: 32px 20px 100px 20px;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 14px;
-      flex-wrap: wrap;
-      gap: 10px;
+      flex-direction: column;
+      min-height: calc(100vh - 60px);
     }
-    .btn-voice {
-      background: #f1f5f9;
-      border: 1px solid var(--border);
-      color: #475569;
-      padding: 10px 16px;
-      border-radius: 10px;
-      font-size: 13px;
+
+    /* Welcome Hero (Gemini Greeting) */
+    .gemini-hero {
+      margin-top: 24px;
+      margin-bottom: 32px;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    .gemini-greeting {
+      font-size: 38px;
+      font-weight: 500;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+    }
+    .greeting-subtle {
+      color: var(--gemini-text-secondary);
+      font-weight: 400;
+    }
+    .greeting-gradient {
+      background: linear-gradient(74deg, #1a73e8 0%, #4285f4 50%, #9b72cb 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 600;
+    }
+
+    /* Suggestion Prompt Cards (Gemini Cards) */
+    .gemini-suggestions {
+      margin-bottom: 36px;
+    }
+    .suggestions-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .suggestion-card {
+      background: var(--gemini-surface);
+      border: 1px solid var(--gemini-border);
+      border-radius: var(--radius-lg);
+      padding: 16px 18px;
       cursor: pointer;
-      display: inline-flex;
+      text-align: left;
+      transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      min-height: 96px;
+      font-family: inherit;
+      width: 100%;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    .suggestion-card:hover {
+      background: var(--gemini-input-bg);
+      border-color: #d0d5dd;
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+    .suggestion-text {
+      font-size: 14px;
+      color: var(--gemini-text-primary);
+      font-weight: 500;
+      line-height: 1.45;
+      text-wrap: balance;
+      word-break: normal;
+      overflow-wrap: break-word;
+    }
+    .suggestion-tag {
+      font-size: 11.5px;
+      color: var(--gemini-text-tertiary);
+      display: flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.2s;
     }
-    .btn-voice:hover { background: #e2e8f0; }
-    .btn-voice.recording {
-      background: var(--danger-bg);
-      color: var(--danger);
-      border-color: var(--danger);
+
+    /* =========================================================
+       GEMINI INPUT CAPSULE (The Core Interaction Box)
+       ========================================================= */
+    .gemini-input-wrapper {
+      position: relative;
+      margin-top: auto;
+      margin-bottom: 8px;
+    }
+
+    .gemini-input-box {
+      background: var(--gemini-input-bg);
+      border: 1px solid transparent;
+      border-radius: var(--radius-xl);
+      padding: 16px 18px 12px 18px;
+      transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+    .gemini-input-box:focus-within {
+      background: var(--gemini-surface);
+      border-color: #d0d5dd;
+      box-shadow: var(--shadow-input);
+    }
+
+    .gemini-textarea {
+      width: 100%;
+      min-height: 52px;
+      max-height: 180px;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--gemini-text-primary);
+      resize: none;
+    }
+    .gemini-textarea::placeholder {
+      color: var(--gemini-text-tertiary);
+      font-family: var(--font-ui);
+      font-size: 15px;
+    }
+
+    .input-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 8px;
+      padding-top: 6px;
+    }
+
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-icon-action {
+      background: transparent;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--gemini-text-secondary);
+      transition: all 0.2s ease;
+    }
+    .btn-icon-action:hover {
+      background: rgba(0, 0, 0, 0.06);
+      color: var(--gemini-text-primary);
+    }
+    .btn-icon-action.recording {
+      background: #fce8e6;
+      color: #d93025;
       animation: pulse 1.5s infinite;
     }
-    @keyframes pulse {
-      0% { opacity: 1; }
-      50% { opacity: 0.5; }
-      100% { opacity: 1; }
-    }
-    .btn-submit {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      color: #fff;
-      border: none;
-      padding: 12px 28px;
-      border-radius: 12px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
+
+    .tag-pdpa-hint {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      box-shadow: 0 4px 12px rgba(0, 102, 204, 0.25);
-      transition: all 0.2s;
-      font-family: inherit;
+      gap: 5px;
+      font-size: 11.5px;
+      color: var(--gemini-text-tertiary);
     }
-    .btn-submit:hover {
-      box-shadow: 0 6px 18px rgba(0, 102, 204, 0.35);
-      transform: translateY(-1px);
-    }
-    .btn-submit:disabled {
-      background: #cbd5e1;
+
+    .btn-send-gemini {
+      background: #e3e3e3;
+      color: #8e918f;
+      border: none;
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: not-allowed;
-      box-shadow: none;
-      transform: none;
+      transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+      flex-shrink: 0;
+    }
+    .btn-send-gemini.active {
+      background: var(--google-blue);
+      color: #ffffff;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(26, 115, 232, 0.35);
+    }
+    .btn-send-gemini.active:hover {
+      background: var(--google-blue-hover);
+      transform: scale(1.04);
     }
 
-    /* Results Container */
-    .results-container {
-      display: none;
-      animation: fadeIn .3s ease-in;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Status & Urgency Card */
-    .status-card {
-      border-radius: var(--radius);
-      padding: 18px 20px;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border: 1px solid transparent;
-    }
-    .status-card.critical { background: var(--danger-bg); border-color: #fca5a5; color: #991b1b; }
-    .status-card.urgent { background: var(--warning-bg); border-color: #fcd34d; color: #92400e; }
-    .status-card.normal { background: var(--success-bg); border-color: #86efac; color: #166534; }
-    .status-left h3 { margin: 0 0 4px 0; font-size: 16.5px; font-weight: 700; }
-    .status-left p { margin: 0; font-size: 13.5px; }
-
-    /* Quota Banner */
-    .quota-info-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #eef2ff;
-      border: 1px solid #c7d2fe;
-      color: #3730a3;
-      padding: 10px 16px;
-      border-radius: 10px;
-      font-size: 13px;
-      margin-bottom: 16px;
-    }
-
-    /* PDPA Shield Banner */
-    .pdpa-banner {
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-left: 4px solid var(--primary);
-      padding: 10px 14px;
-      border-radius: 8px;
-      font-size: 12.5px;
-      color: #475569;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    /* Standardized 6-Part Advice Cards */
-    .advice-step-card {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 18px 20px;
-      margin-bottom: 14px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-      transition: border-color 0.2s;
-    }
-    .advice-step-card:hover { border-color: #cbd5e1; }
-    .advice-step-header {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--navy);
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .advice-step-content {
-      font-size: 14px;
-      color: #334155;
-      white-space: pre-line;
-      line-height: 1.7;
-    }
-
-    /* Partner Lawyer Handoff Box */
-    .handoff-action-box {
-      background: linear-gradient(135deg, #0b2a4a 0%, #163e68 100%);
-      color: #fff;
-      border-radius: var(--radius);
-      padding: 24px;
-      margin-top: 24px;
-      box-shadow: 0 8px 24px rgba(11, 42, 74, 0.2);
-    }
-    .handoff-action-box h4 {
-      margin: 0 0 8px 0;
-      font-size: 18px;
-      font-family: var(--font-serif);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .handoff-action-box p {
-      margin: 0 0 16px 0;
-      font-size: 13.5px;
-      color: #cbd5e1;
+    .gemini-disclaimer {
+      font-size: 12px;
+      color: var(--gemini-text-tertiary);
+      text-align: center;
+      margin-top: 10px;
       line-height: 1.5;
     }
-    .handoff-btn-group {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
+
+    /* =========================================================
+       CHAT & DOSSIER RESULTS (Gemini Conversation Flow)
+       ========================================================= */
+    .conversation-area {
+      display: none;
+      flex-direction: column;
+      gap: 24px;
+      margin-bottom: 32px;
     }
-    .btn-line-oa {
-      background: var(--line-green);
-      color: #fff;
-      border: none;
-      padding: 14px 24px;
-      border-radius: 12px;
+
+    /* User Message Bubble */
+    .user-query-bubble {
+      align-self: flex-end;
+      background: var(--gemini-input-bg);
+      border-radius: 20px 20px 4px 20px;
+      padding: 14px 18px;
+      max-width: 85%;
+      font-family: var(--font-body);
+      font-size: 15.5px;
+      line-height: 1.6;
+      color: var(--gemini-text-primary);
+      box-shadow: var(--shadow-sm);
+      word-break: break-word;
+    }
+
+    /* Assistant Response Container */
+    .assistant-response-container {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      animation: fadeIn 0.35s ease-out;
+    }
+
+    .assistant-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #0f1d35 0%, #1e3a67 100%);
+      color: #93c5fd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 3px;
+      box-shadow: 0 2px 6px rgba(15, 29, 53, 0.18);
+    }
+    [data-theme="dark"] .assistant-avatar {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      color: #93c5fd;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .assistant-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* Status & Category Bar */
+    .response-meta-bar {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .badge-category {
+      background: #ffffff;
+      border: 1px solid var(--gemini-border);
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--gemini-text-primary);
+    }
+
+    .badge-urgency {
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 11.5px;
+      font-weight: 500;
+    }
+    .badge-urgency.critical { background: #fce8e6; color: #c5221f; }
+    .badge-urgency.high { background: #fef7e0; color: #b06000; }
+    .badge-urgency.normal { background: #e8f0fe; color: #1a73e8; }
+
+    /* 6 Consultation Steps */
+    .step-section {
+      background: var(--gemini-surface);
+      border: 1px solid var(--gemini-border);
+      border-radius: var(--radius-lg);
+      padding: 18px 20px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .step-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
       font-size: 15px;
-      font-weight: 700;
+      font-weight: 600;
+      color: var(--gemini-text-primary);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--gemini-border-subtle);
+      line-height: 1.45;
+      text-wrap: balance;
+    }
+
+    .step-badge {
+      width: 22px;
+      height: 22px;
+      border-radius: var(--radius-full);
+      background: var(--gemini-text-primary);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .step-content {
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      line-height: 1.75;
+      color: #334155;
+      word-break: normal;
+      overflow-wrap: break-word;
+    }
+    .step-content p {
+      margin-bottom: 10px;
+    }
+    .step-content p:last-child {
+      margin-bottom: 0;
+    }
+    .step-content strong {
+      color: var(--gemini-text-primary);
+      font-weight: 600;
+    }
+    .step-content ul.step-list {
+      margin: 8px 0 12px 18px;
+      padding: 0;
+    }
+    .step-content li {
+      margin-bottom: 5px;
+      line-height: 1.65;
+    }
+
+    /* Action Toolbar underneath response */
+    .response-action-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+      padding-top: 14px;
+      border-top: 1px solid var(--gemini-border-subtle);
+    }
+
+    .btn-gemini-action {
+      border: 1px solid var(--gemini-border);
+      background: #ffffff;
+      color: var(--gemini-text-primary);
+      padding: 9px 16px;
+      border-radius: var(--radius-full);
+      font-size: 13px;
+      font-weight: 500;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      box-shadow: 0 4px 14px rgba(6, 199, 85, 0.35);
+      gap: 7px;
       transition: all 0.2s ease;
       font-family: inherit;
     }
-    .btn-line-oa:hover {
-      background: var(--line-green-dark);
-      transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(6, 199, 85, 0.45);
-    }
-    .btn-secondary-brief {
-      background: rgba(255, 255, 255, 0.15);
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      padding: 14px 20px;
-      border-radius: 12px;
-      font-size: 14px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s;
-      font-family: inherit;
-    }
-    .btn-secondary-brief:hover {
-      background: rgba(255, 255, 255, 0.25);
+    .btn-gemini-action:hover {
+      background: var(--gemini-input-bg);
+      border-color: #c4c7c5;
     }
 
-    /* Modal Styling */
-    .modal-overlay {
-      display: none;
+    .btn-gemini-action.primary-line {
+      background: var(--line-green);
+      color: #ffffff;
+      border-color: var(--line-green);
+      font-weight: 600;
+    }
+    .btn-gemini-action.primary-line:hover {
+      background: var(--line-green-hover);
+      border-color: var(--line-green-hover);
+    }
+
+    /* =========================================================
+       MODAL & BOTTOM SHEET (Clean, Accessible, 100% Solid)
+       ========================================================= */
+    .modal-backdrop {
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(4px);
-      z-index: 100;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: none;
       align-items: center;
       justify-content: center;
       padding: 16px;
-    }
-    .modal-content {
-      background: #fff;
-      border-radius: 20px;
-      width: 100%;
-      max-width: 600px;
-      max-height: 90vh;
-      overflow-y: auto;
-      padding: 24px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-      animation: zoomIn .2s ease-out;
-    }
-    @keyframes zoomIn {
-      from { transform: scale(0.95); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 12px;
-      margin-bottom: 16px;
-    }
-    .modal-header h3 {
-      margin: 0;
-      font-size: 18px;
-      font-family: var(--font-serif);
-      color: var(--navy);
-    }
-    .close-btn {
-      border: none;
-      background: none;
-      font-size: 22px;
-      cursor: pointer;
-      color: #64748b;
-    }
-    .brief-section {
-      background: #f8fafc;
-      border-radius: 10px;
-      padding: 12px 16px;
-      margin-bottom: 12px;
-      font-size: 13px;
-    }
-    .brief-label {
-      font-weight: 700;
-      color: var(--navy);
-      margin-bottom: 4px;
+      box-sizing: border-box;
     }
 
-    /* Auth Modal Tabs & Inputs */
-    .auth-tabs {
-      display: flex;
-      border-bottom: 2px solid var(--border);
-      margin-bottom: 20px;
-    }
-    .auth-tab-btn {
-      flex: 1;
-      padding: 12px;
-      background: none;
-      border: none;
-      font-weight: 600;
-      font-size: 14px;
-      color: #64748b;
-      cursor: pointer;
-      border-bottom: 3px solid transparent;
-      margin-bottom: -2px;
-      font-family: inherit;
-      transition: all 0.2s;
-    }
-    .auth-tab-btn.active {
-      color: var(--primary);
-      border-color: var(--primary);
-    }
-    .form-group {
-      margin-bottom: 16px;
-    }
-    .form-group label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--navy);
-      margin-bottom: 6px;
-    }
-    .form-input {
+    .modal-box {
+      background: #ffffff !important;
+      opacity: 1 !important;
+      border-radius: var(--radius-xl);
+      max-width: 400px;
       width: 100%;
-      padding: 12px 14px;
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      font-family: inherit;
-      font-size: 14px;
-      outline: none;
-      transition: border-color 0.2s;
+      padding: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--gemini-border);
+      max-height: 90vh;
+      overflow-y: auto;
+      box-sizing: border-box;
     }
-    .form-input:focus {
-      border-color: var(--primary);
-    }
-    .otp-input-group {
+
+    .modal-top {
       display: flex;
-      gap: 8px;
       align-items: center;
-    }
-    .otp-input {
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: 4px;
-      text-align: center;
-    }
-    .btn-google {
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--gemini-border-subtle);
       width: 100%;
-      background: #fff;
-      color: #374151;
-      border: 1.5px solid #d1d5db;
-      padding: 12px;
-      border-radius: 12px;
-      font-size: 14.5px;
+      box-sizing: border-box;
+    }
+    .modal-header-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+      min-width: 0;
+      flex: 1;
+    }
+    .modal-header-crest {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+      color: #fbbf24;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+    }
+    .modal-title-group {
+      min-width: 0;
+      flex: 1;
+    }
+    .modal-title {
+      font-size: 15.5px;
       font-weight: 600;
+      color: var(--gemini-text-primary);
+      margin: 0;
+      line-height: 1.3;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .modal-subtitle {
+      font-size: 12px;
+      color: var(--gemini-text-secondary);
+      margin: 2px 0 0 0;
+      line-height: 1.3;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .modal-close-btn {
+      background: #f0f4f9;
+      border: none;
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
+      color: var(--gemini-text-secondary);
+      flex-shrink: 0;
+      margin-left: 8px;
+      transition: background 0.15s;
+    }
+    .modal-close-btn:hover {
+      background: #e2e8f0;
+      color: var(--gemini-text-primary);
+    }
+
+    /* Vertical stacked 1-click login buttons: 100% width, zero cramped text */
+    .auth-quick-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 14px;
+      width: 100%;
+    }
+
+    .btn-auth-provider {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
-      transition: background 0.2s;
+      padding: 11px 16px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
       font-family: inherit;
+      transition: all 0.2s ease;
+      border: 1px solid var(--gemini-border);
+      background: #ffffff;
+      color: var(--gemini-text-primary);
+      width: 100%;
+      box-sizing: border-box;
+      white-space: nowrap;
     }
-    .btn-google:hover {
-      background: #f9fafb;
-      border-color: #9ca3af;
+    .btn-auth-provider.line {
+      background: var(--line-green);
+      color: #ffffff;
+      border-color: var(--line-green);
+      font-weight: 600;
     }
-    .auth-notice-box {
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
-      color: #166534;
-      padding: 12px;
-      border-radius: 10px;
-      font-size: 12.5px;
-      margin-top: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .btn-auth-provider.line:hover {
+      background: var(--line-green-hover);
+    }
+    .btn-auth-provider.google {
+      background: #ffffff;
+      color: var(--gemini-text-primary);
+    }
+    .btn-auth-provider.google:hover {
+      background: #f8fafd;
+      border-color: #c4c7c5;
     }
 
-    /* Notification Toast */
-    .toast {
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 14px 0;
+      color: var(--gemini-text-tertiary);
+      font-size: 12px;
+    }
+    .auth-divider::before,
+    .auth-divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid var(--gemini-border-subtle);
+    }
+    .auth-divider span {
+      padding: 0 10px;
+      white-space: nowrap;
+    }
+
+    .auth-email-flow {
+      text-align: left;
+      width: 100%;
+    }
+    .form-group {
+      margin-bottom: 12px;
+      text-align: left;
+    }
+    .form-label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--gemini-text-secondary);
+      margin-bottom: 6px;
+    }
+    .form-label small {
+      font-weight: 400;
+      color: var(--gemini-text-tertiary);
+    }
+
+    .otp-input {
+      letter-spacing: 0.3em;
+      font-size: 22px;
+      font-weight: 600;
+      text-align: center;
+      padding: 10px;
+      font-family: monospace, var(--font-body);
+    }
+    .otp-sent-banner {
+      background: #edf7ed;
+      border: 1px solid #c8e6c9;
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      font-size: 12.5px;
+      color: #1e4620;
+    }
+    .otp-sent-icon {
+      color: #2e7d32;
+      flex-shrink: 0;
+      display: flex;
+    }
+    .otp-sent-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+    .sent-email-highlight {
+      font-weight: 600;
+      color: #1b5e20;
+      word-break: break-all;
+    }
+
+    .demo-otp-box {
+      background: #fff8e1;
+      border: 1px dashed #ffc107;
+      border-radius: var(--radius-md);
+      padding: 8px 12px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .demo-otp-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      color: #856404;
+    }
+    .demo-tag {
+      background: #ffecb3;
+      color: #795548;
+      font-weight: 700;
+      font-size: 10px;
+      padding: 1px 5px;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+    }
+    .btn-demo-autofill {
+      background: #ffe082;
+      border: 1px solid #ffd54f;
+      border-radius: 6px;
+      padding: 4px 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      font-size: 12px;
+      font-family: monospace, var(--font-body);
+      color: #5d4037;
+      transition: all 0.15s ease;
+    }
+    .btn-demo-autofill:hover {
+      background: #ffd54f;
+      transform: scale(1.02);
+    }
+    .btn-demo-autofill small {
+      font-family: var(--font-body);
+      font-size: 10.5px;
+      font-weight: 400;
+      color: #795548;
+    }
+
+    .otp-actions-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+      padding-top: 4px;
+    }
+    .btn-text-link {
+      background: none;
+      border: none;
+      font-size: 12px;
+      color: var(--google-blue);
+      cursor: pointer;
+      padding: 4px 0;
+      font-family: inherit;
+      transition: color 0.15s;
+    }
+    .btn-text-link:hover {
+      text-decoration: underline;
+    }
+
+    .modal-legal-footer {
+      margin-top: 16px;
+      padding-top: 10px;
+      border-top: 1px solid var(--gemini-border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11.5px;
+      color: var(--gemini-text-tertiary);
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .btn-full-brand {
+      width: 100%;
+      padding: 11px 16px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: none;
+      font-family: inherit;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+    }
+    .btn-full-brand.line {
+      background: var(--line-green);
+      color: #fff;
+    }
+    .btn-full-brand.google {
+      background: #ffffff;
+      color: var(--gemini-text-primary);
+      border: 1px solid var(--gemini-border);
+    }
+    .btn-full-brand.submit {
+      background: var(--google-blue);
+      color: #fff;
+    }
+
+    .form-input-control {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--gemini-border);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      margin-bottom: 12px;
+      box-sizing: border-box;
+    }
+    .form-input-control:focus {
+      border-color: var(--google-blue);
+    }
+
+    /* Toast Notification */
+    .gemini-toast {
       position: fixed;
       bottom: 24px;
       left: 50%;
-      transform: translateX(-50%);
-      background: #1e293b;
-      color: #fff;
-      padding: 12px 24px;
-      border-radius: 30px;
-      font-size: 14px;
-      font-weight: 500;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-      z-index: 200;
-      display: none;
-      align-items: center;
-      gap: 8px;
+      transform: translateX(-50%) translateY(80px);
+      background: #1f1f1f;
+      color: #ffffff;
+      padding: 9px 18px;
+      border-radius: var(--radius-full);
+      font-size: 13px;
+      font-weight: 400;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+      z-index: 2000;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+      white-space: nowrap;
+    }
+    .gemini-toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+      pointer-events: auto;
     }
 
-    @media (max-width: 600px) {
-      .top-bar { padding: 14px 16px; }
-      .content-area { padding: 16px; }
-      .brand-title { font-size: 19px; }
-      .handoff-btn-group { flex-direction: column; }
-      .btn-line-oa, .btn-secondary-brief { width: 100%; justify-content: center; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* =========================================================
+       MOBILE OPTIMIZATION (Strict Fluid Layout, No Horizontal Cut)
+       ========================================================= */
+    @media (max-width: 640px) {
+      .header-inner {
+        padding: 8px 12px;
+        gap: 8px;
+      }
+      .brand-title {
+        font-size: 14.5px;
+      }
+      .legal-crest {
+        width: 26px;
+        height: 26px;
+      }
+      .legal-crest svg {
+        width: 15px;
+        height: 15px;
+      }
+
+      /* Mobile Header: Clean & Uncluttered */
+      #headerQuotaBadge {
+        display: none;
+      }
+      .btn-auth-header {
+        padding: 6px 12px;
+        font-size: 11.5px;
+        gap: 5px;
+      }
+      .btn-auth-header svg {
+        width: 12px;
+        height: 12px;
+      }
+      .user-header-pill {
+        font-size: 11px;
+        padding: 4px 8px;
+        gap: 6px;
+      }
+
+      .gemini-main {
+        padding: 14px 12px max(24px, env(safe-area-inset-bottom)) 12px;
+        min-height: calc(100vh - 52px);
+      }
+
+      .gemini-hero {
+        margin-top: 10px;
+        margin-bottom: 18px;
+      }
+      .gemini-greeting {
+        font-size: 23px;
+        line-height: 1.3;
+      }
+
+      .suggestions-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .suggestion-card {
+        padding: 12px 14px;
+        min-height: auto;
+        border-radius: var(--radius-md);
+      }
+      .suggestion-text {
+        font-size: 13px;
+        line-height: 1.45;
+      }
+      .suggestion-tag {
+        font-size: 11px;
+      }
+
+      .gemini-input-box {
+        padding: 12px 12px 8px 12px;
+        border-radius: var(--radius-lg);
+      }
+      .gemini-textarea {
+        font-size: 15px;
+        min-height: 48px;
+      }
+      .gemini-textarea::placeholder {
+        font-size: 13.5px;
+      }
+
+      .tag-pdpa-hint span {
+        font-size: 10.5px;
+      }
+      .btn-send-gemini {
+        width: 34px;
+        height: 34px;
+      }
+      .btn-send-gemini svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      .gemini-disclaimer {
+        font-size: 11px;
+        margin-top: 8px;
+        padding: 0 4px;
+      }
+
+      .user-query-bubble {
+        max-width: 95%;
+        padding: 12px 14px;
+        font-size: 14px;
+      }
+
+      .assistant-avatar {
+        width: 24px;
+        height: 24px;
+      }
+      .assistant-avatar svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      .step-section {
+        padding: 13px 12px;
+        margin-bottom: 10px;
+        border-radius: var(--radius-md);
+      }
+      .step-header {
+        font-size: 13.5px;
+      }
+      .step-content {
+        font-size: 13.5px;
+        line-height: 1.65;
+      }
+
+      .response-action-toolbar {
+        flex-direction: column;
+        width: 100%;
+        gap: 8px;
+      }
+      .btn-gemini-action {
+        width: 100%;
+        justify-content: center;
+        padding: 11px 14px;
+        font-size: 13px;
+      }
+
+      /* Native Mobile Bottom Sheet */
+      .modal-backdrop {
+        padding: 0;
+        align-items: flex-end;
+      }
+      .modal-box {
+        max-width: 100% !important;
+        width: 100% !important;
+        border-radius: 20px 20px 0 0;
+        border-bottom: none;
+        max-height: 85vh;
+        padding: 20px 18px max(24px, env(safe-area-inset-bottom)) 18px;
+        background: #ffffff !important;
+        opacity: 1 !important;
+        box-sizing: border-box;
+      }
+      [data-theme="dark"] .modal-box {
+        background: #1e1f20 !important;
+      }
+    }
+
+    @media (max-width: 370px) {
+      .brand-title {
+        font-size: 13.5px;
+      }
+      .gemini-greeting {
+        font-size: 21px;
+      }
+      .tag-pdpa-hint span {
+        display: none;
+      }
+    }
+
+    /* =========================================================
+       DARK THEME COMPONENT OVERRIDES & TOGGLE BUTTON
+       ========================================================= */
+    .btn-theme-toggle {
+      background: transparent;
+      border: none;
+      width: 34px;
+      height: 34px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--gemini-text-secondary);
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+    .btn-theme-toggle:hover {
+      background: var(--gemini-input-bg);
+      color: var(--gemini-text-primary);
+    }
+
+    [data-theme="dark"] .gemini-header {
+      background: rgba(19, 19, 20, 0.94);
+      border-bottom-color: #282a2c;
+    }
+    [data-theme="dark"] .greeting-gradient {
+      background: linear-gradient(74deg, #4285f4 0%, #9b72cb 50%, #d96570 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    [data-theme="dark"] .quota-badge {
+      background: #282a2c;
+      color: #c4c7c5;
+    }
+    [data-theme="dark"] .quota-badge.member {
+      background: #0f3818;
+      color: #81c995;
+    }
+    [data-theme="dark"] .user-header-pill {
+      background: #1e1f20;
+      border-color: #37393b;
+    }
+    [data-theme="dark"] .btn-auth-header {
+      background: var(--google-blue);
+      color: #041e49;
+      font-weight: 600;
+    }
+    [data-theme="dark"] .btn-auth-header:hover {
+      background: var(--google-blue-hover);
+    }
+    [data-theme="dark"] .btn-theme-toggle:hover {
+      background: #282a2c;
+      color: #ffffff;
+    }
+    [data-theme="dark"] .suggestion-card {
+      background: #1e1f20;
+      border-color: #37393b;
+    }
+    [data-theme="dark"] .suggestion-card:hover {
+      background: #282a2c;
+      border-color: #4a4d51;
+    }
+    [data-theme="dark"] .gemini-input-box {
+      background: #1e1f20;
+      border-color: #37393b;
+    }
+    [data-theme="dark"] .gemini-input-box:focus-within {
+      background: #1e1f20;
+      border-color: #a8c7fa;
+      box-shadow: 0 4px 24px rgba(168, 199, 250, 0.14);
+    }
+    [data-theme="dark"] .btn-send-gemini {
+      background: #282a2c;
+      color: #8e918f;
+    }
+    [data-theme="dark"] .btn-send-gemini.active {
+      background: #a8c7fa;
+      color: #041e49;
+    }
+    [data-theme="dark"] .btn-icon-action:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #e3e3e3;
+    }
+    [data-theme="dark"] .btn-icon-action.recording {
+      background: rgba(234, 67, 53, 0.2);
+      color: #f28b82;
+    }
+    [data-theme="dark"] .user-query-bubble {
+      background: #282a2c;
+      color: #e3e3e3;
+    }
+    [data-theme="dark"] .step-section {
+      background: #1e1f20;
+      border-color: #37393b;
+    }
+    [data-theme="dark"] .step-header {
+      border-bottom-color: #282a2c;
+    }
+    [data-theme="dark"] .step-badge {
+      background: #37393b;
+      color: #e3e3e3;
+    }
+    [data-theme="dark"] .step-content {
+      color: #d2d5d8;
+    }
+    [data-theme="dark"] .badge-category {
+      background: #1e1f20;
+      border-color: #37393b;
+    }
+    [data-theme="dark"] .badge-urgency.critical { background: #3b1717; color: #f28b82; }
+    [data-theme="dark"] .badge-urgency.high { background: #332612; color: #fdd663; }
+    [data-theme="dark"] .badge-urgency.normal { background: #17263c; color: #a8c7fa; }
+
+    [data-theme="dark"] .btn-gemini-action {
+      background: #1e1f20;
+      border-color: #37393b;
+      color: #e3e3e3;
+    }
+    [data-theme="dark"] .btn-gemini-action:hover {
+      background: #282a2c;
+      border-color: #4a4d51;
+    }
+
+    [data-theme="dark"] .modal-backdrop {
+      background: rgba(0, 0, 0, 0.75);
+    }
+    [data-theme="dark"] .modal-box {
+      background: #1e1f20;
+      border-color: #37393b;
+      color: #e3e3e3;
+    }
+    [data-theme="dark"] .modal-top {
+      border-bottom-color: #282a2c;
+    }
+    [data-theme="dark"] .modal-close-btn {
+      background: #282a2c;
+      color: #c4c7c5;
+    }
+    [data-theme="dark"] .modal-close-btn:hover {
+      background: #37393b;
+      color: #ffffff;
+    }
+    [data-theme="dark"] .modal-header-crest {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #93c5fd;
+    }
+    [data-theme="dark"] .btn-auth-provider.google {
+      background: #1e1f20;
+      border-color: #37393b;
+      color: #e3e3e3;
+    }
+    [data-theme="dark"] .btn-auth-provider.google:hover {
+      background: #282a2c;
+      border-color: #4a4d51;
+    }
+    [data-theme="dark"] .auth-divider {
+      color: #8e918f;
+    }
+    [data-theme="dark"] .auth-divider::before,
+    [data-theme="dark"] .auth-divider::after {
+      border-bottom-color: #282a2c;
+    }
+    [data-theme="dark"] .otp-sent-banner {
+      background: rgba(16, 185, 129, 0.1);
+      border-color: rgba(16, 185, 129, 0.25);
+      color: #a7f3d0;
+    }
+    [data-theme="dark"] .otp-sent-icon {
+      color: #34d399;
+    }
+    [data-theme="dark"] .sent-email-highlight {
+      color: #6ee7b7;
+    }
+    [data-theme="dark"] .demo-otp-box {
+      background: rgba(245, 158, 11, 0.12);
+      border-color: rgba(245, 158, 11, 0.3);
+      color: #fcd34d;
+    }
+    [data-theme="dark"] .demo-otp-header {
+      color: #fcd34d;
+    }
+    [data-theme="dark"] .demo-tag {
+      background: rgba(245, 158, 11, 0.3);
+      color: #fef3c7;
+    }
+    [data-theme="dark"] .btn-demo-autofill {
+      background: rgba(245, 158, 11, 0.25);
+      border-color: rgba(245, 158, 11, 0.4);
+      color: #fef3c7;
+    }
+    [data-theme="dark"] .btn-demo-autofill:hover {
+      background: rgba(245, 158, 11, 0.35);
+    }
+    [data-theme="dark"] .btn-demo-autofill small {
+      color: #fcd34d;
+    }
+    [data-theme="dark"] .modal-legal-footer {
+      border-top-color: #282a2c;
+      color: #8e918f;
+    }
+    [data-theme="dark"] .btn-full-brand.google {
+      background: #1e1f20;
+      border-color: #37393b;
+      color: #e3e3e3;
+    }
+    [data-theme="dark"] .form-input-control {
+      background: #131314;
+      border-color: #37393b;
+      color: #e3e3e3;
+    }
+    [data-theme="dark"] #briefContent {
+      background: #131314 !important;
+      color: #c4c7c5 !important;
+    }
+    [data-theme="dark"] .gemini-toast {
+      background: #282a2c;
+      border: 1px solid #37393b;
+      color: #e3e3e3;
+    }
+    [data-theme="dark"] ::-webkit-scrollbar-thumb {
+      background: #37393b;
     }
   </style>
 </head>
 <body>
 
-<div class="main-wrapper">
-  <!-- Top App Bar -->
-  <header class="top-bar">
-    <div class="top-bar-inner">
-      <div class="brand-group">
-        <div class="brand-icon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 3v18"/><path d="M7 21h10"/><path d="M4 7h16"/><path d="M7 7l-3 7a3 3 0 0 0 6 0z"/><path d="M17 7l-3 7a3 3 0 0 0 6 0z"/>
+  <!-- Doctor Lawyer Executive App Bar -->
+  <header class="gemini-header">
+    <div class="header-inner">
+      <a href="/" class="brand-group">
+        <div class="legal-crest">
+          <!-- Official Scales of Justice Legal Emblem -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/>
+            <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/>
+            <path d="M7 21h10"/>
+            <path d="M12 3v18"/>
+            <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>
           </svg>
         </div>
-        <div>
-          <div class="brand-title">ดอกเตอร์ลอว์เยอร์</div>
-          <div class="brand-sub">Doctor Lawyer · AI Legal Triage & Partner Lawyer Network</div>
+        <span class="brand-title">ดอกเตอร์ลอว์เยอร์</span>
+      </a>
+
+      <div class="header-actions">
+        <div id="headerQuotaBadge" class="quota-badge">
+          <span>สิทธิ์วันนี้ 1/1 ครั้ง</span>
         </div>
-      </div>
-      
-      <div class="header-right">
-        <span id="tierBadge" class="badge-tier tier1">⚡ Tier 1: 0 บาท</span>
-        
-        <!-- Auth Profile State in Nav -->
+        <button class="btn-theme-toggle" id="themeToggleBtn" onclick="toggleTheme()" title="สลับโหมด Dark / Light">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
         <div id="authNavContainer">
-          <button type="button" class="btn-auth-nav" onclick="openAuthModal()">
-            <span>🔑 เข้าสู่ระบบ (รับฟรี 3 ครั้ง)</span>
+          <button class="btn-auth-header" onclick="openAuthModal()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            <span>เข้าสู่ระบบ</span>
           </button>
         </div>
       </div>
     </div>
   </header>
 
-  <div class="content-area">
-    <!-- Membership State Banner -->
-    <div id="membershipBanner" class="membership-alert-banner">
-      <div class="banner-text">
-        <span id="membershipStatusText">👤 <b>ผู้ใช้งานทั่วไป:</b> ทดลองปรึกษาฟรีได้ 1 ครั้ง · สมัคร/เข้าสู่ระบบเพื่อรับสิทธิ์ฟรี 3 ครั้ง!</span>
-      </div>
-      <button type="button" id="membershipActionBtn" class="banner-btn" onclick="openAuthModal()">
-        เข้าสู่ระบบ / ลงทะเบียน
-      </button>
-    </div>
+  <!-- Gemini Main Content Area -->
+  <main class="gemini-main">
 
-    <!-- Presets Bar -->
-    <div class="presets-card">
-      <div class="presets-title">
-        <span>💡 คลิกเลือกตัวอย่างคดีทดสอบ (ทดสอบฟรี 1 คลิก):</span>
-      </div>
-      <div class="presets-grid">
-        <button class="preset-btn" onclick="setQuery('ถูกหลอกให้โอนเงินเข้าบัญชีม้า 35,000 บาท เมื่อ 1 ชั่วโมงที่แล้ว คนร้ายบล็อกหนี ติดต่อไม่ได้ มีสลิปโอนเงินครับ')">🚨 โกงออนไลน์ (AOC 72 ชม.)</button>
-        <button class="preset-btn" onclick="setQuery('กู้เงินนอกระบบมา 20,000 บาท เจ้าหนี้คิดดอกเบี้ยร้อยละ 20 ต่อเดือน ส่งดอกไป 20,000 แล้วแต่เงินต้นไม่ลดเลย มีแชทคุยในไลน์')">💸 ดอกเบี้ยโหด 20%/เดือน</button>
-        <button class="preset-btn" onclick="setQuery('ทำงานมา 2 ปี 6 เดือน ถูกเจ้านายบอกให้ออกสิ้นเดือนนี้กะทันหัน ไม่บอกล่วงหน้า ไม่จ่ายค่าชดเชยและค่าตกใจ ไม่ได้ทำผิดอะไร')">💼 เลิกจ้างไม่จ่ายชดเชย</button>
-        <button class="preset-btn" onclick="setQuery('ขับรถยนต์ถูกคู่กรณีขับรถชนท้าย รถต้องเข้าซ่อมที่อู่ 30 วัน ประกันคู่กรณีไม่ยอมจ่ายค่าขาดประโยชน์จากการใช้รถระหว่างซ่อม')">🚗 รถชน เรียกค่าขาดประโยชน์</button>
-        <button class="preset-btn" onclick="setQuery('ขายของออนไลน์ใน TikTok Shop มีเงินโอนเข้าบัญชีเกิน 400 ครั้ง ยอดขายทั้งปีเกิน 1.8 ล้านบาท โดนสรรพากรเรียกตรวจย้อนหลังเรื่อง VAT')">📦 ภาษีแม่ค้าออนไลน์ (VAT 1.8 ล้าน)</button>
-        <button class="preset-btn" onclick="setQuery('เป็นหนี้เพื่อน 5,000 บาท แล้วเพื่อนแคปแชทและเอารูปเราไปโพสต์ประจานในเฟซบุ๊ก ทำให้เสียชื่อเสียงมาก ฟ้องหมิ่นประมาทได้ไหม')">📢 โพสต์ประจานทวงหนี้</button>
-        <button class="preset-btn" onclick="setQuery('ผ่อนรถไม่ไหว อยากเอารถเช่าซื้อไปคืนไฟแนนซ์ก่อนที่จะผิดนัดค่างวด ไฟแนนซ์จะฟ้องเรียกค่าขาดราคาส่วนต่างได้ไหม')">🔑 คืนรถเช่าซื้อไฟแนนซ์</button>
-        <button class="preset-btn" onclick="setQuery('มีข้อพิพาทเรื่องเงิน ไม่อยากเสียค่าธรรมเนียมศาลและไม่อยากจ้างทนายฟ้อง อยากยื่นขอไกล่เกลี่ยข้อพิพาทก่อนฟ้องตามมาตรา 20 ตรี')">🤝 ไกล่เกลี่ยก่อนฟ้องฟรี</button>
-        <button class="preset-btn" onclick="setQuery('โดนเวนคืนที่ดินเพื่อสร้างทางด่วนพิเศษ ได้เงินค่าทดแทนน้อยเกินไป อยากยื่นอุทธรณ์ต่อศาลปกครอง')">🏛️ คดีเฉพาะทาง (เวนคืนที่ดิน)</button>
-      </div>
-    </div>
+    <!-- Gemini Hero Greeting (Visible before search) -->
+    <section class="gemini-hero" id="geminiHero">
+      <h1 class="gemini-greeting">
+        <span class="greeting-subtle">สวัสดีครับ</span><br>
+        <span class="greeting-gradient">มีเรื่องกฎหมายใดให้ช่วยวันนี้?</span>
+      </h1>
+    </section>
 
-    <!-- Query Input Card -->
-    <div class="query-card">
-      <h2>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-        </svg>
-        พิมพ์เล่าปัญหาข้อพิพาทของท่าน (คุ้มครองข้อมูล PDPA อัตโนมัติ)
-      </h2>
-      <textarea id="queryInput" class="query-input" placeholder="เล่าเรื่องราวของคุณ เช่น โดนโกงเงิน, กู้เงินดอกเบี้ยเกิน, เลิกจ้างไม่เป็นธรรม, สรรพากรเรียกตรวจภาษี, เวนคืนที่ดิน..."></textarea>
-      
-      <div class="query-actions">
-        <button type="button" id="voiceBtn" class="btn-voice">
-          🎤 พูดด้วยเสียง
+    <!-- Gemini Suggestion Prompt Cards (Visible before search) -->
+    <section class="gemini-suggestions" id="geminiSuggestions">
+      <div class="suggestions-grid">
+        <button class="suggestion-card" onclick="setQuery('โดนหลอกโอนเงินซื้อของออนไลน์ใน Facebook บัญชีม้า ต้องอายัดเงินทันทียังไงและแจ้งความที่ไหน')">
+          <div class="suggestion-text">โดนหลอกโอนเงิน / บัญชีม้า ต้องอายัดเงินอย่างไร</div>
+          <div class="suggestion-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--google-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <span>อาชญากรรมไซเบอร์</span>
+          </div>
         </button>
-        <button type="button" id="submitBtn" class="btn-submit">
-          <span>วิเคราะห์คดี (0 บาท)</span>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+
+        <button class="suggestion-card" onclick="setQuery('กู้เงินนอกระบบ ดอกเบี้ยร้อยละ 20 ต่อเดือน สัญญากู้มีผลบังคับใช้ได้ไหม เจ้าหนี้ฟ้องได้ไหม')">
+          <div class="suggestion-text">ดอกเบี้ยเงินกู้นอกระบบ เกินอัตราที่กฎหมายกำหนด</div>
+          <div class="suggestion-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+            </svg>
+            <span>สัญญากู้ยืมเงิน</span>
+          </div>
+        </button>
+
+        <button class="suggestion-card" onclick="setQuery('ถูกเลิกจ้างกะทันหัน ทำงานมา 3 ปี นายจ้างไม่จ่ายค่าชดเชยและค่าตกใจ ต้องทำอย่างไร')">
+          <div class="suggestion-text">ถูกเลิกจ้างกะทันหัน ไม่ได้รับเงินชดเชยตามกฎหมาย</div>
+          <div class="suggestion-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+            </svg>
+            <span>กฎหมายแรงงาน</span>
+          </div>
+        </button>
+
+        <button class="suggestion-card" onclick="setQuery('รถถูกชนท้าย คู่กรณีเป็นฝ่ายผิด ประกันจ่ายค่าซ่อม แต่ต้องการเรียกค่าขาดประโยชน์ระหว่างซ่อม')">
+          <div class="suggestion-text">รถชน ประกันจ่ายซ่อมแล้ว เรียกค่าขาดประโยชน์ได้ไหม</div>
+          <div class="suggestion-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 11.1 2 11.5 2 12v4c0 .6.4 1 1 1h2"/>
+              <circle cx="7" cy="17" r="2"/>
+              <circle cx="17" cy="17" r="2"/>
+            </svg>
+            <span>ละเมิดและค่าเสียหาย</span>
+          </div>
+        </button>
+      </div>
+    </section>
+
+    <!-- Active Conversation View (Visible after search) -->
+    <div class="conversation-area" id="conversationArea">
+      <!-- User Query Bubble -->
+      <div class="user-query-bubble" id="userQueryBubble"></div>
+
+      <!-- Assistant Answer Stream -->
+      <div class="assistant-response-container">
+        <div class="assistant-avatar">
+          <!-- Official Scales of Justice Legal Emblem -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/>
+            <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/>
+            <path d="M7 21h10"/>
+            <path d="M12 3v18"/>
+            <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>
+          </svg>
+        </div>
+
+        <div class="assistant-body">
+          <div class="response-meta-bar">
+            <span class="badge-category" id="categoryBadge">ข้อพิพาททั่วไป</span>
+            <span class="badge-urgency normal" id="urgencyBadge">ความเร่งด่วน: ปานกลาง</span>
+          </div>
+
+          <!-- 6-Part Clean Sections -->
+          <div id="adviceStepsContainer"></div>
+
+          <!-- Bottom Action Toolbar -->
+          <div class="response-action-toolbar">
+            <button class="btn-gemini-action primary-line" onclick="handoffToLineOA()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 5.92 2 10.75c0 4.29 3.55 7.89 8.35 8.6.33.07.77.22.88.51.1.26.07.67.03.93l-.15.93c-.05.3-.23 1.18 1.03.64 1.27-.53 6.84-4.03 9.34-6.9 1.76-1.95 2.52-3.87 2.52-5.83C22 5.92 17.52 2 12 2z"/>
+              </svg>
+              <span>ส่งต่อทนายพาร์ตเนอร์ (LINE OA)</span>
+            </button>
+
+            <button class="btn-gemini-action" onclick="openLawyerModal()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+              </svg>
+              <span>ดูสรุปคดี (Intake Brief)</span>
+            </button>
+
+            <button class="btn-gemini-action" onclick="copyBriefOnly()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+              <span>คัดลอกสรุป</span>
+            </button>
+
+            <button class="btn-gemini-action" onclick="resetToNewQuery()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+                <path d="M21 3v5h-5"/>
+                <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+                <path d="M8 16H3v5"/>
+              </svg>
+              <span>ปรึกษาเรื่องใหม่</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gemini Floating Prompt Input Box -->
+    <div class="gemini-input-wrapper">
+      <div class="gemini-input-box">
+        <textarea 
+          class="gemini-textarea" 
+          id="queryInput" 
+          rows="1"
+          placeholder="ถามข้อกฎหมาย หรือพิมพ์เล่าเหตุการณ์ที่เกิดขึ้น..."
+          oninput="handleInputState(this)"
+        ></textarea>
+
+        <div class="input-toolbar">
+          <div class="toolbar-left">
+            <button class="btn-icon-action" id="voiceBtn" title="พิมพ์ด้วยเสียง">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                <line x1="12" y1="19" x2="12" y2="22"/>
+              </svg>
+            </button>
+
+            <div class="tag-pdpa-hint">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+              <span>PDPA เซ็นเซอร์ข้อมูลอัตโนมัติ</span>
+            </div>
+          </div>
+
+          <button class="btn-send-gemini" id="submitBtn" title="ส่งคำถาม" disabled>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="19" x2="12" y2="5"/>
+              <polyline points="5 12 12 5 19 12"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <p class="gemini-disclaimer">
+        ดอกเตอร์ลอว์เยอร์ ประมวลผลจากตัวบทกฎหมายไทยและคำพิพากษาศาลฎีกา · ควรปรึกษาทนายความวิชาชีพเพื่อความแน่นอน
+      </p>
+    </div>
+
+  </main>
+
+  <!-- Executive Auth Modal (Email OTP, LINE, Google) -->
+  <div class="modal-backdrop" id="authModal" onclick="if(event.target===this) closeAuthModal()">
+    <div class="modal-box modal-auth-box">
+      <!-- Modal Header -->
+      <div class="modal-top">
+        <div class="modal-header-brand">
+          <div class="modal-header-crest">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/>
+              <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/>
+              <path d="M7 21h10"/>
+              <path d="M12 3v18"/>
+              <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>
+            </svg>
+          </div>
+          <div class="modal-title-group">
+            <h3 class="modal-title">เข้าสู่ระบบ / ลงทะเบียน</h3>
+            <p class="modal-subtitle">ปรึกษากฎหมายฟรี 3 ครั้งต่อวัน</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="closeAuthModal()" title="ปิดหน้าต่าง">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
           </svg>
         </button>
       </div>
-    </div>
 
-    <!-- Results Container -->
-    <div id="resultsContainer" class="results-container">
-      <!-- Status Card -->
-      <div id="statusCard" class="status-card normal">
-        <div class="status-left">
-          <h3 id="categoryTitle">หมวดกฎหมาย</h3>
-          <p id="urgencyText">ระดับความเร่งด่วน</p>
-        </div>
-        <div id="statusIcon" style="font-size: 32px;">⚖️</div>
-      </div>
-
-      <!-- Quota Notice Bar -->
-      <div id="quotaInfoBar" class="quota-info-bar">
-        <span id="quotaInfoText">⚡ ประมวลผลสำเร็จ</span>
-        <span id="quotaRemainingBadge" style="font-weight: 700;"></span>
-      </div>
-
-      <!-- PDPA Shield -->
-      <div class="pdpa-banner">
-        <span>🛡️</span>
-        <span><b>PDPA Protected:</b> ระบบตัดเลขบัตรประชาชน, เลขที่บัญชีธนาคาร, และเบอร์โทรศัพท์ออกโดยอัตโนมัติ</span>
-      </div>
-
-      <!-- 6-Part Advice Cards -->
-      <div id="adviceCardsList"></div>
-
-      <!-- Partner Lawyer Handoff Box -->
-      <div class="handoff-action-box">
-        <h4>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2C6.48 2 2 6.03 2 11c0 2.87 1.5 5.41 3.86 7.02-.17.6-.62 2.19-.71 2.53-.11.43.16.42.33.31.14-.09 2.2-1.46 3.1-2.07.46.07.93.11 1.42.11 5.52 0 10-4.03 10-9s-4.48-9-10-9z"/>
+      <!-- Quick 1-Click Sign In Options (Stacked cleanly) -->
+      <div class="auth-quick-actions">
+        <!-- LINE Official Sign In -->
+        <button class="btn-auth-provider line" onclick="handleLineSignInClick()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 5.92 2 10.75c0 4.29 3.55 7.89 8.35 8.6.33.07.77.22.88.51.1.26.07.67.03.93l-.15.93c-.05.3-.23 1.18 1.03.64 1.27-.53 6.84-4.03 9.34-6.9 1.76-1.95 2.52-3.87 2.52-5.83C22 5.92 17.52 2 12 2z"/>
           </svg>
-          ส่งต่อเคสให้ทนายความพาร์ตเนอร์ผ่าน LINE Official Account
-        </h4>
-        <p>ระบบได้ประมวลผลข้อเท็จจริงและจัดทำ <b>"ใบสรุปข้อมูลคดี (Case Intake Brief)"</b> เรียบร้อยแล้ว พร้อมส่งต่อให้ทนายความพาร์ตเนอร์ตรวจเอกสารและรับงานผ่าน LINE OA</p>
-        <div class="handoff-btn-group">
-          <button type="button" class="btn-line-oa" onclick="handoffToLineOA()">
-            <span>💬 ส่งเรื่องให้ทนายพาร์ตเนอร์ (เปิด LINE OA)</span>
-          </button>
-          <button type="button" class="btn-secondary-brief" onclick="openLawyerModal()">
-            <span>📄 ตรวจดูใบสรุปข้อมูลคดี</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+          <span>เข้าสู่ระบบด้วย LINE</span>
+        </button>
 
-<!-- Modal: User Authentication (Google & Email OTP) -->
-<div class="modal-overlay" id="authModal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h3>🔑 เข้าสู่ระบบ / ลงทะเบียนรับสิทธิ์ฟรี 3 ครั้ง</h3>
-      <button class="close-btn" onclick="closeAuthModal()">✕</button>
-    </div>
-
-    <div class="auth-tabs">
-      <button class="auth-tab-btn active" id="tabGoogleBtn" onclick="switchAuthTab('google')">
-        Google Account
-      </button>
-      <button class="auth-tab-btn" id="tabEmailBtn" onclick="switchAuthTab('email')">
-        Email + รหัส OTP
-      </button>
-    </div>
-
-    <!-- Google Sign-In Tab -->
-    <div id="tabGoogleContent">
-      <p style="font-size: 13.5px; color: #475569; margin-bottom: 20px;">
-        เข้าสู่ระบบด้วย Google Account ที่ผ่านการตรวจสอบความถูกต้องแล้วทันที เพื่อรับสิทธิ์ปรึกษากฎหมายฟรี <b>3 ครั้ง</b>
-      </p>
-      
-      <button type="button" class="btn-google" onclick="handleGoogleSignInDemo()">
-        <svg width="20" height="20" viewBox="0 0 24 24">
-          <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
-          <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.34 24 12 24z"/>
-          <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.98 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
-          <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
-        </svg>
-        เข้าสู่ระบบด้วย Google Account
-      </button>
-
-      <div class="auth-notice-box">
-        <span>🛡️</span>
-        <span>Google Account ได้รับการยืนยันตัวตนอัตโนมัติ ไม่ต้องรอยืนยัน OTP</span>
-      </div>
-    </div>
-
-    <!-- Email + OTP Tab -->
-    <div id="tabEmailContent" style="display: none;">
-      <p style="font-size: 13.5px; color: #475569; margin-bottom: 16px;">
-        ลงทะเบียนด้วย Email เพื่อป้องกันอีเมลปลอม ระบบจะส่งรหัส <b>OTP 6 หลัก</b> ไปยังอีเมลของท่าน เมื่อยืนยันสำเร็จจะได้รับสิทธิ์ฟรี <b>3 ครั้ง</b>
-      </p>
-
-      <!-- Step 1: Input Email -->
-      <div id="emailStep1">
-        <div class="form-group">
-          <label for="authEmailInput">อีเมลของท่าน:</label>
-          <input type="email" id="authEmailInput" class="form-input" placeholder="name@example.com">
-        </div>
-        <div class="form-group">
-          <label for="authNameInput">ชื่อ-นามสกุล (สำหรับให้ทนายความเรียกขาน):</label>
-          <input type="text" id="authNameInput" class="form-input" placeholder="คุณสมชาย ใจดี">
-        </div>
-        <button type="button" id="btnRequestOtp" class="btn-submit" style="width: 100%; justify-content: center;" onclick="requestEmailOtp()">
-          📩 ส่งรหัส OTP ยืนยันตัวตน (15 นาที)
+        <!-- Google Official Sign In -->
+        <button class="btn-auth-provider google" onclick="handleGoogleSignInDemo()">
+          <svg width="18" height="18" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.05h3.87c2.26-2.09 3.67-5.17 3.67-9.15z"/>
+            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.87-3.05c-1.08.72-2.45 1.16-4.06 1.16-3.13 0-5.78-2.11-6.73-4.96H1.28v3.15C3.26 21.36 7.34 24 12 24z"/>
+            <path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.61H1.28C.46 8.23 0 10.06 0 12s.46 3.77 1.28 5.39l3.99-3.15z"/>
+            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.28 6.61l3.99 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/>
+          </svg>
+          <span>เข้าสู่ระบบด้วย Google</span>
         </button>
       </div>
 
-      <!-- Step 2: Input OTP -->
-      <div id="emailStep2" style="display: none;">
+      <!-- Formal Divider -->
+      <div class="auth-divider">
+        <span>หรือใช้อีเมล</span>
+      </div>
+
+      <!-- Email OTP Step 1: Request OTP -->
+      <div id="emailRequestStep" class="auth-email-flow">
         <div class="form-group">
-          <label>กรอกรหัสยืนยัน OTP 6 หลัก ที่ส่งไปยังอีเมล:</label>
-          <input type="text" id="otpInput" class="form-input otp-input" maxlength="6" placeholder="000000">
-          <p id="otpDemoHint" style="font-size: 12px; color: #16a34a; margin-top: 6px; display: none;"></p>
+          <label class="form-label" for="authEmailInput">ที่อยู่อีเมล</label>
+          <input 
+            type="email" 
+            id="authEmailInput" 
+            class="form-input-control" 
+            placeholder="name@example.com"
+            autocomplete="email"
+            required
+            onkeydown="if(event.key==='Enter') requestEmailOtp()"
+          >
         </div>
-        <div style="display: flex; gap: 10px;">
-          <button type="button" id="btnVerifyOtp" class="btn-submit" style="flex: 2; justify-content: center;" onclick="verifyEmailOtp()">
-            ✅ ยืนยันรหัส OTP
-          </button>
-          <button type="button" class="btn-secondary-brief" style="flex: 1; background:#f1f5f9; color:#475569; border:1px solid #cbd5e1;" onclick="resetOtpStep()">
-            เปลี่ยนอีเมล
+
+        <div class="form-group">
+          <label class="form-label" for="authNameInput">ชื่อ หรือ นามสมมุติ <small>(ไม่บังคับ)</small></label>
+          <input 
+            type="text" 
+            id="authNameInput" 
+            class="form-input-control" 
+            placeholder="เช่น สมชาย"
+            autocomplete="name"
+            onkeydown="if(event.key==='Enter') requestEmailOtp()"
+          >
+        </div>
+
+        <button class="btn-full-brand submit" id="btnRequestOtp" onclick="requestEmailOtp()">
+          ขอรับรหัส OTP ทางอีเมล
+        </button>
+      </div>
+
+      <!-- Email OTP Step 2: Verify OTP -->
+      <div id="emailVerifyStep" class="auth-email-flow" style="display: none;">
+        <div class="otp-sent-banner">
+          <div class="otp-sent-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </div>
+          <div class="otp-sent-text">
+            <span>รหัส OTP ถูกส่งไปที่</span>
+            <strong id="sentEmailDisplay" class="sent-email-highlight"></strong>
+          </div>
+        </div>
+
+        <!-- Demo OTP Helper Box (Appears when demo_otp returned) -->
+        <div id="demoOtpBox" class="demo-otp-box" style="display: none;">
+          <div class="demo-otp-header">
+            <span class="demo-tag">DEMO</span>
+            <span>รหัสทดสอบด่วน</span>
+          </div>
+          <button type="button" class="btn-demo-autofill" onclick="autoFillDemoOtp()">
+            <span id="demoOtpDisplay">123456</span>
+            <small>กรอกอัตโนมัติ</small>
           </button>
         </div>
+
+        <div class="form-group">
+          <label class="form-label" for="authOtpInput">กรอกรหัส OTP 6 หลัก</label>
+          <input 
+            type="text" 
+            id="authOtpInput" 
+            class="form-input-control otp-input" 
+            placeholder="• • • • • •"
+            maxlength="6"
+            inputmode="numeric"
+            autocomplete="one-time-code"
+            onkeydown="if(event.key==='Enter') verifyEmailOtp()"
+          >
+        </div>
+
+        <button class="btn-full-brand submit" id="btnVerifyOtp" onclick="verifyEmailOtp()">
+          ยืนยันรหัส OTP และเข้าสู่ระบบ
+        </button>
+
+        <div class="otp-actions-row">
+          <button type="button" class="btn-text-link" onclick="backToEmailStep()">
+            ← เปลี่ยนที่อยู่อีเมล
+          </button>
+          <button type="button" class="btn-text-link" id="btnResendOtp" onclick="resendEmailOtp()">
+            ขอรหัสใหม่อีกครั้ง
+          </button>
+        </div>
+      </div>
+
+      <!-- Legal Trust Footer -->
+      <div class="modal-legal-footer">
+        <span>🔒 คุ้มครองความเป็นส่วนตัวตามมาตรฐาน PDPA</span>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Modal: Partner Lawyer Intake Brief -->
-<div class="modal-overlay" id="lawyerModal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h3>📄 ใบสรุปข้อมูลส่งต่อทนายความ (Case Intake Brief)</h3>
-      <button class="close-btn" onclick="closeLawyerModal()">✕</button>
-    </div>
-    
-    <div id="briefContent">
-      <div class="brief-section">
-        <div class="brief-label">สถานะเคส:</div>
-        <div id="briefStatus" style="color: #10b981; font-weight: 600;">พร้อมส่งต่อทนายความพาร์ตเนอร์ (LINE OA)</div>
+  <!-- Intake Brief Modal -->
+  <div class="modal-backdrop" id="lawyerModal" onclick="if(event.target===this) closeLawyerModal()">
+    <div class="modal-box" style="max-width: 580px;">
+      <div class="modal-top">
+        <h3>ใบสรุปข้อมูลคดี (Case Intake Brief)</h3>
+        <button class="modal-close-btn" onclick="closeLawyerModal()">✕</button>
       </div>
-      <div class="brief-section">
-        <div class="brief-label">หมวดหมู่คดี:</div>
-        <div id="briefCategory">-</div>
+      <div id="briefContent" style="font-family: var(--font-body); font-size: 14px; line-height: 1.7; background: #f8fafd; padding: 14px; border-radius: 12px; margin-bottom: 16px;"></div>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn-full-brand line" style="margin-bottom: 0;" onclick="handoffToLineOA()">ส่งต่อเข้า LINE OA ทนาย</button>
+        <button class="btn-full-brand google" style="margin-bottom: 0;" onclick="copyBriefOnly()">คัดลอกข้อความ</button>
       </div>
-      <div class="brief-section">
-        <div class="brief-label">ข้อเท็จจริงโดยสังเขป (ปกปิดข้อมูล PDPA):</div>
-        <div id="briefStatement" style="font-style: italic; color: #475569;">-</div>
-      </div>
-      <div class="brief-section">
-        <div class="brief-label">มาตรากฎหมายและคำพิพากษาฎีกาที่เกี่ยวข้อง:</div>
-        <div id="briefStatutes">-</div>
-      </div>
-      <div class="brief-section">
-        <div class="brief-label">เอกสารที่แนะนำให้ลูกความเตรียม:</div>
-        <div id="briefDocs">-</div>
-      </div>
-    </div>
-
-    <div style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
-      <button class="btn-line-oa" style="flex: 1; justify-content: center;" onclick="handoffToLineOA()">
-        💬 คัดลอกสรุปคดี & เปิดแชท LINE OA ทนาย
-      </button>
-      <button type="button" onclick="copyBriefOnly()" class="btn-secondary-brief" style="background:#f1f5f9; color:#334155; border: 1px solid var(--border);">
-        📋 คัดลอกข้อความ
-      </button>
-      <button type="button" onclick="closeLawyerModal()" style="background:#e2e8f0; border:none; border-radius:12px; padding:12px 18px; cursor:pointer;">
-        ปิด
-      </button>
     </div>
   </div>
-</div>
 
-<!-- Toast Alert -->
-<div id="toast" class="toast">
-  <span id="toastIcon">✅</span>
-  <span id="toastText">คัดลอกข้อความแล้ว</span>
-</div>
+  <!-- Toast Notification Pill -->
+  <div class="gemini-toast" id="toastPill"></div>
 
-<script>
-  let lastResult = null;
-  const DEFAULT_LINE_OA_URL = "https://line.me/R/ti/p/@doctorlawyer";
+  <script>
+    const LIFF_ID = "2012301635-WMe8TR6J";
+    const LINE_OA_URL = "https://lin.ee/NQLCu3p";
+    let lastResult = null;
 
-  // Guest ID and Session Management
-  let guestId = localStorage.getItem("doctor_lawyer_guest_id");
-  if (!guestId) {
-    guestId = "guest_" + Math.random().toString(36).substring(2, 12);
-    localStorage.setItem("doctor_lawyer_guest_id", guestId);
-  }
+    // Theme Management (Dark & Light Mode)
+    function initTheme() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const themeParam = urlParams.get('theme');
+      if (themeParam === 'dark' || themeParam === 'light') {
+        applyTheme(themeParam);
+        return;
+      }
+      const savedTheme = localStorage.getItem("doctor_lawyer_theme");
+      if (savedTheme === "dark" || (!savedTheme && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        applyTheme("dark");
+      } else {
+        applyTheme("light");
+      }
+    }
 
-  let sessionToken = localStorage.getItem("doctor_lawyer_token") || "";
-  let currentUser = null;
+    function applyTheme(theme) {
+      const root = document.documentElement;
+      const btn = document.getElementById("themeToggleBtn");
+      if (theme === "dark") {
+        root.setAttribute("data-theme", "dark");
+        localStorage.setItem("doctor_lawyer_theme", "dark");
+        if (btn) {
+          btn.setAttribute("title", "เปลี่ยนเป็นโหมดสว่าง (Light)");
+          btn.innerHTML = `
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"/>
+              <line x1="12" y1="1" x2="12" y2="3"/>
+              <line x1="12" y1="21" x2="12" y2="23"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+              <line x1="1" y1="12" x2="3" y2="12"/>
+              <line x1="21" y1="12" x2="23" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+          `;
+        }
+      } else {
+        root.removeAttribute("data-theme");
+        localStorage.setItem("doctor_lawyer_theme", "light");
+        if (btn) {
+          btn.setAttribute("title", "เปลี่ยนเป็นโหมดมืด (Dark)");
+          btn.innerHTML = `
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+          `;
+        }
+      }
+    }
 
-  // Initialize and check current user status
-  async function initAuthStatus() {
-    try {
-      const headers = { "X-Guest-ID": guestId };
-      if (sessionToken) {
-        headers["Authorization"] = "Bearer " + sessionToken;
+    function toggleTheme() {
+      const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+      applyTheme(isDark ? "light" : "dark");
+      showToast(isDark ? "สลับเป็นโหมดสว่าง" : "สลับเป็นโหมดมืด");
+    }
+
+    // Immediate theme bootstrap
+    initTheme();
+
+    let guestId = localStorage.getItem("doctor_lawyer_guest_id") || "";
+    if (!guestId) {
+      guestId = "guest_" + Math.random().toString(36).substring(2, 12);
+      localStorage.setItem("doctor_lawyer_guest_id", guestId);
+    }
+
+    let sessionToken = localStorage.getItem("doctor_lawyer_token") || "";
+    let currentUser = null;
+
+    // Handle input state (Gemini textarea auto-expand and submit button state)
+    function handleInputState(textarea) {
+      const submitBtn = document.getElementById("submitBtn");
+      textarea.style.height = "auto";
+      textarea.style.height = Math.min(textarea.scrollHeight, 180) + "px";
+
+      if (textarea.value.trim().length > 0) {
+        submitBtn.classList.add("active");
+        submitBtn.disabled = false;
+      } else {
+        submitBtn.classList.remove("active");
+        submitBtn.disabled = true;
+      }
+    }
+
+    // Set query from suggestions
+    function setQuery(text) {
+      const textarea = document.getElementById("queryInput");
+      textarea.value = text;
+      handleInputState(textarea);
+      textarea.focus();
+    }
+
+    // Reset back to new query view
+    function resetToNewQuery() {
+      document.getElementById("conversationArea").style.display = "none";
+      document.getElementById("geminiHero").style.display = "block";
+      document.getElementById("geminiSuggestions").style.display = "block";
+      const textarea = document.getElementById("queryInput");
+      textarea.value = "";
+      handleInputState(textarea);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // Auth Status Init
+    async function initAuthStatus() {
+      try {
+        const headers = { "X-Guest-ID": guestId };
+        if (sessionToken) headers["Authorization"] = "Bearer " + sessionToken;
+
+        const resp = await fetch("/api/auth/me", { headers });
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data.authenticated && data.user) {
+            currentUser = data.user;
+            renderLoggedInState(currentUser);
+          } else {
+            currentUser = null;
+            renderGuestState(data.guest);
+          }
+        }
+      } catch (e) {
+        console.log("Auth init notice:", e);
+      }
+    }
+
+    function renderLoggedInState(user) {
+      const authNav = document.getElementById("authNavContainer");
+      const quotaBadge = document.getElementById("headerQuotaBadge");
+
+      quotaBadge.className = "quota-badge member";
+      quotaBadge.innerHTML = `<span>ฟรีวันนี้ ${user.remaining}/3 ครั้ง</span>`;
+
+      authNav.innerHTML = `
+        <div class="user-header-pill">
+          <span>${escapeHtml(user.name || user.email || 'สมาชิก')}</span>
+          <button class="btn-logout-link" onclick="logout()">ออก</button>
+        </div>
+      `;
+    }
+
+    function renderGuestState(guest) {
+      const authNav = document.getElementById("authNavContainer");
+      const quotaBadge = document.getElementById("headerQuotaBadge");
+
+      const rem = guest ? guest.remaining : 1;
+      quotaBadge.className = "quota-badge";
+      quotaBadge.innerHTML = `<span>สิทธิ์วันนี้ ${rem}/1 ครั้ง</span>`;
+
+      authNav.innerHTML = `
+        <button class="btn-auth-header" onclick="openAuthModal()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span>เข้าสู่ระบบ</span>
+        </button>
+      `;
+    }
+
+    function logout() {
+      localStorage.removeItem("doctor_lawyer_token");
+      sessionToken = "";
+      currentUser = null;
+      initAuthStatus();
+      showToast("ออกจากระบบแล้ว");
+    }
+
+    let pendingAuthEmail = "";
+    let pendingAuthName = "";
+    let pendingDemoOtp = "";
+
+    function openAuthModal() {
+      // If no OTP request is in flight, display Step 1 (email request)
+      if (!pendingAuthEmail) {
+        document.getElementById("emailRequestStep").style.display = "block";
+        document.getElementById("emailVerifyStep").style.display = "none";
+      }
+      document.getElementById("authModal").style.display = "flex";
+      setTimeout(() => {
+        const input = pendingAuthEmail 
+          ? document.getElementById("authOtpInput") 
+          : document.getElementById("authEmailInput");
+        if (input) input.focus();
+      }, 120);
+    }
+
+    function closeAuthModal() {
+      document.getElementById("authModal").style.display = "none";
+    }
+
+    function backToEmailStep() {
+      document.getElementById("emailRequestStep").style.display = "block";
+      document.getElementById("emailVerifyStep").style.display = "none";
+      setTimeout(() => {
+        const input = document.getElementById("authEmailInput");
+        if (input) input.focus();
+      }, 60);
+    }
+
+    function autoFillDemoOtp() {
+      if (!pendingDemoOtp) return;
+      const otpInput = document.getElementById("authOtpInput");
+      otpInput.value = pendingDemoOtp;
+      verifyEmailOtp();
+    }
+
+    async function requestEmailOtp() {
+      const emailInput = document.getElementById("authEmailInput");
+      const nameInput = document.getElementById("authNameInput");
+      const btn = document.getElementById("btnRequestOtp");
+
+      const email = emailInput.value.trim().toLowerCase();
+      const name = nameInput.value.trim();
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email || !emailRegex.test(email)) {
+        alert("กรุณาระบุที่อยู่อีเมลทางการให้ถูกต้อง (เช่น name@example.com)");
+        emailInput.focus();
+        return;
       }
 
-      const resp = await fetch("/api/auth/me", { headers });
-      if (resp.ok) {
+      btn.disabled = true;
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = `<span>กำลังส่งรหัส OTP...</span>`;
+
+      try {
+        const resp = await fetch("/api/auth/email/request-otp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: email, name: name })
+        });
         const data = await resp.json();
-        if (data.authenticated && data.user) {
+
+        if (data.success) {
+          pendingAuthEmail = email;
+          pendingAuthName = name;
+          document.getElementById("sentEmailDisplay").innerText = email;
+
+          if (data.demo_otp) {
+            pendingDemoOtp = data.demo_otp;
+            document.getElementById("demoOtpDisplay").innerText = data.demo_otp;
+            document.getElementById("demoOtpBox").style.display = "flex";
+          } else {
+            document.getElementById("demoOtpBox").style.display = "none";
+          }
+
+          document.getElementById("emailRequestStep").style.display = "none";
+          document.getElementById("emailVerifyStep").style.display = "block";
+          document.getElementById("authOtpInput").value = "";
+          document.getElementById("authOtpInput").focus();
+
+          showToast("ส่งรหัส OTP 6 หลักไปที่อีเมลแล้ว");
+        } else {
+          alert("ไม่สามารถขอรหัส OTP ได้: " + (data.error || data.message || "เกิดข้อผิดพลาด"));
+        }
+      } catch (err) {
+        alert("เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+      }
+    }
+
+    async function resendEmailOtp() {
+      if (!pendingAuthEmail) return;
+      const btn = document.getElementById("btnResendOtp");
+      btn.disabled = true;
+      btn.innerText = "กำลังขอรหัสใหม่...";
+      try {
+        const resp = await fetch("/api/auth/email/request-otp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: pendingAuthEmail, name: pendingAuthName })
+        });
+        const data = await resp.json();
+        if (data.success) {
+          if (data.demo_otp) {
+            pendingDemoOtp = data.demo_otp;
+            document.getElementById("demoOtpDisplay").innerText = data.demo_otp;
+            document.getElementById("demoOtpBox").style.display = "flex";
+          }
+          showToast("ส่งรหัส OTP ชุดใหม่ไปยังอีเมลแล้ว");
+        } else {
+          alert(data.error || "ขอรหัสใหม่ไม่สำเร็จ");
+        }
+      } catch (e) {
+        alert("ข้อผิดพลาด: " + e.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "ขอรับรหัสใหม่อีกครั้ง";
+      }
+    }
+
+    async function verifyEmailOtp() {
+      const otpInput = document.getElementById("authOtpInput");
+      const btn = document.getElementById("btnVerifyOtp");
+      const otp = otpInput.value.trim();
+
+      if (!otp || otp.length < 4) {
+        alert("กรุณากรอกรหัส OTP 6 หลักที่ได้รับทางอีเมล");
+        otpInput.focus();
+        return;
+      }
+
+      btn.disabled = true;
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = `<span>กำลังตรวจสอบรหัส OTP...</span>`;
+
+      try {
+        const resp = await fetch("/api/auth/email/verify-otp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: pendingAuthEmail, otp: otp })
+        });
+        const data = await resp.json();
+
+        if (data.success && data.session_token) {
+          localStorage.setItem("doctor_lawyer_token", data.session_token);
+          sessionToken = data.session_token;
           currentUser = data.user;
           renderLoggedInState(currentUser);
+          closeAuthModal();
+          showToast("ยืนยันอีเมลสำเร็จ! ได้รับสิทธิ์ 3 ครั้ง/วัน");
         } else {
-          currentUser = null;
-          renderGuestState(data.guest);
+          alert(data.error || data.message || "รหัส OTP ไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง");
+        }
+      } catch (err) {
+        alert("เกิดข้อผิดพลาดในการตรวจสอบ: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+      }
+    }
+
+    // LINE LIFF Init
+    async function initLiff() {
+      try {
+        if (typeof liff !== "undefined") {
+          await liff.init({ liffId: LIFF_ID });
+          if (liff.isLoggedIn()) {
+            const profile = await liff.getProfile();
+            await handleLineAutoSignIn(profile);
+          }
+        }
+      } catch (e) {
+        console.log("LIFF Initialization notice:", e);
+      }
+    }
+
+    async function handleLineAutoSignIn(profile) {
+      if (sessionToken && currentUser) return;
+      try {
+        const resp = await fetch("/api/auth/line", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            line_user_id: profile.userId,
+            name: profile.displayName || "LINE User",
+            picture_url: profile.pictureUrl || ""
+          })
+        });
+        const data = await resp.json();
+        if (data.success && data.user) {
+          localStorage.setItem("doctor_lawyer_token", data.session_token);
+          sessionToken = data.session_token;
+          currentUser = data.user;
+          renderLoggedInState(currentUser);
+          showToast("ยินดีต้อนรับ " + currentUser.name + "!");
+        }
+      } catch (e) {
+        console.log("Line auto sign-in error:", e);
+      }
+    }
+
+    async function handleLineSignInClick() {
+      if (typeof liff !== "undefined" && liff.isLoggedIn()) {
+        try {
+          const profile = await liff.getProfile();
+          await handleLineAutoSignIn(profile);
+          closeAuthModal();
+          return;
+        } catch (e) {
+          console.log("LIFF Profile error:", e);
         }
       }
-    } catch (e) {
-      console.log("Auth init skipped:", e);
-    }
-  }
-
-  function renderLoggedInState(user) {
-    const authNav = document.getElementById("authNavContainer");
-    const banner = document.getElementById("membershipBanner");
-
-    authNav.innerHTML = `
-      <div class="user-pill">
-        <span>👤 ${escapeHtml(user.name || user.email)}</span>
-        <span style="background:#10b981; padding:2px 8px; border-radius:12px; font-weight:700;">ฟรี ${user.remaining}/3 ครั้ง</span>
-        <button class="btn-logout" onclick="logout()">ออกจากระบบ</button>
-      </div>
-    `;
-
-    banner.style.background = "#f0fdf4";
-    banner.style.borderColor = "#86efac";
-    document.getElementById("membershipStatusText").innerHTML = `
-      ⭐ <b>ยินดีต้อนรับ ${escapeHtml(user.name || user.email)}:</b> สมาชิกยืนยันตัวตนแล้ว (สิทธิ์คงเหลือ: <b>${user.remaining}/3 ครั้ง</b>)
-    `;
-    document.getElementById("membershipActionBtn").style.display = "none";
-  }
-
-  function renderGuestState(guest) {
-    const authNav = document.getElementById("authNavContainer");
-    const banner = document.getElementById("membershipBanner");
-
-    authNav.innerHTML = `
-      <button type="button" class="btn-auth-nav" onclick="openAuthModal()">
-        <span>🔑 เข้าสู่ระบบ (รับฟรี 3 ครั้ง)</span>
-      </button>
-    `;
-
-    banner.style.background = "linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%)";
-    banner.style.borderColor = "#bfdbfe";
-    const rem = guest ? guest.remaining : 1;
-    document.getElementById("membershipStatusText").innerHTML = `
-      👤 <b>ผู้ใช้งานทั่วไป:</b> ได้รับสิทธิ์ทดลองฟรี <b>${rem}/1 ครั้ง</b> · เข้าสู่ระบบด้วย Google หรือ Email ยืนยัน OTP เพื่อรับฟรี <b>3 ครั้ง</b>
-    `;
-    const btn = document.getElementById("membershipActionBtn");
-    btn.style.display = "block";
-    btn.textContent = "เข้าสู่ระบบ / ลงทะเบียน";
-  }
-
-  function logout() {
-    localStorage.removeItem("doctor_lawyer_token");
-    sessionToken = "";
-    currentUser = null;
-    showToast("ออกจากระบบเรียบร้อยแล้ว", "👋");
-    initAuthStatus();
-  }
-
-  // Auth Tabs
-  function switchAuthTab(tab) {
-    const gTab = document.getElementById("tabGoogleBtn");
-    const eTab = document.getElementById("tabEmailBtn");
-    const gContent = document.getElementById("tabGoogleContent");
-    const eContent = document.getElementById("tabEmailContent");
-
-    if (tab === 'google') {
-      gTab.classList.add('active');
-      eTab.classList.remove('active');
-      gContent.style.display = 'block';
-      eContent.style.display = 'none';
-    } else {
-      eTab.classList.add('active');
-      gTab.classList.remove('active');
-      eContent.style.display = 'block';
-      gContent.style.display = 'none';
-    }
-  }
-
-  // Google Sign-In Demo Handler
-  async function handleGoogleSignInDemo() {
-    const emailPrompt = prompt("กรุณาระบุ Google Email ของท่าน (หรือกดยืนยันเพื่อใช้บัญชีทดสอบ):", "user.google@gmail.com");
-    if (!emailPrompt) return;
-
-    try {
-      const resp = await fetch("/api/auth/google", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: emailPrompt.trim(),
-          name: emailPrompt.split("@")[0]
-        })
-      });
-
-      const data = await resp.json();
-      if (data.success && data.user) {
-        localStorage.setItem("doctor_lawyer_token", data.session_token);
-        sessionToken = data.session_token;
-        currentUser = data.user;
-        renderLoggedInState(currentUser);
-        closeAuthModal();
-        showToast("เข้าสู่ระบบด้วย Google สำเร็จ! ได้รับสิทธิ์ฟรี 3 ครั้ง", "🎉");
-      } else {
-        alert(data.error || "เกิดข้อผิดพลาดในการเข้าสู่ระบบด้วย Google");
+      if (typeof liff !== "undefined" && liff.isInClient() && !liff.isLoggedIn()) {
+        liff.login();
+        return;
       }
-    } catch (e) {
-      alert("เชื่อมต่อเซิร์ฟเวอร์ไม่สำเร็จ: " + e.message);
-    }
-  }
-
-  // Email OTP Request
-  async function requestEmailOtp() {
-    const email = document.getElementById("authEmailInput").value.trim();
-    const name = document.getElementById("authNameInput").value.trim();
-
-    if (!email) {
-      alert("กรุณากรอกอีเมลของท่านก่อนครับ");
-      return;
-    }
-
-    const btn = document.getElementById("btnRequestOtp");
-    btn.disabled = true;
-    btn.textContent = "กำลังส่งรหัส OTP...";
-
-    try {
-      const resp = await fetch("/api/auth/email/request-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, name })
-      });
-
-      const data = await resp.json();
-      if (data.success) {
-        document.getElementById("emailStep1").style.display = "none";
-        document.getElementById("emailStep2").style.display = "block";
-
-        const hint = document.getElementById("otpDemoHint");
-        if (data.demo_otp) {
-          hint.innerHTML = `💡 <b>รหัสทดสอบ OTP:</b> <span style="font-size:16px; font-weight:700;">${data.demo_otp}</span> (สำหรับทดสอบในโหมด Demo)`;
-          hint.style.display = "block";
-          document.getElementById("otpInput").value = data.demo_otp;
-        } else {
-          hint.style.display = "none";
+      const fakeLineId = "Uline_" + Math.random().toString(36).substring(2, 10);
+      try {
+        const resp = await fetch("/api/auth/line", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            line_user_id: fakeLineId,
+            name: "LINE Member",
+            picture_url: ""
+          })
+        });
+        const data = await resp.json();
+        if (data.success) {
+          localStorage.setItem("doctor_lawyer_token", data.session_token);
+          sessionToken = data.session_token;
+          currentUser = data.user;
+          renderLoggedInState(currentUser);
+          closeAuthModal();
+          showToast("เข้าสู่ระบบผ่าน LINE สำเร็จ (3 ครั้ง/วัน)");
         }
-
-        showToast("ส่งรหัส OTP 6 หลักเรียบร้อยแล้ว", "📩");
-      } else {
-        alert(data.error || "ไม่สามารถส่ง OTP ได้");
+      } catch (err) {
+        alert("ไม่สามารถเข้าสู่ระบบ LINE ได้: " + err.message);
       }
-    } catch (e) {
-      alert("เชื่อมต่อไม่สำเร็จ: " + e.message);
-    } finally {
-      btn.disabled = false;
-      btn.textContent = "📩 ส่งรหัส OTP ยืนยันตัวตน (15 นาที)";
-    }
-  }
-
-  // Email OTP Verify
-  async function verifyEmailOtp() {
-    const email = document.getElementById("authEmailInput").value.trim();
-    const otp = document.getElementById("otpInput").value.trim();
-
-    if (!otp || otp.length !== 6) {
-      alert("กรุณากรอกรหัส OTP 6 หลักให้ครบถ้วนครับ");
-      return;
     }
 
-    const btn = document.getElementById("btnVerifyOtp");
-    btn.disabled = true;
-    btn.textContent = "กำลังตรวจสอบ...";
+    async function handleGoogleSignInDemo() {
+      const email = prompt("เข้าสู่ระบบด้วย Google Account\nกรุณาระบุอีเมล Google ของท่านสำหรับรับสิทธิ์ 3 ครั้ง/วัน:", "user@gmail.com");
+      if (!email) return;
 
-    try {
-      const resp = await fetch("/api/auth/email/verify-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, otp })
-      });
-
-      const data = await resp.json();
-      if (data.success && data.user) {
-        localStorage.setItem("doctor_lawyer_token", data.session_token);
-        sessionToken = data.session_token;
-        currentUser = data.user;
-        renderLoggedInState(currentUser);
-        closeAuthModal();
-        showToast("ยืนยันอีเมลสำเร็จ! ได้รับสิทธิ์ฟรี 3 ครั้ง", "🎉");
-      } else {
-        alert(data.error || "รหัส OTP ไม่ถูกต้อง");
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email.trim())) {
+        alert("รูปแบบอีเมลไม่ถูกต้อง");
+        return;
       }
-    } catch (e) {
-      alert("เชื่อมต่อไม่สำเร็จ: " + e.message);
-    } finally {
-      btn.disabled = false;
-      btn.textContent = "✅ ยืนยันรหัส OTP";
+
+      try {
+        const resp = await fetch("/api/auth/google", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: email.trim(),
+            name: email.trim().split("@")[0],
+            google_sub: "google_" + Date.now()
+          })
+        });
+        const data = await resp.json();
+        if (data.success && data.session_token) {
+          localStorage.setItem("doctor_lawyer_token", data.session_token);
+          sessionToken = data.session_token;
+          currentUser = data.user;
+          renderLoggedInState(currentUser);
+          closeAuthModal();
+          showToast("เข้าสู่ระบบ Google สำเร็จ (สิทธิ์ 3 ครั้ง/วัน)");
+        } else {
+          alert(data.error || "เข้าสู่ระบบ Google ไม่สำเร็จ");
+        }
+      } catch (err) {
+        alert("เกิดข้อผิดพลาด: " + err.message);
+      }
     }
-  }
 
-  function resetOtpStep() {
-    document.getElementById("emailStep1").style.display = "block";
-    document.getElementById("emailStep2").style.display = "none";
-  }
+    function showToast(text) {
+      const toast = document.getElementById("toastPill");
+      toast.innerText = text;
+      toast.classList.add("show");
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3200);
+    }
 
-  function openAuthModal() {
-    document.getElementById("authModal").style.display = "flex";
-  }
-
-  function closeAuthModal() {
-    document.getElementById("authModal").style.display = "none";
-  }
-
-  function setQuery(text) {
-    document.getElementById("queryInput").value = text;
-    document.getElementById("queryInput").focus();
-  }
-
-  function showToast(text, icon = "📋") {
-    const toast = document.getElementById("toast");
-    document.getElementById("toastText").textContent = text;
-    document.getElementById("toastIcon").textContent = icon;
-    toast.style.display = "flex";
-    setTimeout(() => {
-      toast.style.display = "none";
-    }, 3500);
-  }
-
-  // Voice Input (Speech-to-Text)
-  const voiceBtn = document.getElementById("voiceBtn");
-  if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    // Speech Recognition
+    const voiceBtn = document.getElementById("voiceBtn");
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    const recognition = new SpeechRecognition();
-    recognition.lang = 'th-TH';
-    recognition.continuous = false;
 
-    let isRecording = false;
-    voiceBtn.addEventListener('click', () => {
-      if (!isRecording) {
-        recognition.start();
-        voiceBtn.classList.add('recording');
-        voiceBtn.innerHTML = '🔴 กำลังฟัง...';
-        isRecording = true;
-      } else {
-        recognition.stop();
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'th-TH';
+      recognition.continuous = false;
+      let isRec = false;
+
+      voiceBtn.addEventListener('click', () => {
+        if (!isRec) {
+          recognition.start();
+          voiceBtn.classList.add('recording');
+          isRec = true;
+        } else {
+          recognition.stop();
+          voiceBtn.classList.remove('recording');
+          isRec = false;
+        }
+      });
+
+      recognition.onresult = (e) => {
+        const transcript = e.results[0][0].transcript;
+        const textarea = document.getElementById("queryInput");
+        textarea.value += (textarea.value ? " " : "") + transcript;
+        handleInputState(textarea);
         voiceBtn.classList.remove('recording');
-        voiceBtn.innerHTML = '🎤 พูดด้วยเสียง';
-        isRecording = false;
-      }
-    });
-
-    recognition.onresult = (event) => {
-      const transcript = event.results[0][0].transcript;
-      document.getElementById("queryInput").value += (document.getElementById("queryInput").value ? " " : "") + transcript;
-      voiceBtn.classList.remove('recording');
-      voiceBtn.innerHTML = '🎤 พูดด้วยเสียง';
-      isRecording = false;
-    };
-
-    recognition.onerror = () => {
-      voiceBtn.classList.remove('recording');
-      voiceBtn.innerHTML = '🎤 พูดด้วยเสียง';
-      isRecording = false;
-    };
-  } else {
-    voiceBtn.style.display = 'none';
-  }
-
-  // Submit Query to Backend Engine
-  document.getElementById("submitBtn").addEventListener("click", async () => {
-    const query = document.getElementById("queryInput").value.trim();
-    if (!query) {
-      alert("กรุณากรอกข้อความเล่าปัญหาของท่านก่อนครับ");
-      return;
-    }
-
-    const submitBtn = document.getElementById("submitBtn");
-    submitBtn.disabled = true;
-    submitBtn.innerText = "กำลังประมวลผล...";
-
-    try {
-      const headers = {
-        "Content-Type": "application/json; charset=utf-8",
-        "X-Guest-ID": guestId
+        isRec = false;
       };
-      if (sessionToken) {
-        headers["Authorization"] = "Bearer " + sessionToken;
-      }
 
-      const response = await fetch("/api/consult", {
-        method: "POST",
-        headers: headers,
-        body: JSON.stringify({ query: query })
-      });
-
-      const data = await response.json();
-      lastResult = data;
-
-      // Handle Authentication Required (Guest limit = 1 reached)
-      if (data.status === "AUTH_REQUIRED") {
-        renderResults(data);
-        setTimeout(() => {
-          openAuthModal();
-        }, 800);
-        return;
-      }
-
-      // Handle Member Quota Exceeded (Member limit = 3 reached)
-      if (data.status === "QUOTA_EXCEEDED") {
-        renderResults(data);
-        return;
-      }
-
-      renderResults(data);
-      // Refresh Auth and Quota badge
-      initAuthStatus();
-    } catch (err) {
-      alert("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้: " + err.message);
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = `<span>วิเคราะห์คดี (0 บาท)</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>`;
-    }
-  });
-
-  function renderResults(data) {
-    const resultsContainer = document.getElementById("resultsContainer");
-    const statusCard = document.getElementById("statusCard");
-    const categoryTitle = document.getElementById("categoryTitle");
-    const urgencyText = document.getElementById("urgencyText");
-    const statusIcon = document.getElementById("statusIcon");
-    const adviceCardsList = document.getElementById("adviceCardsList");
-    const tierBadge = document.getElementById("tierBadge");
-    const quotaInfoText = document.getElementById("quotaInfoText");
-    const quotaRemainingBadge = document.getElementById("quotaRemainingBadge");
-
-    // Tier indicator
-    const isTier1 = (data.tier || "").includes("Tier 1");
-    if (isTier1) {
-      tierBadge.className = "badge-tier tier1";
-      tierBadge.textContent = "⚡ Tier 1: 0 บาท";
+      recognition.onerror = () => {
+        voiceBtn.classList.remove('recording');
+        isRec = false;
+      };
     } else {
-      tierBadge.className = "badge-tier tier2";
-      tierBadge.textContent = "🤖 Tier 2: AI ช่วยวิเคราะห์";
+      voiceBtn.style.display = 'none';
     }
 
-    // Quota display
-    if (data.quota) {
-      quotaInfoText.textContent = data.quota.note || "ประมวลผลข้อกฎหมายสำเร็จ";
-      quotaRemainingBadge.textContent = `สิทธิ์คงเหลือ: ${data.quota.remaining}/${data.quota.limit} ครั้ง`;
-    }
+    // Submit Query
+    document.getElementById("submitBtn").addEventListener("click", async () => {
+      const textarea = document.getElementById("queryInput");
+      const query = textarea.value.trim();
+      if (!query) return;
 
-    const urgencyScore = data.urgency ? data.urgency.score : 1;
-    statusCard.className = "status-card " + (urgencyScore >= 3 ? "critical" : (urgencyScore >= 2 ? "urgent" : "normal"));
-
-    categoryTitle.textContent = (data.matched_category_id ? data.matched_category_id + ": " : "") + (data.category_name || "คดีทั่วไป");
-    urgencyText.textContent = `ระดับความเร่งด่วน: ${data.urgency ? data.urgency.label : 'ปานกลาง'}`;
-    statusIcon.textContent = urgencyScore >= 3 ? "🚨" : (data.matched_category_id === "CAT-11" ? "📦" : "⚖️");
-
-    // Render Consultation Steps
-    adviceCardsList.innerHTML = "";
-    (data.consultation_parts || []).forEach(part => {
-      const card = document.createElement("div");
-      card.className = "advice-step-card";
-      card.innerHTML = `
-        <div class="advice-step-header">${part.title}</div>
-        <div class="advice-step-content">${escapeHtml(part.content)}</div>
+      const submitBtn = document.getElementById("submitBtn");
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: spin 1s linear infinite;">
+          <circle cx="12" cy="12" r="10" stroke-opacity="0.25"/>
+          <path d="M12 2a10 10 0 0 1 10 10"/>
+        </svg>
       `;
-      adviceCardsList.appendChild(card);
+
+      try {
+        const headers = {
+          "Content-Type": "application/json; charset=utf-8",
+          "X-Guest-ID": guestId
+        };
+        if (sessionToken) headers["Authorization"] = "Bearer " + sessionToken;
+
+        const response = await fetch("/api/consult", {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify({ query: query })
+        });
+
+        const data = await response.json();
+        lastResult = data;
+
+        if (data.status === "AUTH_REQUIRED") {
+          renderResults(query, data);
+          setTimeout(() => { openAuthModal(); }, 600);
+          return;
+        }
+
+        renderResults(query, data);
+        initAuthStatus();
+      } catch (err) {
+        alert("เกิดข้อผิดพลาดในการเชื่อมต่อ: " + err.message);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="19" x2="12" y2="5"/>
+            <polyline points="5 12 12 5 19 12"/>
+          </svg>
+        `;
+      }
     });
 
-    resultsContainer.style.display = "block";
-    resultsContainer.scrollIntoView({ behavior: "smooth" });
-  }
+    function renderResults(userQuery, data) {
+      // Hide Greeting & Suggestions
+      document.getElementById("geminiHero").style.display = "none";
+      document.getElementById("geminiSuggestions").style.display = "none";
 
-  function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.innerText = text;
-    return div.innerHTML;
-  }
+      // Show Conversation
+      const conversationArea = document.getElementById("conversationArea");
+      conversationArea.style.display = "flex";
 
-  function formatBriefAsText() {
-    if (!lastResult || !lastResult.partner_lawyer_brief) return "";
-    const b = lastResult.partner_lawyer_brief;
-    const cat = (b.category_id || '') + ' ' + (b.category_name || '');
-    const statutes = (b.recommended_statutes || []).join(', ');
-    const precedents = (b.relevant_precedents || []).join(', ');
-    const docs = (b.required_documents || []).map(d => '- ' + d).join('\n');
+      // Render User Bubble
+      document.getElementById("userQueryBubble").innerText = userQuery;
 
-    return `[ใบสรุปข้อมูลคดี - ดอกเตอร์ลอว์เยอร์ (Doctor Lawyer)]
-📋 หมวดหมู่คดี: ${cat}
-⚖️ ข้อเท็จจริงเบื้องต้น (PDPA): ${b.masked_client_statement || '-'}
-📖 ข้อกฎหมายและแนวฎีกา: ${statutes}${precedents ? '\nฎีกา: ' + precedents : ''}
-📂 เอกสารที่เตรียมไว้:
-${docs}
+      // Meta Badges
+      const catBadge = document.getElementById("categoryBadge");
+      catBadge.innerText = data.category_name || "ข้อพิพาททั่วไป";
 
-(ส่งต่อผ่านระบบ ดอกเตอร์ลอว์เยอร์ เพื่อให้ทนายความพาร์ตเนอร์ตรวจเอกสารและรับงาน)`;
-  }
+      const urgBadge = document.getElementById("urgencyBadge");
+      const urgScore = (data.urgency && data.urgency.score) || 2;
+      let shortUrg = "ปานกลาง";
+      if (urgScore >= 3) shortUrg = "เร่งด่วนมาก";
+      else if (urgScore === 2) shortUrg = "ปานกลาง";
+      else shortUrg = "ทั่วไป";
 
-  function copyBriefOnly() {
-    const text = formatBriefAsText();
-    if (!text) return;
-    navigator.clipboard.writeText(text).then(() => {
-      showToast("คัดลอกสรุปคดีลงคลิปบอร์ดเรียบร้อยแล้ว!", "📋");
-    }).catch(err => {
-      alert("ไม่สามารถคัดลอกได้: " + err);
-    });
-  }
+      urgBadge.className = "badge-urgency " + (urgScore >= 3 ? "critical" : urgScore === 2 ? "high" : "normal");
+      urgBadge.innerText = "ความเร่งด่วน: " + shortUrg;
 
-  function handoffToLineOA() {
-    const text = formatBriefAsText();
-    const lineUrl = (lastResult && lastResult.line_oa_url) ? lastResult.line_oa_url : DEFAULT_LINE_OA_URL;
+      // Render 6 Steps
+      const container = document.getElementById("adviceStepsContainer");
+      container.innerHTML = "";
 
-    if (navigator.clipboard && text) {
-      navigator.clipboard.writeText(text).then(() => {
-        showToast("คัดลอกสรุปคดีแล้ว กำลังเปิด LINE OA...", "💬");
-        setTimeout(() => {
-          window.open(lineUrl, "_blank");
-        }, 1200);
-      }).catch(() => {
-        window.open(lineUrl, "_blank");
+      (data.consultation_parts || []).forEach(part => {
+        const stepDiv = document.createElement("div");
+        stepDiv.className = "step-section";
+        stepDiv.innerHTML = `
+          <div class="step-header">
+            <span class="step-badge">${escapeHtml(part.step || '•')}</span>
+            <span>${cleanStepTitle(part.title)}</span>
+          </div>
+          <div class="step-content">${formatMarkdown(part.content)}</div>
+        `;
+        container.appendChild(stepDiv);
       });
-    } else {
-      window.open(lineUrl, "_blank");
+
+      // Smooth scroll to top of conversation
+      conversationArea.scrollIntoView({ behavior: "smooth" });
     }
-  }
 
-  // Modal Controls
-  function openLawyerModal() {
-    if (!lastResult || !lastResult.partner_lawyer_brief) return;
-    const brief = lastResult.partner_lawyer_brief;
-
-    document.getElementById("briefCategory").textContent = (brief.category_id || '') + ' ' + (brief.category_name || '');
-    document.getElementById("briefStatement").textContent = brief.masked_client_statement || '-';
-    
-    let statutesText = (brief.recommended_statutes || []).join(', ');
-    if (brief.relevant_precedents && brief.relevant_precedents.length > 0) {
-      statutesText += '\n• คำพิพากษาฎีกา: ' + brief.relevant_precedents.join(', ');
+    function cleanStepTitle(title) {
+      if (!title) return "";
+      let clean = title.replace(/\s*\([A-Za-z\s&/]+\)\s*/g, '').trim();
+      if (clean.includes("การส่งต่อนายความ")) return "แนวทางดำเนินการและปรึกษาทนายความ";
+      if (clean.includes("คำพิพากษาศาลฎีกา")) return "แนวคำพิพากษาศาลฎีกาที่เกี่ยวข้อง";
+      if (clean.includes("พยานหลักฐาน")) return "พยานหลักฐานสำคัญที่ต้องเตรียม";
+      if (clean.includes("สรุปประเด็น")) return "สรุปข้อเท็จจริงและประเด็นกฎหมาย";
+      if (clean.includes("สิทธิและบทบัญญัติ")) return "บทบัญญัติกฎหมายและสิทธิที่คุ้มครอง";
+      if (clean.includes("ลำดับขั้นตอน")) return "ขั้นตอนการปฏิบัติทันที";
+      return clean;
     }
-    document.getElementById("briefStatutes").innerText = statutesText || '-';
 
-    document.getElementById("briefDocs").innerText = (brief.required_documents || []).map(d => '• ' + d).join('\n') || '-';
+    function formatMarkdown(text) {
+      if (!text) return "";
+      let html = escapeHtml(text);
+      // Bold + Italic: ***text***
+      html = html.replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>');
+      // Bold: **text**
+      html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      // Italic: *text*
+      html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
+      
+      const lines = html.split('\n');
+      let result = [];
+      let inList = false;
+      for (let rawLine of lines) {
+        let line = rawLine.trim();
+        if (line.startsWith('- ') || line.startsWith('• ')) {
+          if (!inList) {
+            result.push('<ul class="step-list">');
+            inList = true;
+          }
+          result.push('<li>' + line.substring(2) + '</li>');
+        } else if (/^\d+\.\s/.test(line)) {
+          if (inList) {
+            result.push('</ul>');
+            inList = false;
+          }
+          result.push('<p class="step-p-ordered">' + line + '</p>');
+        } else {
+          if (inList) {
+            result.push('</ul>');
+            inList = false;
+          }
+          if (line.length > 0) {
+            result.push('<p>' + line + '</p>');
+          }
+        }
+      }
+      if (inList) result.push('</ul>');
+      return result.join('');
+    }
 
-    document.getElementById("lawyerModal").style.display = "flex";
-  }
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.innerText = text;
+      return div.innerHTML;
+    }
 
-  function closeLawyerModal() {
-    document.getElementById("lawyerModal").style.display = "none";
-  }
+    function formatBriefAsText() {
+      if (!lastResult || !lastResult.partner_lawyer_brief) return "";
+      const b = lastResult.partner_lawyer_brief;
+      const cat = (b.category_id || '') + ' ' + (b.category_name || '');
+      const statutes = (b.recommended_statutes || []).join(', ');
+      const deadlines = (b.critical_deadlines || []).join('\n- ');
+      const docs = (b.required_documents || []).join('\n- ');
 
-  // Load Auth Status on Page Load
-  initAuthStatus();
-</script>
+      return `[ใบสรุปคดีเบื้องต้น - ดอกเตอร์ลอว์เยอร์]\n` +
+             `หมวดหมู่: ${cat}\n` +
+             `ความเร่งด่วน: ${b.urgency_level || 'ปานกลาง'}\n\n` +
+             `สรุปข้อเท็จจริง:\n${b.incident_summary || '-'}\n\n` +
+             `ประเด็นกฎหมายและมาตราที่เกี่ยวข้อง:\n${statutes || '-'}\n\n` +
+             `กรอบเวลา/อายุความวิกฤต:\n- ${deadlines || '-'}\n\n` +
+             `เอกสารพยานหลักฐานที่ต้องเตรียม:\n- ${docs || '-'}\n\n` +
+             `คำแนะนำเบื้องต้น:\n${b.preliminary_advice || '-'}`;
+    }
 
+    function copyBriefOnly() {
+      const text = formatBriefAsText();
+      if (!text) {
+        showToast("ยังไม่มีข้อมูลสรุปคดี");
+        return;
+      }
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("คัดลอกใบสรุปคดีลงคลิปบอร์ดแล้ว");
+      }).catch(() => {
+        showToast("คัดลอกไม่สำเร็จ");
+      });
+    }
+
+    function handoffToLineOA() {
+      const briefText = formatBriefAsText();
+      if (!briefText) {
+        showToast("ยังไม่มีข้อมูลสรุปคดี");
+        return;
+      }
+      navigator.clipboard.writeText(briefText).then(() => {
+        showToast("คัดลอกสรุปคดีแล้ว! กำลังเปิด LINE OA...");
+      });
+      setTimeout(() => {
+        const lineOaUrl = (lastResult && lastResult.line_oa_url) || LINE_OA_URL;
+        window.open(lineOaUrl, "_blank");
+      }, 700);
+    }
+
+    function openLawyerModal() {
+      const brief = lastResult && lastResult.partner_lawyer_brief;
+      if (!brief) {
+        alert("ยังไม่มีข้อมูลสรุปคดี กรุณาวิเคราะห์ข้อกฎหมายก่อนครับ");
+        return;
+      }
+      const container = document.getElementById("briefContent");
+      container.innerHTML = `
+        <div style="font-weight: 700; color: #1f1f1f; margin-bottom: 6px;">หมวดหมู่: ${escapeHtml(brief.category_name || '')}</div>
+        <div style="margin-bottom: 12px; color: #444746;"><b>ความเร่งด่วน:</b> ${escapeHtml(brief.urgency_level || 'ปานกลาง')}</div>
+        <div style="margin-bottom: 12px;"><b>สรุปเหตุการณ์:</b><br>${escapeHtml(brief.incident_summary || '-')}</div>
+        <div style="margin-bottom: 12px;"><b>กฎหมายที่เกี่ยวข้อง:</b><br>${escapeHtml((brief.recommended_statutes || []).join(', '))}</div>
+        <div style="margin-bottom: 12px;"><b>เอกสารที่ต้องเตรียม:</b><br>- ${escapeHtml((brief.required_documents || []).join('\n- '))}</div>
+      `;
+      document.getElementById("lawyerModal").style.display = "flex";
+    }
+
+    function closeLawyerModal() {
+      document.getElementById("lawyerModal").style.display = "none";
+    }
+
+    // Auto initialize on load
+    window.addEventListener("DOMContentLoaded", () => {
+      initTheme();
+      initAuthStatus();
+      initLiff();
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const q = urlParams.get("q");
+      if (q) {
+        setQuery(q);
+        setTimeout(() => {
+          document.getElementById("submitBtn").click();
+        }, 150);
+      } else if (urlParams.get("modal") === "auth") {
+        if (urlParams.get("step") === "verify") {
+          pendingAuthEmail = "executive.test@lawfirm.co.th";
+          pendingDemoOtp = "591673";
+          document.getElementById("sentEmailDisplay").innerText = pendingAuthEmail;
+          document.getElementById("demoOtpDisplay").innerText = pendingDemoOtp;
+          document.getElementById("demoOtpBox").style.display = "flex";
+          document.getElementById("emailRequestStep").style.display = "none";
+          document.getElementById("emailVerifyStep").style.display = "block";
+        }
+        openAuthModal();
+      }
+    });
+  </script>
 </body>
 </html>
