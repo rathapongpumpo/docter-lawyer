@@ -28,7 +28,26 @@ with open('d:/Projects/docter-lawyer/frontend/index.html', 'r', encoding='utf-8'
 with sftp.file('/home/u196912583/domains/lawyer.buzlike.com/public_html/index.html', 'w') as f:
     f.write(html_content)
 
-# 4. Upload .htaccess to public_html/.htaccess
+# 4. Upload Favicons
+favicon_files = [
+    'favicon.ico',
+    'favicon.svg',
+    'favicon.png',
+    'favicon-32.png',
+    'favicon-64.png',
+    'favicon-192.png',
+    'favicon-512.png',
+    'apple-touch-icon.png'
+]
+
+for fav in favicon_files:
+    local_path = f'd:/Projects/docter-lawyer/frontend/{fav}'
+    remote_path = f'/home/u196912583/domains/lawyer.buzlike.com/public_html/{fav}'
+    if os.path.exists(local_path):
+        sftp.put(local_path, remote_path)
+        print(f"Uploaded favicon: {fav}")
+
+# 5. Upload .htaccess to public_html/.htaccess
 htaccess_content = '''RewriteEngine On
 
 # Block sensitive files
