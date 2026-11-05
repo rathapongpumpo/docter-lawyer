@@ -2082,7 +2082,7 @@
     ];
 
     const LEGAL_PROMPTS_POOL = [
-      // CAT-01: Cybercrime & Online Scams
+      // CAT-01: Cybercrime & Online Scams (cyber)
       {
         category: "cyber",
         categoryLabel: "อาชญากรรมไซเบอร์",
@@ -2099,7 +2099,32 @@
         text: "เผลอกดลิงก์ดูดเงินจากแอปธนาคาร เรียกเงินคืนได้ไหม",
         prompt: "ถูกมิจฉาชีพหลอกให้กดลิงก์แล้วเงินในบัญชีธนาคารถูกโอนออกไปหมด ต้องติดต่อศูนย์ AOC 1441 และธนาคารต้องรับผิดชอบอย่างไร"
       },
-      // CAT-02: Loans & Usury
+      {
+        category: "cyber",
+        categoryLabel: "อาชญากรรมไซเบอร์",
+        iconColor: "var(--google-blue)",
+        icon: `<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>`,
+        text: "รับจ้างเปิดบัญชีม้า มีโทษจำคุกกี่ปีและมีผลย้อนหลังไหม",
+        prompt: "เคยรับจ้างเปิดบัญชีม้าให้คนอื่น ตอนนี้มีหมายเรียกจากตำรวจ มีโทษจำคุกกี่ปี และต้องแก้ไขอย่างไร"
+      },
+      {
+        category: "cyber",
+        categoryLabel: "อาชญากรรมไซเบอร์",
+        iconColor: "var(--google-blue)",
+        icon: `<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>`,
+        text: "ถูกแฮก LINE หรือ Facebook ทักไปยืมเงินคนอื่น",
+        prompt: "ถูกแฮกบัญชี LINE แล้วมิจฉาชีพนำไปทักยืมเงินเพื่อนๆ หลายคน เจ้าของบัญชีตัวจริงต้องรับผิดชอบเงินที่เพื่อนโอนไหม"
+      },
+      {
+        category: "cyber",
+        categoryLabel: "อาชญากรรมไซเบอร์",
+        iconColor: "var(--google-blue)",
+        icon: `<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>`,
+        text: "ลงทุนเทรดคริปโตหรือหุ้นต่างประเทศแล้วถอนเงินไม่ได้",
+        prompt: "ถูกชักชวนลงทุนเทรดคริปโตผ่านแพลตฟอร์มต่างประเทศ สุดท้ายถอนเงินไม่ได้ เข้าข่ายแชร์ลูกโซ่หรือฉ้อโกงประชาชนไหม"
+      },
+
+      // CAT-02: Loans & Usury (loan)
       {
         category: "loan",
         categoryLabel: "สัญญากู้ยืมเงิน",
@@ -2116,7 +2141,32 @@
         text: "ยืมเงินผ่านแชท LINE ไม่มีสัญญา ฟ้องศาลได้ไหม",
         prompt: "เพื่อนยืมเงิน 50,000 บาทผ่านแชท LINE มีหลักฐานสลิปโอนเงินแต่ไม่มีสัญญากระดาษ สามารถฟ้องร้องบังคับคดีได้หรือไม่"
       },
-      // CAT-03: Labor & Dismissal
+      {
+        category: "loan",
+        categoryLabel: "สัญญากู้ยืมเงิน",
+        iconColor: "#059669",
+        icon: `<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>`,
+        text: "ค้ำประกันเงินกู้ให้เพื่อน เพื่อนหนีหนี้ ต้องจ่ายแทนไหม",
+        prompt: "เซ็นค้ำประกันเงินกู้ให้เพื่อนร่วมงาน ต่อมาผู้กู้หนีหนี้ เจ้าหนี้มาทวงที่ผู้ค้ำประกันทันที ถูกต้องตามกฎหมายค้ำประกันใหม่ไหม"
+      },
+      {
+        category: "loan",
+        categoryLabel: "สัญญากู้ยืมเงิน",
+        iconColor: "#059669",
+        icon: `<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>`,
+        text: "เจ้าหนี้คิดดอกเบี้ยทบต้น ดอกเบี้ยเกินเงินต้น ถูกต้องไหม",
+        prompt: "กู้เงินมา 100,000 บาท จ่ายดอกเบี้ยไปแล้ว 150,000 บาท เจ้าหนี้ยังทวงเงินต้นครบ แบบนี้คิดดอกเบี้ยทบต้นผิดกฎหมายไหม"
+      },
+      {
+        category: "loan",
+        categoryLabel: "สัญญากู้ยืมเงิน",
+        iconColor: "#059669",
+        icon: `<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>`,
+        text: "หนี้บัตรเครดิต ขาดอายุความกี่ปี หากถูกฟ้องทำอย่างไร",
+        prompt: "หนี้บัตรเครดิตไม่ได้จ่ายมานานกว่า 5 ปี มีหมายศาลส่งมาที่บ้าน คดีขาดอายุความหรือยัง และต้องเขียนคำให้การอย่างไร"
+      },
+
+      // CAT-03: Labor & Dismissal (labor)
       {
         category: "labor",
         categoryLabel: "กฎหมายแรงงาน",
@@ -2133,7 +2183,32 @@
         text: "นายจ้างบีบให้เซ็นใบลาออก หากไม่ยอมเซ็นมีสิทธิอะไรบ้าง",
         prompt: "บริษัทบีบให้เซ็นใบลาออกโดยอ้างปรับโครงสร้าง หากไม่ยอมเซ็นจะเสียสิทธิเงินชดเชยตามอายุงานหรือไม่"
       },
-      // CAT-04: Tort & Traffic Accidents
+      {
+        category: "labor",
+        categoryLabel: "กฎหมายแรงงาน",
+        iconColor: "#d97706",
+        icon: `<rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>`,
+        text: "ทำงานล่วงเวลา (OT) แต่นายจ้างไม่ยอมจ่ายเงินค่าล่วงเวลา",
+        prompt: "บริษัทบังคับให้อยู่ทำงานล่วงเวลาหลังเลิกงานและวันหยุด แต่จ่ายเป็นวันหยุดชดเชยแทนเงินค่า OT ถูกต้องตามกฎหมายแรงงานไหม"
+      },
+      {
+        category: "labor",
+        categoryLabel: "กฎหมายแรงงาน",
+        iconColor: "#d97706",
+        icon: `<rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>`,
+        text: "ลาออกจากงาน นายจ้างไม่ยอมคืนเงินค้ำประกันการทำงาน",
+        prompt: "ตอนเข้าทำงานวางเงินค้ำประกันไว้ 15,000 บาท พอลาออกถูกต้องตามระเบียบ นายจ้างบ่ายเบี่ยงไม่ยอมคืนเงินค้ำประกัน"
+      },
+      {
+        category: "labor",
+        categoryLabel: "กฎหมายแรงงาน",
+        iconColor: "#d97706",
+        icon: `<rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>`,
+        text: "เกิดอุบัติเหตุขณะทำงาน นายจ้างต้องรับผิดชอบอย่างไร",
+        prompt: "ประสบอุบัติเหตุเครื่องจักรหนีบมือขณะทำงานในโรงงาน นายจ้างและกองทุนเงินทดแทนต้องจ่ายเงินชดเชยและค่ารักษาอย่างไร"
+      },
+
+      // CAT-04: Tort & Traffic Accidents (tort)
       {
         category: "tort",
         categoryLabel: "ละเมิดและค่าเสียหาย",
@@ -2150,7 +2225,32 @@
         text: "สุนัขเพื่อนบ้านกัดบาดเจ็บ เจ้าของไม่ยอมจ่ายค่ารักษา",
         prompt: "ถูกสุนัขของเพื่อนบ้านหลุดออกมากัดจนต้องเย็บแผลและฉีดวัคซีน เจ้าของปฏิเสธความรับผิดชอบ ฟ้องร้องเรียกค่าเสียหายอย่างไร"
       },
-      // CAT-05: Family & Inheritance
+      {
+        category: "tort",
+        categoryLabel: "ละเมิดและค่าเสียหาย",
+        iconColor: "#dc2626",
+        icon: `<path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 11.1 2 11.5 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/>`,
+        text: "ของตกใส่รถจากอาคารหรือเขตก่อสร้าง เรียกร้องใคร",
+        prompt: "ขับรถผ่านเขตก่อสร้างแล้วมีเศษหินตกใส่กระจกแตก เจ้าของอาคารหรือผู้รับเหมาต้องรับผิดชอบค่าเสียหายอย่างไร"
+      },
+      {
+        category: "tort",
+        categoryLabel: "ละเมิดและค่าเสียหาย",
+        iconColor: "#dc2626",
+        icon: `<path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 11.1 2 11.5 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/>`,
+        text: "คนเดินข้ามถนนถูกรถชน แต่ไม่ได้ข้ามตรงทางม้าลาย",
+        prompt: "คนเดินเท้าข้ามถนนถูกรถชนได้รับบาดเจ็บสาหัส แต่ไม่ได้ข้ามตรงทางม้าลาย ใครเป็นฝ่ายประมาทและเรียกร้องค่ารักษาได้ไหม"
+      },
+      {
+        category: "tort",
+        categoryLabel: "ละเมิดและค่าเสียหาย",
+        iconColor: "#dc2626",
+        icon: `<path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 11.1 2 11.5 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/>`,
+        text: "ร้านอาหารทำเศษแก้วหรือสิ่งแปลกปลอมปนจนบาดเจ็บ",
+        prompt: "ทานอาหารในร้านแล้วมีเศษแก้วปนทำให้ฟันแตกและปากเป็นแผล ทางร้านเสนอแค่ยกเลิกค่าอาหาร สามารถฟ้องเรียกค่าเสียหายได้ไหม"
+      },
+
+      // CAT-05: Family & Inheritance (family)
       {
         category: "family",
         categoryLabel: "มรดกและครอบครัว",
@@ -2167,7 +2267,32 @@
         text: "ฟ้องหย่าคู่สมรสมีชู้ แบ่งสินสมรสและเรียกค่าทดแทน",
         prompt: "คู่สมรสแอบไปมีความสัมพันธ์กับบุคคลอื่น ต้องการฟ้องหย่า แบ่งสินสมรส และเรียกค่าทดแทนจากชู้ทำได้อย่างไร"
       },
-      // CAT-06: Tenancy & Hire-Purchase
+      {
+        category: "family",
+        categoryLabel: "มรดกและครอบครัว",
+        iconColor: "#7c3aed",
+        icon: `<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>`,
+        text: "การตั้งผู้จัดการมรดก มีขั้นตอนและใช้เวลากี่เดือน",
+        prompt: "ต้องการยื่นคำร้องต่อศาลเพื่อขอตั้งผู้จัดการมรดก ต้องเตรียมเอกสารอะไรบ้าง มีค่าใช้จ่ายเท่าไร และใช้เวลานานไหม"
+      },
+      {
+        category: "family",
+        categoryLabel: "มรดกและครอบครัว",
+        iconColor: "#7c3aed",
+        icon: `<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>`,
+        text: "พ่อแม่ยกที่ดินให้ลูก ต่อมาลูกเนรคุณ ขอถอนคืนการให้ได้ไหม",
+        prompt: "พ่อแม่โอนที่ดินให้บุตร ต่อมาบุตรด่าทอขับไล่ไม่ยอมเลี้ยงดู พ่อแม่สามารถฟ้องขอถอนคืนการให้เพราะเหตุเนรคุณได้หรือไม่"
+      },
+      {
+        category: "family",
+        categoryLabel: "มรดกและครอบครัว",
+        iconColor: "#7c3aed",
+        icon: `<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/>`,
+        text: "ไม่ได้จดทะเบียนสมรส ทรัพย์สินที่หามาด้วยกันแบ่งอย่างไร",
+        prompt: "อยู่กินกันมา 10 ปีแต่ไม่ได้จดทะเบียนสมรส ร่วมกันซื้อบ้านและรถยนต์ หากเลิกกันจะแบ่งทรัพย์สินที่เป็นกรรมสิทธิ์ร่วมอย่างไร"
+      },
+
+      // CAT-06: Tenancy & Hire-Purchase (rent)
       {
         category: "rent",
         categoryLabel: "สัญญาเช่าและเช่าซื้อ",
@@ -2184,7 +2309,32 @@
         text: "ผ่อนรถไม่ไหว คืนรถให้ไฟแนนซ์ ต้องจ่ายส่วนต่างไหม",
         prompt: "ผ่อนค่างวดรถยนต์ต่อไม่ไหว นำรถไปส่งมอบคืนไฟแนนซ์ขณะที่ยังไม่ผิดนัดชำระ ไฟแนนซ์ฟ้องเรียกค่าขาดราคาได้หรือไม่"
       },
-      // CAT-07: Consumer Protection
+      {
+        category: "rent",
+        categoryLabel: "สัญญาเช่าและเช่าซื้อ",
+        iconColor: "#0891b2",
+        icon: `<path d="M3 21h18M5 21V7l8-4v18M13 21V3l6 3v15M9 9h1M9 13h1M9 17h1M15 9h1M15 13h1M15 17h1"/>`,
+        text: "ย้ายออกจากห้องเช่า เจ้าของหอพักยึดเงินประกันทั้งหมด",
+        prompt: "แจ้งย้ายออกจากหอพักล่วงหน้าตามสัญญา แต่เจ้าของหักเงินประกัน 10,000 บาท อ้างค่าทาสีและค่าเสื่อมสภาพตามปกติ ทำอย่างไรได้บ้าง"
+      },
+      {
+        category: "rent",
+        categoryLabel: "สัญญาเช่าและเช่าซื้อ",
+        iconColor: "#0891b2",
+        icon: `<path d="M3 21h18M5 21V7l8-4v18M13 21V3l6 3v15M9 9h1M9 13h1M9 17h1M15 9h1M15 13h1M15 17h1"/>`,
+        text: "ผู้เช่าไม่ยอมย้ายออกหลังหมดสัญญา เจ้าของบ้านทำอย่างไร",
+        prompt: "สัญญาเช่าบ้านหมดอายุแล้ว ผู้เช่าไม่ยอมย้ายออกและไม่ยอมจ่ายค่าเช่า เจ้าของบ้านเข้าไปขนย้ายของเองได้ไหม หรือต้องฟ้องขับไล่"
+      },
+      {
+        category: "rent",
+        categoryLabel: "สัญญาเช่าและเช่าซื้อ",
+        iconColor: "#0891b2",
+        icon: `<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>`,
+        text: "เช่าซื้อรถยนต์แล้วรถถูกขโมยหาย ยังต้องผ่อนต่อไหม",
+        prompt: "รถมอเตอร์ไซค์ที่ยังผ่อนไม่หมดถูกขโมย ประกันจ่ายสินไหมไม่เต็มจำนวน ผู้เช่าซื้อยังต้องผ่อนค่างวดที่เหลือต่อหรือไม่"
+      },
+
+      // CAT-07: Consumer Protection (consumer)
       {
         category: "consumer",
         categoryLabel: "คุ้มครองผู้บริโภค",
@@ -2201,7 +2351,32 @@
         text: "ซื้อคอนโดใหม่แล้วพบห้องรั่วซึม โครงการไม่ยอมแก้ไข",
         prompt: "ซื้อคอนโดสร้างเสร็จใหม่แต่พบปัญหาน้ำรั่วซึม โครงการบ่ายเบี่ยงไม่ยอมมาซ่อมตามประกัน ผู้ซื้อมีสิทธิเรียกร้องอะไรได้บ้าง"
       },
-      // CAT-08: Defamation & Computer Crime
+      {
+        category: "consumer",
+        categoryLabel: "คุ้มครองผู้บริโภค",
+        iconColor: "#ea580c",
+        icon: `<path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>`,
+        text: "คลินิกเสริมความงามทำหน้าพัง ไม่เห็นผลตามโฆษณา",
+        prompt: "ซื้อคอร์สเลเซอร์และศัลยกรรมคลินิกความงามแล้วใบหน้าอักเสบเสียโฉม ทางคลินิกปัดความรับผิดชอบ ร้องเรียนและฟ้องร้องอย่างไร"
+      },
+      {
+        category: "consumer",
+        categoryLabel: "คุ้มครองผู้บริโภค",
+        iconColor: "#ea580c",
+        icon: `<path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>`,
+        text: "ฟิตเนสปิดกิจการกะทันหัน ยังเหลืออายุสมาชิกรายปี",
+        prompt: "สมัครสมาชิกฟิตเนสรายปีจ่ายเงินก้อนไปแล้ว จู่ๆ ฟิตเนสประกาศปิดให้บริการถาวร สมาชิกสามารถรวมตัวฟ้องเรียกเงินคืนได้ไหม"
+      },
+      {
+        category: "consumer",
+        categoryLabel: "คุ้มครองผู้บริโภค",
+        iconColor: "#ea580c",
+        icon: `<path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>`,
+        text: "ซื้อรถป้ายแดงออกจากศูนย์ มีปัญหาเครื่องยนต์ดับบ่อย",
+        prompt: "ออกรถป้ายแดงมาได้ 1 เดือน รถดับกลางทางบ่อยครั้ง ซ่อมไม่หาย ผู้บริโภคสามารถขอเปลี่ยนคันใหม่หรือคืนเงินได้หรือไม่"
+      },
+
+      // CAT-08: Defamation & Computer Crime (defamation)
       {
         category: "defamation",
         categoryLabel: "หมิ่นประมาทออนไลน์",
@@ -2218,7 +2393,32 @@
         text: "เจ้าหนี้โทรทวงหนี้ที่ทำงาน ประจานกับเพื่อนร่วมงาน",
         prompt: "เจ้าหนี้โทรทวงหนี้ที่ทำงานและพูดจาประจานข่มขู่กับเพื่อนร่วมงาน มีความผิดตาม พ.ร.บ.ทวงถามหนี้ พ.ศ. 2558 อย่างไร"
       },
-      // CAT-09: Criminal Law
+      {
+        category: "defamation",
+        categoryLabel: "หมิ่นประมาทออนไลน์",
+        iconColor: "#db2777",
+        icon: `<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>`,
+        text: "รีวิวสินค้าตามจริง ร้านค้าส่งหนังสือขู่ฟ้องหมิ่นประมาท",
+        prompt: "ซื้อสินค้ามาใช้แล้วไม่ดี จึงเขียนรีวิวตามข้อเท็จจริง ทางร้านค้าส่งหนังสือเตือนขู่จะฟ้องข้อหาหมิ่นประมาททางธุรกิจ ถือเป็นติชมโดยสุจริตไหม"
+      },
+      {
+        category: "defamation",
+        categoryLabel: "หมิ่นประมาทออนไลน์",
+        iconColor: "#db2777",
+        icon: `<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>`,
+        text: "ถูกแอบอัดคลิปเสียงคุยโทรศัพท์ไปเผยแพร่ในอินเทอร์เน็ต",
+        prompt: "คู่สนทนาแอบบันทึกเสียงการคุยโทรศัพท์แล้วนำไปตัดต่อเผยแพร่ในกลุ่มออนไลน์ มีความผิดฐานละเมิดสิทธิส่วนบุคคลหรือหมิ่นประมาทไหม"
+      },
+      {
+        category: "defamation",
+        categoryLabel: "หมิ่นประมาทออนไลน์",
+        iconColor: "#db2777",
+        icon: `<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>`,
+        text: "ถูกนำภาพใบหน้าไปตัดต่อ AI ลามกอนาจาร เอาผิดอย่างไร",
+        prompt: "ถูกนำภาพใบหน้าไปตัดต่อด้วย AI ใส่ในคลิปหรือภาพลามก มีความผิดตาม พ.ร.บ.คอมพิวเตอร์ มาตรา 16 มีโทษจำคุกกี่ปี"
+      },
+
+      // CAT-09: Criminal Law (criminal)
       {
         category: "criminal",
         categoryLabel: "คดีอาญาทั่วไป",
@@ -2235,7 +2435,32 @@
         text: "ถูกทำร้ายร่างกายจนบาดเจ็บ แจ้งความและฟ้องแพ่งอย่างไร",
         prompt: "ถูกคู่กรณีทำร้ายร่างกายจนต้องเย็บแผลและหยุดงาน 14 วัน แจ้งความดำเนินคดีอาญาและเรียกค่าสินไหมทดแทนอย่างไร"
       },
-      // CAT-10: Court Mediation
+      {
+        category: "criminal",
+        categoryLabel: "คดีอาญาทั่วไป",
+        iconColor: "#64748b",
+        icon: `<path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/>`,
+        text: "ป้องกันตัวจากการถูกบุกรุกบ้านยามวิกาล ยิงคนร้ายผิดไหม",
+        prompt: "คนร้ายพกมีดบุกรุกเข้ามาในบ้านตอนกลางคืน เจ้าของบ้านใช้อาวุธปืนยิงคนร้ายบาดเจ็บ เข้าข่ายการป้องกันตัวโดยชอบด้วยกฎหมายไหม"
+      },
+      {
+        category: "criminal",
+        categoryLabel: "คดีอาญาทั่วไป",
+        iconColor: "#64748b",
+        icon: `<path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/>`,
+        text: "รับซื้อของโจรโดยไม่รู้ว่าเป็นของขโมย มีความผิดไหม",
+        prompt: "ซื้อโทรศัพท์มือถือมือสองจากตลาดนัดในราคาถูก ต่อมาตำรวจแจ้งว่าเป็นของที่ถูกขโมยมา ผู้ซื้อจะมีความผิดฐานรับของโจรไหม"
+      },
+      {
+        category: "criminal",
+        categoryLabel: "คดีอาญาทั่วไป",
+        iconColor: "#64748b",
+        icon: `<path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/>`,
+        text: "เช็คเด้ง ธนาคารปฏิเสธการจ่ายเงิน แจ้งความอาญาได้ไหม",
+        prompt: "คู่ค้าจ่ายเช็คชำระค่าสินค้าแต่เช็คเด้ง ธนาคารปฏิเสธการจ่ายเงิน สามารถแจ้งความตาม พ.ร.บ.ว่าด้วยความผิดอันเกิดจากการใช้เช็คได้ไหม"
+      },
+
+      // CAT-10: Court Mediation (mediation)
       {
         category: "mediation",
         categoryLabel: "ไกล่เกลี่ยข้อพิพาท",
@@ -2252,7 +2477,32 @@
         text: "สัญญาประนีประนอมยอมความ หากคู่กรณีเบี้ยวฟ้องได้ไหม",
         prompt: "ทำสัญญาประนีประนอมยอมความต่อหน้าพยาน หากคู่กรณีเบี้ยวไม่ปฏิบัติตามสัญญา สามารถนำไปฟ้องบังคับคดีได้ทันทีไหม"
       },
-      // CAT-11: E-Commerce Tax & VAT
+      {
+        category: "mediation",
+        categoryLabel: "ไกล่เกลี่ยข้อพิพาท",
+        iconColor: "#10b981",
+        icon: `<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/>`,
+        text: "ไกล่เกลี่ยในชั้นศาลแล้วตกลงกันได้ มีผลทางกฎหมายอย่างไร",
+        prompt: "ถูกฟ้องคดีและเข้าสู่กระบวนการไกล่เกลี่ยของศาลจนทำสัญญาประนีประนอมยอมความได้ ศาลจะมีคำพิพากษาตามยอมอย่างไร"
+      },
+      {
+        category: "mediation",
+        categoryLabel: "ไกล่เกลี่ยข้อพิพาท",
+        iconColor: "#10b981",
+        icon: `<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/>`,
+        text: "ไกล่เกลี่ยหนี้กับสถาบันการเงิน ขอปรับโครงสร้างหนี้อย่างไร",
+        prompt: "มีหนี้เสียหลายบัญชีต้องการเข้าร่วมโครงการคลินิกแก้หนี้หรือมหกรรมไกล่เกลี่ยหนี้ มีขั้นตอนและเงื่อนไขอย่างไร"
+      },
+      {
+        category: "mediation",
+        categoryLabel: "ไกล่เกลี่ยข้อพิพาท",
+        iconColor: "#10b981",
+        icon: `<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/>`,
+        text: "ข้อพิพาทมรดกระหว่างพี่น้อง เจรจาไกล่เกลี่ยอย่างไร",
+        prompt: "พี่น้องมีความเห็นไม่ตรงกันเรื่องแบ่งที่ดินมรดก ต้องการใช้คนกลางหรือผู้ประนอมข้อพิพาทช่วยไกล่เกลี่ย มีกระบวนการอย่างไร"
+      },
+
+      // CAT-11: E-Commerce Tax & VAT (tax)
       {
         category: "tax",
         categoryLabel: "ภาษีแม่ค้าออนไลน์",
@@ -2268,20 +2518,72 @@
         icon: `<rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01"/>`,
         text: "บัญชีเงินเข้าเกิน 400 ครั้ง 2 ล้าน สรรพากรจะตรวจไหม",
         prompt: "ยอดเงินโอนเข้าบัญชีส่วนตัวเกิน 400 ครั้งและเกิน 2 ล้านบาทในหนึ่งปี ธนาคารส่งข้อมูลให้สรรพากรหรือไม่ และต้องเตรียมตัวยื่นภาษีอย่างไร"
+      },
+      {
+        category: "tax",
+        categoryLabel: "ภาษีแม่ค้าออนไลน์",
+        iconColor: "#3b82f6",
+        icon: `<rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01"/>`,
+        text: "ขายของออนไลน์ต้องยื่นภาษีครึ่งปี (ภ.ง.ด.94) หรือไม่",
+        prompt: "เปิดร้านขายของออนไลน์มีรายได้ตามมาตรา 40(8) ต้องยื่นภาษีเงินได้บุคคลธรรมดาครึ่งปี ภ.ง.ด.94 ช่วงเดือนไหน และหักค่าใช้จ่ายอย่างไร"
+      },
+      {
+        category: "tax",
+        categoryLabel: "ภาษีแม่ค้าออนไลน์",
+        iconColor: "#3b82f6",
+        icon: `<rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01"/>`,
+        text: "สรรพากรเรียกตรวจย้อนหลัง 5 ปี ต้องเตรียมหลักฐานอะไร",
+        prompt: "ได้รับจดหมายเชิญพบจากสรรพากรขอตรวจสอบภาษีย้อนหลัง 5 ปีจากการขายของออนไลน์ ต้องเตรียมเอกสารบัญชีและสเตทเมนต์อย่างไร"
+      },
+      {
+        category: "tax",
+        categoryLabel: "ภาษีแม่ค้าออนไลน์",
+        iconColor: "#3b82f6",
+        icon: `<rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01"/>`,
+        text: "เปิดบริษัท หรือ บุคคลธรรมดา แบบไหนประหยัดภาษีกว่า",
+        prompt: "ยอดขายออนไลน์เริ่มโตขึ้น ควรจดทะเบียนเป็นนิติบุคคล (บริษัทจำกัด) หรือคงสถานะบุคคลธรรมดาต่อไป แบบไหนวางแผนภาษีได้คุ้มกว่า"
       }
     ];
 
     let currentCategoryFilter = "all";
+    let previousShownTexts = new Set();
+    let shuffleRotationDeg = 0;
+
+    // Fisher-Yates (Knuth) Uniform Shuffle
+    function fisherYatesShuffle(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
 
     function renderCategoryDropdown() {
       const menu = document.getElementById("categoryDropdownMenu");
       if (!menu) return;
-      menu.innerHTML = LEGAL_CATEGORIES.map(cat => `
+
+      const randomCatItem = `
+        <button type="button" class="dropdown-item-cat" onclick="randomizeCategory()" style="border-bottom: 1px solid var(--gemini-border); margin-bottom: 4px; padding-bottom: 9px; font-weight: 500;">
+          <span class="cat-icon">🔀</span>
+          <span class="cat-name">สุ่มเปลี่ยนหมวดหมู่ใหม่</span>
+        </button>
+      `;
+
+      const listItems = LEGAL_CATEGORIES.map(cat => `
         <button type="button" class="dropdown-item-cat ${cat.id === currentCategoryFilter ? 'active' : ''}" onclick="selectCategoryFilter('${cat.id}')">
           <span class="cat-icon">${cat.icon || '⚖️'}</span>
           <span class="cat-name">${escapeHtml(cat.name)}</span>
         </button>
       `).join("");
+
+      menu.innerHTML = randomCatItem + listItems;
+    }
+
+    function randomizeCategory() {
+      const specificCats = LEGAL_CATEGORIES.filter(c => c.id !== "all");
+      const randCat = specificCats[Math.floor(Math.random() * specificCats.length)];
+      selectCategoryFilter(randCat.id);
     }
 
     function toggleCategoryMenu(forceState) {
@@ -2325,33 +2627,45 @@
       const shuffleBtn = document.getElementById("btnShuffleSuggestions");
       const icon = shuffleBtn ? shuffleBtn.querySelector(".shuffle-icon") : null;
 
+      // Animate smooth 360 spin on icon
       if (icon) {
-        icon.classList.remove("rotating");
-        void icon.offsetWidth;
-        icon.classList.add("rotating");
-      }
-
-      let pool = LEGAL_PROMPTS_POOL;
-      if (currentCategoryFilter !== "all") {
-        pool = LEGAL_PROMPTS_POOL.filter(item => item.category === currentCategoryFilter);
+        shuffleRotationDeg += 360;
+        icon.style.transform = `rotate(${shuffleRotationDeg}deg)`;
+        icon.style.transition = "transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)";
       }
 
       let selected = [];
-      if (currentCategoryFilter === "all") {
-        // Pick 4 items from 4 distinct categories
-        const availableCategories = Array.from(new Set(pool.map(p => p.category)));
-        const shuffledCats = availableCategories.sort(() => 0.5 - Math.random());
-        const pickedCats = shuffledCats.slice(0, 4);
 
-        pickedCats.forEach(cat => {
-          const itemsInCat = pool.filter(p => p.category === cat);
-          const randItem = itemsInCat[Math.floor(Math.random() * itemsInCat.length)];
-          selected.push(randItem);
-        });
+      if (currentCategoryFilter === "all") {
+        // Pick 4 distinct categories using Fisher-Yates
+        const catIds = LEGAL_CATEGORIES.filter(c => c.id !== "all").map(c => c.id);
+        const shuffledCats = fisherYatesShuffle(catIds);
+
+        for (const cat of shuffledCats) {
+          if (selected.length >= 4) break;
+          const itemsInCat = LEGAL_PROMPTS_POOL.filter(p => p.category === cat);
+          // Strict anti-repetition: exclude items displayed in the previous round
+          const unshown = itemsInCat.filter(item => !previousShownTexts.has(item.text));
+          const poolToPick = unshown.length > 0 ? unshown : itemsInCat;
+          if (poolToPick.length > 0) {
+            const picked = poolToPick[Math.floor(Math.random() * poolToPick.length)];
+            selected.push(picked);
+          }
+        }
       } else {
-        const shuffled = [...pool].sort(() => 0.5 - Math.random());
-        selected = shuffled.slice(0, 4);
+        // Category specific filter: select 4 distinct items from this category
+        const catPool = LEGAL_PROMPTS_POOL.filter(item => item.category === currentCategoryFilter);
+        const unshown = catPool.filter(item => !previousShownTexts.has(item.text));
+        let candidates = fisherYatesShuffle(unshown);
+        if (candidates.length < 4) {
+          const shown = catPool.filter(item => previousShownTexts.has(item.text));
+          candidates = candidates.concat(fisherYatesShuffle(shown));
+        }
+        selected = candidates.slice(0, 4);
       }
+
+      // Record currently shown prompts to guarantee no repetition on next click
+      previousShownTexts = new Set(selected.map(item => item.text));
 
       if (grid) {
         grid.classList.add("fade-out");
@@ -2368,11 +2682,11 @@
             </button>
           `).join("");
           grid.classList.remove("fade-out");
-        }, 120);
+        }, 130);
       }
     }
 
-    function handleSuggestionClick(btn) {
+        function handleSuggestionClick(btn) {
       const prompt = btn.getAttribute("data-prompt") || "";
       setQuery(prompt);
     }
